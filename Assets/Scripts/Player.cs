@@ -85,7 +85,7 @@ public class Player : NetworkBehaviour {
 	public void CmdEquip( GameObject newGun){
 		if(gun != null)Destroy(gun.gameObject);
 		gun = newGun.GetComponent<armaBase>();
-		gun.equipado(gameObject);
+		gun.Cmdequipado(gameObject);
 	}
 
 	public IEnumerator esperaKnock(float knockbackTime){

@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212599864285947318}
   - component: {fileID: 114955522737511388}
   - component: {fileID: 114013854183748998}
+  - component: {fileID: 114222438803217834}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -54,15 +55,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vida: {fileID: 0}
+  camOffset: {x: 0, y: 0, z: 0}
   username: 
   speed: 10
   skinIndex: 0
   canWalk: 1
   canShoot: 1
-  meleeRange: 0
+  gun: {fileID: 0}
+  testeGun: {fileID: 0}
 --- !u!114 &114222438803217834
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1128904798694940}
