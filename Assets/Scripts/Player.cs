@@ -1,80 +1,119 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using UnityEngine.Networking;
 
 public class Player : NetworkBehaviour {
 
+	public Health vida;
+
 	[SyncVar]
 	public string username;
 	public float speed;
-	public float skinIndex;
+	public int skinIndex;
+	[HideInInspector]
 	public bool canWalk = true;
+	[HideInInspector]
 	public bool canShoot = true;
-	public float meleeRange;
+	[HideInInspector]
+	public armaBase gun;
 
-	private Rigidbody2D rb2d;
+	public GameObject testeGun;//PARA DEBUG
+
+	private Transform trans;
+	private Rigidbody2D rigi;
+	private void Start(){
+		trans = GetComponent<Transform>();
+		rigi = GetComponent<Rigidbody2D>();
+		CmdEquip(testeGun);//DEBUG;
+	}
 
 	public override void OnStartLocalPlayer() {
 		base.OnStartLocalPlayer();
 		//Pega nome das preferencia
 
 		GameManager.instance.CmdAddPlayer(gameObject);
-		rb2d = GetComponent<Rigidbody2D>();
 		SpriteRenderer spr = GetComponent<SpriteRenderer>();
 		if(spr != null) spr.color = Color.red;
 	}
 
-	[ClientRpc]
-	public void RpcSetSkin(int newSkin) {
-		skinIndex = newSkin;
-		//Logica de mudança de skin
-	} 
-	[ClientRpc]
-	public void RpcSetCanMove(bool canMove) {
-		if(isLocalPlayer){
-			canWalk = canMove;
+
+	public void Update(){
+		if(!isLocalPlayer)
+			return;
+
+		if(canWalk)
+			walk();
+		if(canShoot && gun != null&&Input.GetButton("Fire1"))
+			atirar();
+	}
+
+	private void walk(){
+		float ang  = 0;
+		if(Input.GetAxis("Vertical") != 0|| Input.GetAxis("Horizontal") != 0){
+			//float angle = Mathf.Atan2(verticalAxis,horizontalAxis);
+			//Vector3 direction = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
+			//transform.position += speed * Time.deltaTime * direction;
+			//transform.rotation = Quaternion.Euler(0,0,angle * Mathf.Rad2Deg);
+			ang = Mathf.Atan2 (-Input.GetAxis("Horizontal"),Input.GetAxis("Vertical"))* Mathf.Rad2Deg;
+			transform.eulerAngles = new Vector3(0f,0f,ang);
+			rigi.velocity = new Vector2(Input.GetAxis("Horizontal"),Input.GetAxis("Vertical")) * speed;
 		}
 	}
 
+	private void atirar(){
+		gun.CmdAtirar();
+
+	}
+
+
+	[Command]
+	public void CmdUnequip(){
+		Destroy(gun.gameObject);
+		gun = null;
+	}
+
+	[Command]
+	public void CmdEquip( GameObject newGun){
+		if(gun != null)Destroy(gun.gameObject);
+		gun = newGun.GetComponent<armaBase>();
+		gun.equipado(gameObject);
+	}
+
 	[ClientRpc]
-	public void RpcSetCanShoot(bool can) {
+	public void RpcSetSkin(int id){
 		if(isLocalPlayer){
-			canShoot = can;
+			skinIndex = id;
+		}
+	}
+	[ClientRpc]
+	public void RpcSetCanShoot(bool valor){
+		if(isLocalPlayer){
+			canShoot = valor;
+		}
+	}
+	[ClientRpc]
+	public void RpcSetCanWalk(bool valor){
+		if(isLocalPlayer){
+			canWalk = valor;
 		}
 	}
 
 	[ClientRpc]
 	public void RpcPush(Vector2 force) {
-		rb2d.AddForce(force, ForceMode2D.Impulse);
+		rigi.AddForce(force, ForceMode2D.Impulse);
 	}
 
-	[Command]
-	public void CmdEquip(GameObject weapon){
 
-	}
 
-	[Command]
-	public void CmdUnequip(GameObject weapon){
+	public IEnumerator esperaKnock(float knockbackTime){
+        yield return new WaitForSeconds(knockbackTime);
+		RpcSetCanWalk(true);
+    }
 
-	}
-
-	private void Update() {
-		if(!isLocalPlayer)
-			return;
-		
-
-		//Logica de movimento
-		float verticalAxis = Input.GetAxis("Vertical");
-		float horizontalAxis = Input.GetAxis("Horizontal");
-		Debug.Log("Vertical: " + verticalAxis + " Horizontal: " + horizontalAxis);
-		if(Mathf.Abs(verticalAxis) > 0 || Mathf.Abs(horizontalAxis) > 0) {
-			float angle = Mathf.Atan2(verticalAxis,horizontalAxis);
-			Vector3 direction = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
-			transform.position += speed * Time.deltaTime * direction;
-			transform.rotation = Quaternion.Euler(0,0,angle * Mathf.Rad2Deg);
-		}
-	}
-
+	
+	public IEnumerator esperaReLoad(float fireCooldown){
+        yield return new WaitForSeconds(fireCooldown);
+		RpcSetCanShoot(true);
+    }
 }
