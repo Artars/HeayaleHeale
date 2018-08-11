@@ -9,6 +9,8 @@ public class Player : NetworkBehaviour {
 	Joystick joystick;
 	Button button;
 	public Health vida;
+	Transform camTransform;
+	public Vector3 camOffset;
 
 	[SyncVar]
 	public string username;
@@ -36,47 +38,66 @@ public class Player : NetworkBehaviour {
 		//Pega nome das preferencia
 
 		GameManager.instance.CmdAddPlayer(gameObject);
-		rb2d = GetComponent<Rigidbody2D>();
+		rigi = GetComponent<Rigidbody2D>();
 		SpriteRenderer spr = GetComponent<SpriteRenderer>();
 		if(spr != null) spr.color = Color.red;
 
 		joystick = GameObject.Find("Joystick").GetComponent<Joystick>();
-		button = GameObject.Find("Button").GetComponent<Button>();
+		button = GameObject.Find("Button").GetComponent<Button>();	
+		camTransform = Camera.main.transform;
+		camOffset = new Vector3(0,0,-18);
+		camTransform.position = transform.position + camOffset;
 	}
 
 	[ClientRpc]
-	public void RpcSetSkin(int newSkin) {
-		skinIndex = newSkin;
-		//Logica de mudança de skin
-	} 
-	[ClientRpc]
-	public void RpcSetCanMove(bool canMove) {
+	public void RpcSetSkin(int id){
 		if(isLocalPlayer){
-			canWalk = canMove;
+			skinIndex = id;
+		}
+	}
+	
+	[ClientRpc]
+	public void RpcSetCanWalk(bool valor){
+		if(isLocalPlayer){
+			canWalk = valor;
 		}
 	}
 
 	[ClientRpc]
-	public void RpcSetCanShoot(bool can) {
+	public void RpcSetCanShoot(bool valor){
 		if(isLocalPlayer){
-			canShoot = can;
+			canShoot = valor;
 		}
 	}
 
 	[ClientRpc]
 	public void RpcPush(Vector2 force) {
-		rb2d.AddForce(force, ForceMode2D.Impulse);
+		rigi.AddForce(force, ForceMode2D.Impulse);
 	}
 
 	[Command]
-	public void CmdEquip(GameObject weapon){
-
+	public void CmdUnequip(){
+		Destroy(gun.gameObject);
+		gun = null;
 	}
 
 	[Command]
-	public void CmdUnequip(GameObject weapon){
-
+	public void CmdEquip( GameObject newGun){
+		if(gun != null)Destroy(gun.gameObject);
+		gun = newGun.GetComponent<armaBase>();
+		gun.equipado(gameObject);
 	}
+
+	public IEnumerator esperaKnock(float knockbackTime){
+        yield return new WaitForSeconds(knockbackTime);
+		RpcSetCanWalk(true);
+    }
+
+	public IEnumerator esperaReLoad(float fireCooldown){
+        yield return new WaitForSeconds(fireCooldown);
+		RpcSetCanShoot(true);
+    }
+
 
 	private void Update(){
 
@@ -103,60 +124,9 @@ public class Player : NetworkBehaviour {
 		if (moveVector != Vector3.zero){ 
 			transform.rotation = Quaternion.LookRotation(Vector3.forward, moveVector);
 			transform.Translate(moveVector * speed * Time.deltaTime, Space.World);
+			//camTransform.Translate(moveVector * speed * Time.deltaTime, Space.World);
+			camTransform.position = transform.position + camOffset;
 		}
 	}
 
 }
-
-
-
-// 	[Command]
-// 	public void CmdUnequip(){
-// 		Destroy(gun.gameObject);
-// 		gun = null;
-// 	}
-
-// 	[Command]
-// 	public void CmdEquip( GameObject newGun){
-// 		if(gun != null)Destroy(gun.gameObject);
-// 		gun = newGun.GetComponent<armaBase>();
-// 		gun.equipado(gameObject);
-// 	}
-
-// 	[ClientRpc]
-// 	public void RpcSetSkin(int id){
-// 		if(isLocalPlayer){
-// 			skinIndex = id;
-// 		}
-// 	}
-// 	[ClientRpc]
-// 	public void RpcSetCanShoot(bool valor){
-// 		if(isLocalPlayer){
-// 			canShoot = valor;
-// 		}
-// 	}
-// 	[ClientRpc]
-// 	public void RpcSetCanWalk(bool valor){
-// 		if(isLocalPlayer){
-// 			canWalk = valor;
-// 		}
-// 	}
-
-// 	[ClientRpc]
-// 	public void RpcPush(Vector2 force) {
-// 		rigi.AddForce(force, ForceMode2D.Impulse);
-// 	}
-
-
-
-// 	public IEnumerator esperaKnock(float knockbackTime){
-//         yield return new WaitForSeconds(knockbackTime);
-// 		RpcSetCanWalk(true);
-//     }
-
-	
-// 	public IEnumerator esperaReLoad(float fireCooldown){
-//         yield return new WaitForSeconds(fireCooldown);
-// 		RpcSetCanShoot(true);
-//     }
-// }
