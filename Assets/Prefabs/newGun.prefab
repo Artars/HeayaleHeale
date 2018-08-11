@@ -9,75 +9,75 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1438278645809554}
+  m_RootGameObject: {fileID: 1258836680754696}
   m_IsPrefabAsset: 1
---- !u!1 &1438278645809554
+--- !u!1 &1258836680754696
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4711558302159650}
-  - component: {fileID: 33680335854337820}
-  - component: {fileID: 23476129993236104}
-  - component: {fileID: 114743689630315860}
-  - component: {fileID: 114529208968307008}
+  - component: {fileID: 4614439496791574}
+  - component: {fileID: 33232793708271220}
+  - component: {fileID: 23901936232161110}
+  - component: {fileID: 114278578104058912}
+  - component: {fileID: 114447290938860342}
   m_Layer: 0
-  m_Name: gun
+  m_Name: newGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1528677705749772
+--- !u!1 &1389179967512918
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4442740777636200}
+  - component: {fileID: 4487684665209534}
   m_Layer: 0
-  m_Name: lugarDeTiro
+  m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4442740777636200
+--- !u!4 &4487684665209534
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1528677705749772}
+  m_GameObject: {fileID: 1389179967512918}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.73, z: 0}
+  m_LocalPosition: {x: 0, y: 0.91, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4711558302159650}
+  m_Father: {fileID: 4614439496791574}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4711558302159650
+--- !u!4 &4614439496791574
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1438278645809554}
-  m_LocalRotation: {x: 0, y: 0, z: -5.1260662e-12, w: 1}
-  m_LocalPosition: {x: 1.0381073, y: 1.03, z: 0.042721495}
+  m_GameObject: {fileID: 1258836680754696}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.509375, y: 1.7228888, z: -0.1875}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4442740777636200}
+  - {fileID: 4487684665209534}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23476129993236104
+--- !u!23 &23901936232161110
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1438278645809554}
+  m_GameObject: {fileID: 1258836680754696}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -107,19 +107,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33680335854337820
+--- !u!33 &33232793708271220
 MeshFilter:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1438278645809554}
+  m_GameObject: {fileID: 1258836680754696}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114529208968307008
+--- !u!114 &114278578104058912
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1438278645809554}
+  m_GameObject: {fileID: 1258836680754696}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
@@ -128,46 +128,46 @@ MonoBehaviour:
   m_SceneId:
     m_Value: 0
   m_AssetId:
-    i0: 157
-    i1: 135
-    i2: 168
-    i3: 188
-    i4: 164
-    i5: 27
-    i6: 162
-    i7: 68
-    i8: 217
-    i9: 33
-    i10: 193
-    i11: 149
-    i12: 206
-    i13: 251
-    i14: 230
-    i15: 203
+    i0: 39
+    i1: 244
+    i2: 64
+    i3: 161
+    i4: 114
+    i5: 106
+    i6: 171
+    i7: 100
+    i8: 248
+    i9: 157
+    i10: 168
+    i11: 180
+    i12: 6
+    i13: 127
+    i14: 62
+    i15: 115
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
---- !u!114 &114743689630315860
+--- !u!114 &114447290938860342
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1438278645809554}
+  m_GameObject: {fileID: 1258836680754696}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 54e6ca22f4a2cd1478d8d6f61b1ad92a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 0
+  damage: 1
   fireCooldown: 1
-  maxAmmo: 100
+  maxAmmo: 10
   id: 0
   nomeDoAtirador: 
   player: {fileID: 0}
-  trans: {fileID: 4711558302159650}
+  trans: {fileID: 0}
   velbala: 1
   spread: 15
-  knockbackTime: 0
-  Force: 0
+  knockbackTime: 1
+  Force: 2
   bala: {fileID: 1359993272587984, guid: 261473856a04f4243b590fc8b82e4357, type: 2}
-  lugarDeTiro: {fileID: 4442740777636200}
-  projectileTime: 0
+  lugarDeTiro: {fileID: 4487684665209534}
+  projectileTime: 70

@@ -26,6 +26,7 @@ public class armaLongRange : armaBase {
 			player.GetComponent<Rigidbody2D>().AddForce(-trans.up* Force );
 			trans.Rotate(0,0,-rand);
 			NetworkServer.Spawn(aux);
+			
 			Destroy(aux,projectileTime);
 
 			playerScript.RpcSetCanWalk(false);

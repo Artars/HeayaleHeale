@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 212599864285947318}
   - component: {fileID: 114955522737511388}
   - component: {fileID: 114013854183748998}
-  - component: {fileID: 114222438803217834}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -54,6 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e16471f4fc50b9c4faf6cfb05c9f72fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vida: {fileID: 0}
   username: 
   speed: 10
   skinIndex: 0

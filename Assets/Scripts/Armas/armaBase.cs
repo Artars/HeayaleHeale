@@ -27,13 +27,15 @@ public class armaBase : NetworkBehaviour {
 		trans = GetComponent<Transform>();
 	}
 
-	public void equipado(GameObject pla){
+	
+	[Command]
+	public void Cmdequipado(GameObject pla){
 		player = pla;
 		playerScript = player.GetComponent<Player>();
 		nomeDoAtirador = playerScript.username;
 
-		trans = GetComponent<Transform>();
-		player.GetComponent<NetworkTransformChild>().target = trans;
+//		trans = GetComponent<Transform>();
+		RpcSetParent(gameObject, player);
 	}
 
 	[Command]
@@ -46,6 +48,11 @@ public class armaBase : NetworkBehaviour {
 		StartCoroutine(playerScript.esperaReLoad(fireCooldown));
     }
 
+
+	[ClientRpc]
+	void RpcSetParent(GameObject obj, GameObject parent){ 
+		obj.transform.parent = parent.transform; 
+	}
 
 
 }
