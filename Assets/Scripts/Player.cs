@@ -1,4 +1,4 @@
-﻿﻿using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,12 +6,18 @@ using UnityEngine.Networking;
 
 public class Player : NetworkBehaviour {
 
+
+	public List<arma> gun ;
+//	enum armas{um,dois,tres};
+
+	private arma armaAtual;
+	private int armaInicial = 0;
 	Joystick joystick;
 	Button button;
 	public Health vida;
 	Transform camTransform;
 	public Vector3 camOffset;
-
+	private int ammoAtual = 10;
 	[SyncVar]
 	public string username;
 	public float speed;
@@ -20,17 +26,15 @@ public class Player : NetworkBehaviour {
 	public bool canWalk = true;
 	[HideInInspector]
 	public bool canShoot = true;
-	[HideInInspector]
-	public armaBase gun;
 
-	public GameObject testeGun;//PARA DEBUG
+
 
 	private Transform trans;
 	private Rigidbody2D rigi;
 	private void Start(){
 		trans = GetComponent<Transform>();
 		rigi = GetComponent<Rigidbody2D>();
-		CmdEquip(testeGun);//DEBUG;
+		armaAtual = gun[armaInicial];
 	}
 
 	public override void OnStartLocalPlayer() {
@@ -75,17 +79,13 @@ public class Player : NetworkBehaviour {
 		rigi.AddForce(force, ForceMode2D.Impulse);
 	}
 
-	[Command]
-	public void CmdUnequip(){
-		Destroy(gun.gameObject);
-		gun = null;
-	}
 
-	[Command]
-	public void CmdEquip( GameObject newGun){
-		if(gun != null)Destroy(gun.gameObject);
-		gun = newGun.GetComponent<armaBase>();
-		gun.Cmdequipado(gameObject);
+	//[Command]
+	public void CmdEquip(int id){
+		armaAtual.lugarDaArma.GetComponent<SpriteRenderer>().sprite = null;
+		armaAtual = gun[id];	
+		ammoAtual = armaAtual.maxAmmo;
+		armaAtual.lugarDaArma.GetComponent<SpriteRenderer>().sprite= armaAtual.img;
 	}
 
 	public IEnumerator esperaKnock(float knockbackTime){
@@ -107,15 +107,40 @@ public class Player : NetworkBehaviour {
 
 		if(canWalk)
 			walk();
-		if(canShoot && gun != null && button.Pressed)
-			atirar();
+		if(canShoot  && button.Pressed)
+			CmdAtirar();
 
 	}
 
-	private void atirar(){
-		Debug.Log("tiro");
-		gun.CmdAtirar();
+	[Command]
+	private void CmdAtirar (){
+		ammoAtual -= 1;
+		if(ammoAtual <= 0){
+			RpcSetCanShoot(false);
+			StartCoroutine(esperaReLoad(0.2f));
+			CmdEquip(0);
+		}else{
+			RpcSetCanShoot(false);
+			StartCoroutine(esperaReLoad(armaAtual.fireCooldown));
+		}
 
+		GameObject aux =Instantiate(armaAtual.bala, armaAtual.lugarDeTiro.position, trans.rotation);
+
+			float rand = Random.Range(-armaAtual.spread, armaAtual.spread);
+
+			trans.Rotate(0,0,rand);
+			aux.GetComponent<Rigidbody2D>().velocity = (trans.up ) * armaAtual.velbala;
+			RpcPush(-trans.up* armaAtual.Force) ;
+			trans.Rotate(0,0,-rand);
+			NetworkServer.Spawn(aux);
+			
+			Destroy(aux,armaAtual.projectileTime);
+			RpcSetCanWalk(false);
+			StartCoroutine(esperaKnock(armaAtual.knockbackTime));
+
+			Bullet balaGerada = aux.GetComponent<Bullet>();
+			balaGerada.nomeDoAtirador = username;
+			balaGerada.damage = armaAtual.damage;
 	}
 
 	private void walk(){
@@ -129,4 +154,8 @@ public class Player : NetworkBehaviour {
 		}
 	}
 
+
+	public int getRand(){
+		return Random.Range(0, gun.Count);
+	}
 }

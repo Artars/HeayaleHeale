@@ -4,42 +4,43 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class armaLongRange : armaBase {
-	public float velbala;//velocidade da bala
-	public float spread;
-	public float knockbackTime;
-	public float Force;
-	public GameObject bala;
-	public Transform lugarDeTiro;
-	public float projectileTime;
+	// public float velbala;//velocidade da bala
 
-	[Command]
-	public override void CmdAtirar (){
-		if(playerScript.canShoot){ 
-			base.CmdAtirar();
+	// public float spread;
+	// public float knockbackTime;
+	// public float Force;
+	// public GameObject bala;
+	// public Transform lugarDeTiro;
+	// public float projectileTime;
 
-			GameObject aux =Instantiate(bala, lugarDeTiro.position, trans.rotation);
+	// [Command]
+	// public override void CmdAtirar (){
+	// 	if(playerScript.canShoot){ 
+	// 		base.CmdAtirar();
 
-			float rand = Random.Range(-spread, spread);
+	// 		GameObject aux =Instantiate(bala, lugarDeTiro.position, trans.rotation);
 
-			trans.Rotate(0,0,rand);
-			aux.GetComponent<Rigidbody2D>().velocity = (trans.up ) * velbala;
-			player.GetComponent<Rigidbody2D>().AddForce(-trans.up* Force );
-			trans.Rotate(0,0,-rand);
-			NetworkServer.Spawn(aux);
+	// 		float rand = Random.Range(-spread, spread);
+
+	// 		trans.Rotate(0,0,rand);
+	// 		aux.GetComponent<Rigidbody2D>().velocity = (trans.up ) * velbala;
+	// 		player.GetComponent<Rigidbody2D>().AddForce(-trans.up* Force );
+	// 		trans.Rotate(0,0,-rand);
+	// 		NetworkServer.Spawn(aux);
 			
-			Destroy(aux,projectileTime);
+	// 		Destroy(aux,projectileTime);
 
-			playerScript.RpcSetCanWalk(false);
-			StartCoroutine(playerScript.esperaKnock(knockbackTime));
+	// 		playerScript.RpcSetCanWalk(false);
+	// 		StartCoroutine(playerScript.esperaKnock(knockbackTime));
 
-			//aux.GetComponent<Rigidbody2D>().velocity = new Vector2(velbala,0f);
-			Bullet balaGerada = aux.GetComponent<Bullet>();
-			balaGerada.nomeDoAtirador = nomeDoAtirador;
-			balaGerada.damage = damage;
+	// 		//aux.GetComponent<Rigidbody2D>().velocity = new Vector2(velbala,0f);
+	// 		Bullet balaGerada = aux.GetComponent<Bullet>();
+	// 		balaGerada.nomeDoAtirador = nomeDoAtirador;
+	// 		balaGerada.damage = damage;
 
 			
-		}
-	}
+	// 	}
+	// }
 
 
 
