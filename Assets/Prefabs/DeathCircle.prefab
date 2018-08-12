@@ -74,11 +74,10 @@ MonoBehaviour:
   minRadius: 10
   maxRadius: 20
   hurtTimeInterval: 5
-  sizeDelta: 1
-  sizeChangeInterval: 10
+  sizeDelta: 5
+  sizeChangeInterval: 2
   closePoints:
   - {fileID: 0}
-  currentSize: 0
 --- !u!114 &114901921785153112
 MonoBehaviour:
   m_ObjectHideFlags: 1
