@@ -120,4 +120,20 @@ public class DeathCircle : NetworkBehaviour {
 			scale = 0;
 		return myTransform.localScale.x;
 	}
+
+	private void OnTriggerEnter2D(Collider2D other) {
+		if(!isServer)
+			return;
+		if(other.tag == "Player") {
+			playersInside.Add(other.gameObject);
+		}
+	}
+
+	private void OnTriggerExit2D(Collider2D other) {
+		if(!isServer)
+			return;
+		if(other.tag == "Player") {
+			playersInside.Remove(other.gameObject);
+		}
+	}
 } 
