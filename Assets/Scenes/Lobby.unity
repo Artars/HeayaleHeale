@@ -255,7 +255,7 @@ MonoBehaviour:
   m_AutoCreatePlayer: 1
   m_PlayerSpawnMethod: 1
   m_OfflineScene: Lobby
-  m_OnlineScene: Stage1
+  m_OnlineScene: DiscoStage
   m_SpawnPrefabs:
   - {fileID: 1677673031779792, guid: f4763c508e04a1249b69245a2fb70085, type: 2}
   - {fileID: 1359993272587984, guid: 261473856a04f4243b590fc8b82e4357, type: 2}

@@ -11,3 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Stage1.unity
     guid: d673d15ff1402f444afdd4b6240b5761
+  - enabled: 1
+    path: Assets/Scenes/DiscoStage.unity
+    guid: 157ed1f5629255f4094b6caa5fac6af6
+  m_configObjects: {}
