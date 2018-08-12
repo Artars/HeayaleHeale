@@ -21,6 +21,7 @@ public class DeathCircle : NetworkBehaviour {
 
 	private float porcentage = 1;
 	private Transform myTransform;
+	[SyncVar]
 	private State currentState = State.IsIdle;
 	private float timerSize;
 	private float timerDamage;
@@ -55,11 +56,13 @@ public class DeathCircle : NetworkBehaviour {
 		timerDamage -= delta;
 		timerDamage -= delta;
 		if(timerDamage <= 0){
-			float Damage = (maxDamage-minDamage)* porcentage + minDamage;
+			if(shouldDamage){
+				float Damage = (maxDamage-minDamage)* porcentage + minDamage;
 
-			foreach(GameObject g in playersInside) {
-				Health h = g.GetComponent<Health>();
-				h.CmdHurt((int) Damage);
+				foreach(GameObject g in playersInside) {
+					Health h = g.GetComponent<Health>();
+					h.CmdHurt((int) Damage);
+				}
 			}
 			timerDamage = hurtTimeInterval;
 		}
@@ -87,5 +90,13 @@ public class DeathCircle : NetworkBehaviour {
 	[Command]
 	public void CmdSetCanDamage(bool canDamage) {
 		this.shouldDamage = canDamage;
+	}
+
+	[Command]
+	public float currentRadius() {
+		float scale = myTransform.localScale.x;
+		if(currentState == State.IsIdle)
+			scale = 0;
+		return myTransform.localScale.x;
 	}
 } 
