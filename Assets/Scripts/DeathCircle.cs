@@ -23,7 +23,7 @@ public class DeathCircle : NetworkBehaviour {
 	private Transform myTransform;
 
 	private State currentState = State.IsIdle;
-	private float timerSize;
+	public float timerSize;
 	private float timerDamage;
 	private Vector3 currentScale;
 	private float scaleSpeed;
@@ -64,7 +64,7 @@ public class DeathCircle : NetworkBehaviour {
 	private void Update() {
 		float delta = Time.deltaTime;
 		timerDamage -= delta;
-		timerDamage -= delta;
+		timerSize -= delta;
 		if(timerDamage <= 0){
 			if(shouldDamage && isServer){
 				float Damage = (maxDamage-minDamage)* porcentage + minDamage;
@@ -80,7 +80,7 @@ public class DeathCircle : NetworkBehaviour {
 			if(currentState == State.isStable) {
 				currentState = State.IsShrinking;	
 			}
-			if(currentState == State.IsShrinking) {
+			else if(currentState == State.IsShrinking) {
 				currentState = State.isStable;
 				if(currentScale.x <= minRadius){
 					currentState = State.finished;
@@ -94,7 +94,6 @@ public class DeathCircle : NetworkBehaviour {
 				}
 			}
 			timerSize = sizeChangeInterval;
-
 		}
 		if(currentState == State.IsShrinking){
 			currentScale -= delta * scaleSpeed * new Vector3(1,1,0);
@@ -120,5 +119,21 @@ public class DeathCircle : NetworkBehaviour {
 		if(currentState == State.IsIdle)
 			scale = 0;
 		return myTransform.localScale.x;
+	}
+
+	private void OnTriggerEnter2D(Collider2D other) {
+		if(!isServer)
+			return;
+		if(other.tag == "Player") {
+			playersInside.Add(other.gameObject);
+		}
+	}
+
+	private void OnTriggerExit2D(Collider2D other) {
+		if(!isServer)
+			return;
+		if(other.tag == "Player") {
+			playersInside.Remove(other.gameObject);
+		}
 	}
 } 
