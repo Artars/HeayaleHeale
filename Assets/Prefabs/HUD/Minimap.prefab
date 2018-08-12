@@ -60,7 +60,8 @@ MonoBehaviour:
     type: 2}
   cratePointerPrefab: {fileID: 1909867218163748, guid: ddf938755015d82499aead8da2de52c5,
     type: 2}
-  circlePrefab: {fileID: 0}
+  circlePrefab: {fileID: 1909867218163748, guid: ddf938755015d82499aead8da2de52c5,
+    type: 2}
   numberOfPlayersToSpawn: 20
   numberOfBoxesToSpawn: 30
   relativeSizePlayer: 0.1

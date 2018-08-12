@@ -36,4 +36,8 @@ public class Health : NetworkBehaviour {
 	public void UpdateCurrentLife(int newCurrentLife) {
 
 	}
+
+	public int getCurrentLife(){
+		return hpAtual;
+	}
 }
