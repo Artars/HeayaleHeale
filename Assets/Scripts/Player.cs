@@ -47,6 +47,9 @@ public class Player : NetworkBehaviour {
 		camTransform = Camera.main.transform;
 		camOffset = new Vector3(0,0,-18);
 		camTransform.position = transform.position + camOffset;
+		foreach (var ip in System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList){//[0].ToString());
+			Debug.Log(ip.ToString());
+		}
 	}
 
 	[ClientRpc]
