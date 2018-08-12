@@ -2,20 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class GameManager : NetworkBehaviour {
 	public static GameManager instance = null;
-	public List<Player> players;
+	public List<GameObject> players;
 	
 	//Lista de drops
+
+	public DeathCircle DeathCircle;
 	
+	
+	//DEBUG
+	public Text ipAdress;
+
 	public int numberOfSkins = 1;
 	private List<int> remainingSkins;
 
 	private GameManager () {
 		if(instance == null) {
 			instance = this;
-			players = new List<Player>();
+			players = new List<GameObject>();
 			remainingSkins = new List<int>();
 		}
 		else if (instance != this) {
@@ -27,7 +34,7 @@ public class GameManager : NetworkBehaviour {
 	public void CmdAddPlayer(GameObject playerObject){
 		Player player = playerObject.GetComponent<Player>();
 		if(player != null) {
-			players.Add(player);
+			players.Add(playerObject);
 			if(remainingSkins.Count < 1) {
 				fillSkinList();
 				int i = Random.Range(0,remainingSkins.Count);
@@ -37,9 +44,39 @@ public class GameManager : NetworkBehaviour {
 		}
 	}
 
+	public void RpcUpdatePlayerReferences(List<GameObject> players){
+		this.players = players;
+	}
+
 	public void won(GameObject playerObject) {
 		Player player = playerObject.GetComponent<Player>();
 		Debug.Log("Jogador " +  player.username + " ganhou!");
+	}
+
+	[Command]
+	public void CmdHasEndedCircle(){
+
+	}
+
+	private void Start() {
+		if(isServer){
+			RpcSetTextIp("HostIP: " + System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList[3].ToString());
+			foreach (var ip in System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList){//[0].ToString());
+   Debug.Log(ip.ToString());
+  			}
+			DeathCircle.startAtRandom();
+		}
+
+	}
+
+	[ClientRpc]
+	public void RpcSetTextIp(string ip) {
+		Debug.Log(ip);
+		ipAdress.text = ip;
+	}
+
+
+	private void onGameStart(){
 	}
 
 	private void fillSkinList(){
