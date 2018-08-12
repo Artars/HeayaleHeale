@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 
 public class Player : NetworkBehaviour {
 
+	public Animator animator;
 
 	public List<armaMelee> gunM ;
 	public List<armaRanged> gunR ;
@@ -53,6 +54,7 @@ public class Player : NetworkBehaviour {
 		for(int i=0;i<gunR.Count;i++)
 			gun.Add((arma)gunR[i]);
 		armaAtual = gun[armaInicial];
+		animator = GetComponent<Animator>();
 	}
 
 	public override void OnStartLocalPlayer() {
@@ -107,6 +109,7 @@ public class Player : NetworkBehaviour {
 	}
 	[ClientRpc]
 	private void RpcEquip(int id){
+		GetComponent<PlayerAnimationHandler>().setHandStance(armaAtual.handstances);
 		armaAtual.lugarDaArma.GetComponent<SpriteRenderer>().sprite = null;
 		armaAtual = gun[id];
 		ammoAtual = armaAtual.maxAmmo;
@@ -217,13 +220,16 @@ public class Player : NetworkBehaviour {
 		Vector3 moveVector = (Vector3.right * joystick.Horizontal + Vector3.up * joystick.Vertical);
 
 		if (moveVector != Vector3.zero && !Huged && !Hugging){ 
+			animator.SetBool("walking",true);
 			transform.rotation = Quaternion.LookRotation(Vector3.forward, moveVector);
 
 				transform.Translate(moveVector * speed * Time.deltaTime, Space.World);
 				//camTransform.Translate(moveVector * speed * Time.deltaTime, Space.World);
 				camTransform.position = transform.position + camOffset;
-		}else if(Huged || Hugging)
-			camTransform.position = transform.position + camOffset;
+		}else {
+			animator.SetBool("walking",false);
+			if(Huged || Hugging)
+			camTransform.position = transform.position + camOffset;}
 	}
 
 

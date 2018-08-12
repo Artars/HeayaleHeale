@@ -15,4 +15,5 @@ public class arma  {
 	public Transform lugarDaArma;
 
 	public Sprite img;
+	public PlayerAnimationHandler.HandStances handstances;
 }
