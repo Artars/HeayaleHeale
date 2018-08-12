@@ -16,7 +16,7 @@ public class GameManager : NetworkBehaviour {
 	//DEBUG
 	public Text ipAdress;
 
-	public int numberOfSkins = 1;
+	public int numberOfSkins = 0;
 	private List<int> remainingSkins;
 	private bool isPaused = false;
 

@@ -7,10 +7,15 @@ using UnityEngine.Networking;
 public class Player : NetworkBehaviour {
 
 
-	public List<arma> gun ;
-//	enum armas{um,dois,tres};
+	public List<armaMelee> gunM ;
+	public List<armaRanged> gunR ;
+	//public List<armaRanged> gunL ;//lazer
 
-	private arma armaAtual;
+	private List<arma> gun ;//todas as armas
+
+	[HideInInspector]
+	public arma armaAtual;
+
 	private int armaInicial = 0;
 	Joystick joystick;
 	Button button;
@@ -26,7 +31,14 @@ public class Player : NetworkBehaviour {
 	public bool canWalk = true;
 	[HideInInspector]
 	public bool canShoot = true;
-
+	[HideInInspector]
+	[SyncVar]
+	public bool Huged = false;
+	[HideInInspector]
+	[SyncVar]
+	public bool Hugging = false;
+	[SyncVar]
+	public GameObject acariciado;
 
 
 	private Transform trans;
@@ -34,6 +46,12 @@ public class Player : NetworkBehaviour {
 	private void Start(){
 		trans = GetComponent<Transform>();
 		rigi = GetComponent<Rigidbody2D>();
+		if(gun == null)
+			gun = new List<arma>();
+		for(int i=0;i<gunM.Count;i++)
+			gun.Add((arma)gunM[i]);
+		for(int i=0;i<gunR.Count;i++)
+			gun.Add((arma)gunR[i]);
 		armaAtual = gun[armaInicial];
 	}
 
@@ -83,82 +101,150 @@ public class Player : NetworkBehaviour {
 	}
 
 
-	//[Command]
+	[Command]
 	public void CmdEquip(int id){
+		RpcEquip(id);
+	}
+	[ClientRpc]
+	private void RpcEquip(int id){
 		armaAtual.lugarDaArma.GetComponent<SpriteRenderer>().sprite = null;
-		armaAtual = gun[id];	
+		armaAtual = gun[id];
 		ammoAtual = armaAtual.maxAmmo;
 		armaAtual.lugarDaArma.GetComponent<SpriteRenderer>().sprite= armaAtual.img;
 	}
 
 	public IEnumerator esperaKnock(float knockbackTime){
         yield return new WaitForSeconds(knockbackTime);
-		RpcSetCanWalk(true);
+		canWalk = true;
+		//RpcSetCanWalk(true);
     }
 
 	public IEnumerator esperaReLoad(float fireCooldown){
         yield return new WaitForSeconds(fireCooldown);
-		RpcSetCanShoot(true);
+		canShoot = true;
+		//RpcSetCanShoot(true);
     }
 
+	public IEnumerator esperaHug(float tempoHug){
+        yield return new WaitForSeconds(tempoHug);
+		if(Hugging)CmdsoltarHug();
+    }
 
+	//espera hitbox desaparecer
+	public IEnumerator esperaHitBox(GameObject hitbox, float tempoHitBox){
+        yield return new WaitForSeconds(tempoHitBox);
+		hitbox.SetActive(false);//pronto para revisao
+    }
 	private void Update(){
 
 		if(!isLocalPlayer){
 			return;
 		}
 
-		if(canWalk)
+		if(canWalk && !Huged && !Hugging)
 			walk();
-		if(canShoot  && button.Pressed)
-			CmdAtirar();
+		if( button.Pressed){
+			if(canShoot &&  !Huged && !Hugging){
+				ammoAtual -= 1;
 
+				canShoot = false;
+				if(ammoAtual <= 0){
+					StartCoroutine(esperaReLoad(0.2f));
+					CmdEquip(0);
+				}else{
+					StartCoroutine(esperaReLoad(armaAtual.fireCooldown));
+				}
+
+				if(armaAtual.GetType() == typeof(armaRanged)){
+					CmdAtirar();
+					Debug.Log("armaRanged");
+				}
+				else if(armaAtual.GetType() == typeof(armaMelee)){
+					armaMelee armaux  = (armaMelee)armaAtual;
+					Debug.Log("armaMelle");
+					if(armaux.tipo == 0){
+						CmdHug();
+					}
+				}else{
+					Debug.Log("outraArma??");
+				}
+				
+
+				RpcSetCanWalk(false);
+				StartCoroutine(esperaKnock(armaAtual.knockbackTime));
+			}
+		}else if(Hugging && !Input.GetKeyDown("space")){
+			CmdsoltarHug();
+			Player aux = acariciado.GetComponent<Player>();
+			aux.canWalk = false;
+			aux.StartCoroutine(aux.esperaKnock(armaAtual.knockbackTime));
+			aux.canShoot = false;
+			aux.StartCoroutine(aux.esperaReLoad(armaAtual.knockbackTime));	
+		}
+	
+
+	}
+	[Command]
+	private void CmdHug(){
+		armaMelee armaux = (armaMelee)armaAtual;
+		RpcPush(trans.up* armaux.Force) ;
+		armaux.hitbox.SetActive(true);
+		StartCoroutine(esperaHitBox(armaux.hitbox, armaux.knockbackTime));
 	}
 
 	[Command]
 	private void CmdAtirar (){
-		ammoAtual -= 1;
-		if(ammoAtual <= 0){
-			RpcSetCanShoot(false);
-			StartCoroutine(esperaReLoad(0.2f));
-			CmdEquip(0);
-		}else{
-			RpcSetCanShoot(false);
-			StartCoroutine(esperaReLoad(armaAtual.fireCooldown));
-		}
+		armaRanged armaux = (armaRanged)armaAtual;
+		GameObject aux =Instantiate(armaux.bala, armaux.lugarDeTiro.position, trans.rotation);
 
-		GameObject aux =Instantiate(armaAtual.bala, armaAtual.lugarDeTiro.position, trans.rotation);
-
-			float rand = Random.Range(-armaAtual.spread, armaAtual.spread);
+			float rand = Random.Range(-armaux.spread, armaux.spread);
 
 			trans.Rotate(0,0,rand);
-			aux.GetComponent<Rigidbody2D>().velocity = (trans.up ) * armaAtual.velbala;
-			RpcPush(-trans.up* armaAtual.Force) ;
+			aux.GetComponent<Rigidbody2D>().velocity = (trans.up ) * armaux.velbala;
+			RpcPush(-trans.up* armaux.Force) ;
 			trans.Rotate(0,0,-rand);
 			NetworkServer.Spawn(aux);
 			
-			Destroy(aux,armaAtual.projectileTime);
-			RpcSetCanWalk(false);
-			StartCoroutine(esperaKnock(armaAtual.knockbackTime));
+			Destroy(aux,armaux.projectileTime);
 
 			Bullet balaGerada = aux.GetComponent<Bullet>();
 			balaGerada.nomeDoAtirador = username;
-			balaGerada.damage = armaAtual.damage;
+			balaGerada.damage = armaux.damage;
+
 	}
 
 	private void walk(){
 		Vector3 moveVector = (Vector3.right * joystick.Horizontal + Vector3.up * joystick.Vertical);
 
-		if (moveVector != Vector3.zero){ 
+		if (moveVector != Vector3.zero && !Huged && !Hugging){ 
 			transform.rotation = Quaternion.LookRotation(Vector3.forward, moveVector);
-			transform.Translate(moveVector * speed * Time.deltaTime, Space.World);
-			//camTransform.Translate(moveVector * speed * Time.deltaTime, Space.World);
+
+				transform.Translate(moveVector * speed * Time.deltaTime, Space.World);
+				//camTransform.Translate(moveVector * speed * Time.deltaTime, Space.World);
+				camTransform.position = transform.position + camOffset;
+		}else if(Huged || Hugging)
 			camTransform.position = transform.position + camOffset;
-		}
 	}
 
 
 	public int getRand(){
 		return Random.Range(0, gun.Count);
+	}
+
+
+	[Command]
+	private void CmdsoltarHug(){
+		acariciado.GetComponent<Player>().RpcPush(trans.up* armaAtual.Force*3) ;
+		RpcsoltarHug();
+	}
+	
+
+	
+	[ClientRpc]
+	private void RpcsoltarHug(){
+		Hugging = false;
+		Player aux = acariciado.GetComponent<Player>();
+		aux.Huged = false;
+		acariciado = null;	
 	}
 }

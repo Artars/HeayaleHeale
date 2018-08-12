@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class armaMelee : armaBase {
-	// public float alcance;
-	// public override void CmdAtirar (){ 
-	// }
+[System.Serializable]
+public class armaMelee : arma {
+
+	public int tipo;
+	public GameObject hitbox;
+
+	public float tempoHug = 2;
+
 }
