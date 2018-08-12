@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 114767905838131076}
   - component: {fileID: 50295621401322780}
   - component: {fileID: 114144978410949990}
+  - component: {fileID: 114990749546210452}
   m_Layer: 0
   m_Name: bullet
   m_TagString: Untagged
@@ -167,6 +168,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 10
   force: 0
-  projectileTime: 1000
   projectileLife: 300
   nomeDoAtirador: 
+--- !u!114 &114990749546210452
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1359993272587984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 2
+  m_SendInterval: 0
+  m_SyncRotationAxis: 3
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_VelocityThreshold: 0.0001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1

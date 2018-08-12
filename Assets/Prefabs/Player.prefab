@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 114222438803217834}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -54,15 +54,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e16471f4fc50b9c4faf6cfb05c9f72fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gun:
+  - damage: 1
+    fireCooldown: 1
+    maxAmmo: 1
+    velbala: 1
+    spread: 1
+    knockbackTime: 1
+    Force: 1
+    bala: {fileID: 1359993272587984, guid: 261473856a04f4243b590fc8b82e4357, type: 2}
+    lugarDeTiro: {fileID: 0}
+    projectileTime: 100
+  - damage: 0
+    fireCooldown: 0
+    maxAmmo: 0
+    velbala: 0
+    spread: 0
+    knockbackTime: 0
+    Force: 0
+    bala: {fileID: 0}
+    lugarDeTiro: {fileID: 0}
+    projectileTime: 0
+  - damage: 0
+    fireCooldown: 0
+    maxAmmo: 0
+    velbala: 0
+    spread: 0
+    knockbackTime: 0
+    Force: 0
+    bala: {fileID: 0}
+    lugarDeTiro: {fileID: 0}
+    projectileTime: 0
+  vida: {fileID: 0}
+  camOffset: {x: 0, y: 0, z: 0}
   username: 
   speed: 10
   skinIndex: 0
   canWalk: 1
   canShoot: 1
-  meleeRange: 0
 --- !u!114 &114222438803217834
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1128904798694940}
