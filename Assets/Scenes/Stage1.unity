@@ -1143,6 +1143,12 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114354136482435358, guid: b70d11a8278a6564499028084e46a970,
+        type: 2}
+      propertyPath: circlePrefab
+      value: 
+      objectReference: {fileID: 1909867218163748, guid: ddf938755015d82499aead8da2de52c5,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b70d11a8278a6564499028084e46a970, type: 2}
   m_IsPrefabAsset: 0

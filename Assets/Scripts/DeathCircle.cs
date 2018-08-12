@@ -21,7 +21,7 @@ public class DeathCircle : NetworkBehaviour {
 
 	private float porcentage = 1;
 	private Transform myTransform;
-	[SyncVar]
+
 	private State currentState = State.IsIdle;
 	private float timerSize;
 	private float timerDamage;
@@ -35,10 +35,10 @@ public class DeathCircle : NetworkBehaviour {
 		playersInside = new List<GameObject>();
 	}
 
-	public void startAtRandom() {
-		if(!isServer)
-			return;
+	[Command]
+	public void CmdStartAtRandom() {
 		Transform position = closePoints[Random.Range(0,closePoints.Length)];
+		RpcStartAtTransform(position.position);
 		myTransform.position = position.position;
 		currentScale = new Vector3(maxRadius, maxRadius,1);
 		myTransform.localScale = currentScale;
@@ -47,16 +47,26 @@ public class DeathCircle : NetworkBehaviour {
 		timerDamage = hurtTimeInterval;
 		scaleSpeed = sizeDelta/sizeChangeInterval;
 		porcentage = 0;
-	}	
+	}
+
+	[ClientRpc]
+	public void RpcStartAtTransform(Vector3 position){
+		myTransform.position = position;
+		currentScale = new Vector3(maxRadius, maxRadius,1);
+		myTransform.localScale = currentScale;
+		currentState = State.isStable;
+		timerSize = sizeChangeInterval;
+		timerDamage = hurtTimeInterval;
+		scaleSpeed = sizeDelta/sizeChangeInterval;
+		porcentage = 0;
+	}
 
 	private void Update() {
-		if(!isServer)
-			return;
 		float delta = Time.deltaTime;
 		timerDamage -= delta;
 		timerDamage -= delta;
 		if(timerDamage <= 0){
-			if(shouldDamage){
+			if(shouldDamage && isServer){
 				float Damage = (maxDamage-minDamage)* porcentage + minDamage;
 
 				foreach(GameObject g in playersInside) {
@@ -77,6 +87,11 @@ public class DeathCircle : NetworkBehaviour {
 					GameManager.instance.CmdHasEndedCircle();
 					shouldDamage = false;
 				}
+				else{
+					if(isServer){
+						RpcForceRadius(currentScale.x,currentState);
+					}
+				}
 			}
 			timerSize = sizeChangeInterval;
 
@@ -87,12 +102,19 @@ public class DeathCircle : NetworkBehaviour {
 		}
 	}
 
+	[ClientRpc]
+	private void RpcForceRadius(float radius, State forceState){
+		currentScale = new Vector3(radius,radius,1);
+		myTransform.localScale = currentScale;
+		currentState = forceState;
+		this.timerSize = sizeChangeInterval;
+	}
+
 	[Command]
 	public void CmdSetCanDamage(bool canDamage) {
 		this.shouldDamage = canDamage;
 	}
 
-	[Command]
 	public float currentRadius() {
 		float scale = myTransform.localScale.x;
 		if(currentState == State.IsIdle)

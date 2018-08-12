@@ -18,6 +18,7 @@ public class GameManager : NetworkBehaviour {
 
 	public int numberOfSkins = 1;
 	private List<int> remainingSkins;
+	private bool isPaused = false;
 
 	private GameManager () {
 		if(instance == null) {
@@ -55,7 +56,18 @@ public class GameManager : NetworkBehaviour {
 
 	[Command]
 	public void CmdHasEndedCircle(){
-
+		int minIndex = -1;
+		float minValue = float.MaxValue;
+		for(int i = 0; i < players.Count; i++){
+			Health health = players[i].GetComponent<Health>();
+			if(health.getCurrentLife() < minValue){
+				minValue = health.getCurrentLife();
+				minIndex = i;
+			}			
+		}
+		if(minIndex != -1) {
+			won(players[minIndex]);
+		}
 	}
 
 	private void Start() {
@@ -64,7 +76,8 @@ public class GameManager : NetworkBehaviour {
 			foreach (var ip in System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList){//[0].ToString());
    Debug.Log(ip.ToString());
   			}
-			DeathCircle.startAtRandom();
+
+			onGameStart();
 		}
 
 	}
@@ -77,11 +90,23 @@ public class GameManager : NetworkBehaviour {
 
 
 	private void onGameStart(){
+		DeathCircle.CmdStartAtRandom();
+
 	}
 
 	private void fillSkinList(){
 		for(int i = 0; i < numberOfSkins; i++) {
 			remainingSkins.Add(i);
+		}
+	}
+
+	public void CmdSetGamePaused(bool toPause) {
+		RpcSetGamePaused(toPause);
+	}
+	private void RpcSetGamePaused(bool toPause){
+		if(isPaused ^ toPause){
+			isPaused = toPause;
+			Time.timeScale = (isPaused) ? 1 : 0;
 		}
 	}
 }
