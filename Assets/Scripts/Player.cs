@@ -27,7 +27,7 @@ public class Player : NetworkBehaviour {
 	[SyncVar]
 	public string username;
 	public float speed;
-	public float skinIndex;
+	public int skinIndex;
 	[HideInInspector]
 	public bool canWalk = true;
 	[HideInInspector]
@@ -55,6 +55,8 @@ public class Player : NetworkBehaviour {
 			gun.Add((arma)gunR[i]);
 		armaAtual = gun[armaInicial];
 		animator = GetComponent<Animator>();
+		GetComponent<PlayerAnimationHandler>().setSkinVariation(skinIndex);
+
 	}
 
 	public override void OnStartLocalPlayer() {
@@ -80,6 +82,7 @@ public class Player : NetworkBehaviour {
 	public void RpcSetSkin(int id){
 		if(isLocalPlayer){
 			skinIndex = id;
+			GetComponent<PlayerAnimationHandler>().setSkinVariation(id);
 		}
 	}
 	
@@ -220,14 +223,14 @@ public class Player : NetworkBehaviour {
 		Vector3 moveVector = (Vector3.right * joystick.Horizontal + Vector3.up * joystick.Vertical);
 
 		if (moveVector != Vector3.zero && !Huged && !Hugging){ 
-			animator.SetBool("walking",true);
+			animator.SetBool("Walking",true);
 			transform.rotation = Quaternion.LookRotation(Vector3.forward, moveVector);
 
 				transform.Translate(moveVector * speed * Time.deltaTime, Space.World);
 				//camTransform.Translate(moveVector * speed * Time.deltaTime, Space.World);
 				camTransform.position = transform.position + camOffset;
 		}else {
-			animator.SetBool("walking",false);
+			animator.SetBool("Walking",false);
 			if(Huged || Hugging)
 			camTransform.position = transform.position + camOffset;}
 	}

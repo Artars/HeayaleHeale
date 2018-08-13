@@ -20,15 +20,23 @@ public class GameManager : NetworkBehaviour {
 	private List<int> remainingSkins;
 	private bool isPaused = false;
 
+	[Header("Item spawn")]
+	public GameObject itemPrefab;
+	public float timeToSpawn;
+	private float timerSpawn = 0;
+	public Vector3 lowerPos;
+	public Vector3 upperPos;
+	
+
 	private GameManager () {
-		if(instance == null) {
+		// if(instance == null) {
 			instance = this;
 			players = new List<GameObject>();
 			remainingSkins = new List<int>();
-		}
-		else if (instance != this) {
-			Destroy(this);
-		}
+		// }
+		// else if (instance != this) {
+			// Destroy(this);
+		// }
 	}
 
 	[Command]
@@ -49,10 +57,17 @@ public class GameManager : NetworkBehaviour {
 		this.players = players;
 	}
 
-	public void won(GameObject playerObject) {
+	[Command]
+	public void Cmdwon(GameObject playerObject) {
 		Player player = playerObject.GetComponent<Player>();
 		Debug.Log("Jogador " +  player.username + " ganhou!");
+		RpcShowWhoWon("Jogador " +  player.username + " ganhou!");
 	}
+
+	[ClientRpc]
+	public void RpcShowWhoWon(string text){
+		ipAdress.text = text;
+	} 
 
 	[Command]
 	public void CmdHasEndedCircle(){
@@ -66,7 +81,7 @@ public class GameManager : NetworkBehaviour {
 			}			
 		}
 		if(minIndex != -1) {
-			won(players[minIndex]);
+			Cmdwon(players[minIndex]);
 		}
 	}
 
@@ -80,6 +95,25 @@ public class GameManager : NetworkBehaviour {
 			onGameStart();
 		}
 
+	}
+
+	private void Update() {
+		if(isServer){
+			bool canSpawn = false;
+			float x =0 ,y = 0;
+			timerSpawn -= Time.deltaTime;
+			if(timerSpawn <= 0) {
+				while(!canSpawn) {
+					x = Random.Range(lowerPos.x, upperPos.x);
+					y = Random.Range(lowerPos.y, upperPos.y);
+					canSpawn = true;
+
+				}
+				GameObject toInstance = GameObject.Instantiate(itemPrefab ,new Vector3 (x,y,0),Quaternion.identity);
+				NetworkServer.Spawn(toInstance);
+				timerSpawn = timeToSpawn;
+			}
+		}
 	}
 
 	[ClientRpc]

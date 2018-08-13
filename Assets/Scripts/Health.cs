@@ -9,6 +9,7 @@ public class Health : NetworkBehaviour {
 	public int hpInicial;
 	[SyncVar(hook = "UpdateCurrentLife")]
 	private int hpAtual;
+	public SpriteRenderer[] sprites;
 
 	void Start(){
 		hpAtual = hpInicial;
@@ -18,7 +19,7 @@ public class Health : NetworkBehaviour {
 	public void CmdHurt(int dano){
 		hpAtual -=dano;
 		if(hpAtual <= 0){
-			GameManager.instance.won(gameObject);
+			GameManager.instance.Cmdwon(gameObject);
 		}else if(hpAtual >= hpMax)
 			hpAtual = hpMax;
 	}
@@ -34,7 +35,11 @@ public class Health : NetworkBehaviour {
 	/// </summary>
 	/// <param name="newCurrentLife"></param>
 	public void UpdateCurrentLife(int newCurrentLife) {
-
+		float porcentage = newCurrentLife / hpMax;
+		Color color = new Color(1,1-porcentage,1-porcentage,1);
+		foreach(SpriteRenderer sr in sprites){
+			sr.color = color;
+		}
 	}
 
 	public int getCurrentLife(){
