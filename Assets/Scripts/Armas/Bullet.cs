@@ -42,8 +42,10 @@ public class Bullet : NetworkBehaviour {
 	void OnCollisionEnter2D(Collision2D col){//CMD
 		if(isServer){
 			Bullet bul = col.gameObject.GetComponent<Bullet>();
-			if(bul != null)
+			if(bul != null){
+				if(col.gameObject.GetComponent<Bullet>().nomeDoAtirador != nomeDoAtirador)
 				levarDano(bul.damage);
+			}
 			else if(col.gameObject.tag == "Player" && col.gameObject.GetComponent<Player>().username != nomeDoAtirador){
 				col.gameObject.GetComponent<Health>().CmdHeal(damage);
 				morrer();

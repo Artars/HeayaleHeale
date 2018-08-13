@@ -12,6 +12,7 @@ public class armaRanged : arma {
 	public Transform lugarDeTiro;
 
 	public float projectileTime;
+	public int tipo;//0=nao shotgun;1=shotgun
 
 	
 }

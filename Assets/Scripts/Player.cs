@@ -259,22 +259,23 @@ public class Player : NetworkBehaviour {
 	[Command]
 	private void CmdAtirar (){
 		armaRanged armaux = (armaRanged)armaAtual;
-		GameObject aux =Instantiate(armaux.bala, armaux.lugarDeTiro.position, trans.rotation);
+		float rand = Random.Range(-armaux.spread, armaux.spread);
+		trans.Rotate(0,0,rand);
 
-			float rand = Random.Range(-armaux.spread, armaux.spread);
+		RpcPush(-trans.up* armaux.Force) ;
 
-			trans.Rotate(0,0,rand);
-			aux.GetComponent<Rigidbody2D>().velocity = (trans.up ) * armaux.velbala;
-			RpcPush(-trans.up* armaux.Force) ;
-			trans.Rotate(0,0,-rand);
-			NetworkServer.Spawn(aux);
+		gerarBala();
+
+		if(armaux.tipo == 1){
+			trans.Rotate(0,0,25);
+			gerarBala();
+			trans.Rotate(0,0,-50);
+			gerarBala();
+			trans.Rotate(0,0, 25);
+		}
 			
-			Destroy(aux,armaux.projectileTime);
 
-			Bullet balaGerada = aux.GetComponent<Bullet>();
-			balaGerada.nomeDoAtirador = username;
-			balaGerada.damage = armaux.damage;
-			balaGerada.force = armaux.Force;
+
 
 	}
 
@@ -331,5 +332,21 @@ public class Player : NetworkBehaviour {
 		Player aux = acariciado.GetComponent<Player>();
 		aux.Huged = false;
 		acariciado = null;	
+	}
+
+
+	private void gerarBala(){
+		armaRanged armaux = (armaRanged)armaAtual;
+		GameObject aux =Instantiate(armaux.bala, armaux.lugarDeTiro.position, trans.rotation);
+
+
+		aux.GetComponent<Rigidbody2D>().velocity = (trans.up ) * armaux.velbala;
+		NetworkServer.Spawn(aux);
+		Destroy(aux,armaux.projectileTime);
+
+		Bullet balaGerada = aux.GetComponent<Bullet>();
+		balaGerada.nomeDoAtirador = username;
+		balaGerada.damage = armaux.damage;
+		balaGerada.force = armaux.Force;
 	}
 }

@@ -35,7 +35,23 @@ GameObject:
   m_Component:
   - component: {fileID: 4100608007002954}
   m_Layer: 8
-  m_Name: pontoDeTiro
+  m_Name: pontoDeTiro4
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1163538137123830
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4227437222732330}
+  - component: {fileID: 212666457033108474}
+  m_Layer: 8
+  m_Name: pontoDaArma3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -88,6 +104,21 @@ GameObject:
   - component: {fileID: 212020082428796858}
   m_Layer: 8
   m_Name: pontoDaArma
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1600842315251734
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4970829611317436}
+  m_Layer: 8
+  m_Name: pontoDeTiro
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -191,7 +222,7 @@ GameObject:
   - component: {fileID: 4268944448202044}
   - component: {fileID: 212221532778447622}
   m_Layer: 8
-  m_Name: pontoDaArma3
+  m_Name: pontoDaArma4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -217,11 +248,11 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1141157314042948}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.135, y: 0.668, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 1}
+  m_LocalPosition: {x: 0.135, y: 0.89, z: 0}
+  m_LocalScale: {x: 0.39999998, y: 0.39999998, z: 1}
   m_Children: []
   m_Father: {fileID: 4824906866922520}
-  m_RootOrder: 0
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4115285962785878
 Transform:
@@ -249,6 +280,19 @@ Transform:
   m_Father: {fileID: 4824906866922520}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
+--- !u!4 &4227437222732330
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1163538137123830}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.016, y: 0.444, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4824906866922520}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4268944448202044
 Transform:
   m_ObjectHideFlags: 1
@@ -256,11 +300,11 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1988140015325396}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.016, y: 0.444, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.12, y: 0.59, z: 0}
+  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
   m_Children: []
   m_Father: {fileID: 4824906866922520}
-  m_RootOrder: 3
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4290756438734852
 Transform:
@@ -337,17 +381,32 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4100608007002954}
+  - {fileID: 4970829611317436}
   - {fileID: 4115285962785878}
   - {fileID: 4678764923730072}
-  - {fileID: 4268944448202044}
+  - {fileID: 4227437222732330}
   - {fileID: 4644380534189172}
   - {fileID: 4684540818183240}
   - {fileID: 4290756438734852}
   - {fileID: 4149625481200560}
   - {fileID: 4050097905685722}
   - {fileID: 4313126396644762}
+  - {fileID: 4268944448202044}
+  - {fileID: 4100608007002954}
   m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4970829611317436
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1600842315251734}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.135, y: 0.668, z: 0}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4824906866922520}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &50950534666320482
@@ -505,7 +564,7 @@ MonoBehaviour:
     Force: 10
     lugarDaArma: {fileID: 4115285962785878}
     img: {fileID: 0}
-    handstances: 0
+    handstances: 3
     tipo: 0
     hitbox: {fileID: 1345060602042594}
     tempoHug: 3
@@ -517,12 +576,13 @@ MonoBehaviour:
     Force: 3
     lugarDaArma: {fileID: 4115285962785878}
     img: {fileID: 21300000, guid: e96740295c97fe74e93ccef1af4a2d1b, type: 3}
-    handstances: 1
+    handstances: 4
     velbala: 6
     spread: 20
     bala: {fileID: 1359993272587984, guid: 261473856a04f4243b590fc8b82e4357, type: 2}
-    lugarDeTiro: {fileID: 4100608007002954}
+    lugarDeTiro: {fileID: 4970829611317436}
     projectileTime: 8
+    tipo: 0
   - damage: 40
     fireCooldown: 1
     maxAmmo: 5
@@ -536,19 +596,35 @@ MonoBehaviour:
     bala: {fileID: 1571854499853352, guid: 71f379aec7bdc9b42b9f3284825e7c27, type: 2}
     lugarDeTiro: {fileID: 4290756438734852}
     projectileTime: 5
+    tipo: 0
   - damage: 5
     fireCooldown: 0.2
     maxAmmo: 60
     knockbackTime: 0.2
     Force: 3
-    lugarDaArma: {fileID: 4268944448202044}
+    lugarDaArma: {fileID: 4227437222732330}
     img: {fileID: 21300000, guid: 3126ba8e29dbf324f92b4f25df78472d, type: 3}
     handstances: 4
     velbala: 5
-    spread: 40
+    spread: 30
     bala: {fileID: 1373596444894644, guid: 8552ac8b1d83cd84fbaf24770edbed1b, type: 2}
     lugarDeTiro: {fileID: 4313126396644762}
     projectileTime: 6.5
+    tipo: 0
+  - damage: 15
+    fireCooldown: 2
+    maxAmmo: 10
+    knockbackTime: 0.4
+    Force: 6
+    lugarDaArma: {fileID: 4268944448202044}
+    img: {fileID: 21300000, guid: e3a3d34903d2c52498d0394af7617d41, type: 3}
+    handstances: 1
+    velbala: 5
+    spread: 40
+    bala: {fileID: 1373596444894644, guid: 8552ac8b1d83cd84fbaf24770edbed1b, type: 2}
+    lugarDeTiro: {fileID: 4100608007002954}
+    projectileTime: 6.5
+    tipo: 1
   armaAtual:
     damage: 0
     fireCooldown: 0
@@ -989,7 +1065,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 2fb2abf6ecf445a4e9f1a324933dfc5f, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -997,7 +1073,53 @@ SpriteRenderer:
   m_Size: {x: 0.39, y: 0.29}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!212 &212666457033108474
+SpriteRenderer:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1163538137123830}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 0.64, y: 0.64}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!212 &212686681590500560
