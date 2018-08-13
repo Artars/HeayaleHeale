@@ -675,7 +675,7 @@ MonoBehaviour:
     lugarDaArma: {fileID: 4115285962785878}
     img: {fileID: 21300000, guid: e96740295c97fe74e93ccef1af4a2d1b, type: 3}
     handstances: 1
-    soundClip: {fileID: 0}
+    soundClip: {fileID: 8300000, guid: 561dacc293d75b54ebc7d42c7605fbb2, type: 3}
     velbala: 6
     spread: 20
     bala: {fileID: 1359993272587984, guid: 261473856a04f4243b590fc8b82e4357, type: 2}
@@ -690,7 +690,7 @@ MonoBehaviour:
     lugarDaArma: {fileID: 4678764923730072}
     img: {fileID: 21300000, guid: efa69557d5318bf46849fa01c81d847f, type: 3}
     handstances: 1
-    soundClip: {fileID: 0}
+    soundClip: {fileID: 8300000, guid: e5eb01c5178f02d4f96bed02b6f6db8e, type: 3}
     velbala: 30
     spread: 5
     bala: {fileID: 1571854499853352, guid: 71f379aec7bdc9b42b9f3284825e7c27, type: 2}
@@ -705,7 +705,7 @@ MonoBehaviour:
     lugarDaArma: {fileID: 4227437222732330}
     img: {fileID: 21300000, guid: 3126ba8e29dbf324f92b4f25df78472d, type: 3}
     handstances: 4
-    soundClip: {fileID: 0}
+    soundClip: {fileID: 8300000, guid: 30d0d087f04d8194dbd4b578195dcf46, type: 3}
     velbala: 5
     spread: 30
     bala: {fileID: 1373596444894644, guid: 8552ac8b1d83cd84fbaf24770edbed1b, type: 2}
@@ -720,7 +720,7 @@ MonoBehaviour:
     lugarDaArma: {fileID: 4268944448202044}
     img: {fileID: 21300000, guid: e3a3d34903d2c52498d0394af7617d41, type: 3}
     handstances: 1
-    soundClip: {fileID: 0}
+    soundClip: {fileID: 8300000, guid: 133b7415540fe5446a69984d563ff2a4, type: 3}
     velbala: 5
     spread: 40
     bala: {fileID: 1140779804055566, guid: 73bd51994b43b7b419ec9760e25c1812, type: 2}

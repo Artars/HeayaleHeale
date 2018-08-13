@@ -51,6 +51,10 @@ public class Minimap : MonoBehaviour {
 	}
 
 	private void Update() {
+		// float sizeX = imageMap.sizeDelta.x;
+		// float sizeY = imageMap.sizeDelta.y;
+		// float sizeY = imageMap.rect.height;
+		// float sizeX = imageMap.rect.width;
 		float sizeX = imageMap.rect.xMax - imageMap.rect.xMin;
 		float sizeY = imageMap.rect.yMax - imageMap.rect.yMin;
 		float mySizeX,mySizeY;
@@ -102,7 +106,7 @@ public class Minimap : MonoBehaviour {
 			if(circlePointer.gameObject.activeInHierarchy == false)
 				circlePointer.gameObject.SetActive(true);
 			float radius = GameManager.instance.DeathCircle.currentRadius();
-			mySizeX = mySizeY = porcentagePosition(lowerLeftCorner + new Vector3(radius,0,0)).x * sizeX;
+			mySizeX = mySizeY = porcentagePosition(lowerLeftCorner + new Vector3(radius,0,0)).x * sizeX * 0.4f;
 			Vector2 porcent = porcentagePosition(GameManager.instance.DeathCircle.transform.position);
 			Vector2 posi = new Vector2(sizeX*porcent.x,sizeY*porcent.y);
 			circlePointer.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left,posi.x-mySizeX/2,mySizeX);
