@@ -17,6 +17,7 @@ public class GameManager : NetworkBehaviour {
 	//Lista de drops
 
 	public DeathCircle DeathCircle;
+	public Slider playerSlider;
 	
 	
 	//DEBUG
@@ -72,7 +73,10 @@ public class GameManager : NetworkBehaviour {
 	}
 
 	public void addLocalReference(int id,GameObject player){
-		this.players.Add(id,player);
+		if(!players.ContainsKey(id))
+			this.players.Add(id,player);
+		else
+			this.players[id] = player;
 	}
 
 	public void addLocalBoxReference(GameObject box) {

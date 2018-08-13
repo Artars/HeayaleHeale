@@ -47,6 +47,7 @@ public class Player : NetworkBehaviour {
 	[SyncVar]
 	public GameObject acariciado;
 
+	public GameObject prefabHealthBar;
 
 	private Transform trans;
 	private Rigidbody2D rigi;
@@ -65,6 +66,15 @@ public class Player : NetworkBehaviour {
 
 		if(id != -1) {
 			GameManager.instance.addLocalReference(id,gameObject);
+		}
+
+		if(!isLocalPlayer) {
+			GameObject toSpawn = GameObject.Instantiate(prefabHealthBar);
+			toSpawn.GetComponent<Follower>().target = transform;
+			UnityEngine.UI.Slider slider = toSpawn.GetComponentInChildren<UnityEngine.UI.Slider>();
+			GetComponent<Health>().setBar(slider);
+		} else {
+			GetComponent<Health>().setBar(GameManager.instance.playerSlider);
 		}
 
 		Debug.Log("Started: " + id);

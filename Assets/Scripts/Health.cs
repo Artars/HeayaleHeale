@@ -2,21 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class Health : NetworkBehaviour {
 
-	public int hpMax;
-	public int hpInicial;
+	public float hpMax;
+	public float hpInicial;
 	[SyncVar(hook = "UpdateCurrentLife")]
-	private int hpAtual;
-	public SpriteRenderer[] sprites;
+	private float hpAtual;
+	public Slider slider;
 
 	void Start(){
 		hpAtual = hpInicial;
 	}
 
 	[Command]
-	public void CmdHurt(int dano){
+	public void CmdHurt(float dano){
 		hpAtual -=dano;
 		if(hpAtual <= 0){
 			GameManager.instance.Cmdwon(gameObject);
@@ -25,7 +26,7 @@ public class Health : NetworkBehaviour {
 	}
 
 	[Command]
-	public void CmdHeal(int dano){
+	public void CmdHeal(float dano){
 		CmdHurt(-dano);
 	}
 
@@ -34,15 +35,19 @@ public class Health : NetworkBehaviour {
 	/// Atualizar barra de vida para a posição correta
 	/// </summary>
 	/// <param name="newCurrentLife"></param>
-	public void UpdateCurrentLife(int newCurrentLife) {
+	public void UpdateCurrentLife(float newCurrentLife) {
 		float porcentage = newCurrentLife / hpMax;
-		Color color = new Color(1,1-porcentage,1-porcentage,1);
-		foreach(SpriteRenderer sr in sprites){
-			sr.color = color;
-		}
+		
+		if(slider != null)
+			slider.value = porcentage;
 	}
 
-	public int getCurrentLife(){
+	public void setBar(Slider bar){
+		slider = bar;
+		UpdateCurrentLife(hpAtual);
+	}
+
+	public float getCurrentLife(){
 		return hpAtual;
 	}
 }
