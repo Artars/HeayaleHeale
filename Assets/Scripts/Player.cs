@@ -8,6 +8,8 @@ public class Player : NetworkBehaviour {
 
 	public Animator animator;
 
+	private AudioSource audioSource;
+
 	[SyncVar(hook="changedID")]
 	// [SyncVar]
 	public int id = -1;
@@ -57,6 +59,7 @@ public class Player : NetworkBehaviour {
 	private void Start(){
 		trans = GetComponent<Transform>();
 		rigi = GetComponent<Rigidbody2D>();
+		audioSource = GetComponent<AudioSource>();
 		if(gun == null)
 			gun = new List<arma>();
 		for(int i=0;i<gunM.Count;i++)
@@ -177,13 +180,16 @@ public class Player : NetworkBehaviour {
 		armaAtual.lugarDaArma.GetComponent<SpriteRenderer>().sprite = null;
 		armaAtual = gun[id];
 		GetComponent<PlayerAnimationHandler>().setHandStance(armaAtual.handstances);
-		ammoAtual = armaAtual.maxAmmo;
-		maxAmmo = armaAtual.maxAmmo;
-		if(maxAmmo > 1000)
-			shouldShowAmmo = false;
-		else
-			shouldShowAmmo = true;
-		updateAmmoText();
+		if(isLocalPlayer){
+			ammoAtual = armaAtual.maxAmmo;
+			maxAmmo = armaAtual.maxAmmo;
+			if(maxAmmo > 1000)
+				shouldShowAmmo = false;
+			else
+				shouldShowAmmo = true;
+			updateAmmoText();
+		}
+		audioSource.clip = armaAtual.soundClip;
 		armaAtual.lugarDaArma.GetComponent<SpriteRenderer>().sprite= armaAtual.img;
 	}
 
@@ -215,6 +221,9 @@ public class Player : NetworkBehaviour {
 			return;
 		}
 
+		//Atualizar posição da camera
+		camTransform.position = transform.position + camOffset;
+
 		if(canWalk && !Huged && !Hugging)
 			walk();
 		if( button.Pressed){
@@ -232,7 +241,7 @@ public class Player : NetworkBehaviour {
 				}
 
 				if(armaAtual.GetType() == typeof(armaRanged)){
-					CmdAtirar();
+					CmdAtirar(trans.rotation);
 					Debug.Log("armaRanged");
 				}
 				else if(armaAtual.GetType() == typeof(armaMelee)){
@@ -279,11 +288,13 @@ public class Player : NetworkBehaviour {
 	}
 
 	[Command]
-	private void CmdAtirar (){
+	private void CmdAtirar (Quaternion rotation){
 		armaRanged armaux = (armaRanged)armaAtual;
+		trans.rotation = rotation;
 		float rand = Random.Range(-armaux.spread, armaux.spread);
 		trans.Rotate(0,0,rand);
 
+		RpcPlaySound();
 		RpcPush(-trans.up* armaux.Force) ;
 
 		gerarBala();
@@ -326,12 +337,14 @@ public class Player : NetworkBehaviour {
 
 				transform.Translate(moveVector * speed * Time.deltaTime, Space.World);
 				//camTransform.Translate(moveVector * speed * Time.deltaTime, Space.World);
-				camTransform.position = transform.position + camOffset;
+			}
+			else{
+				animator.SetBool("Walking",false);
 			}
 		}else {
 			animator.SetBool("Walking",false);
-			if(Huged || Hugging)
-			camTransform.position = transform.position + camOffset;}
+		}
+
 	}
 
 
@@ -370,5 +383,18 @@ public class Player : NetworkBehaviour {
 		balaGerada.nomeDoAtirador = username;
 		balaGerada.damage = armaux.damage;
 		balaGerada.force = armaux.Force;
+	}
+
+	[Command]
+	private void CmdAllPlaySound(){
+		RpcPlaySound();
+	}
+
+	[ClientRpc]
+	private void RpcPlaySound(){
+		if(audioSource.clip != null)
+		audioSource.Play();
+
+
 	}
 }

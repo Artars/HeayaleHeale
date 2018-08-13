@@ -115,6 +115,7 @@ MonoBehaviour:
   projectileLife: 1
   img: {fileID: 21300000, guid: cf2cf35a7a8221042a29778a639db316, type: 3}
   nomeDoAtirador: 
+  playerID: 0
 --- !u!114 &114828344812855076
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -159,7 +160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 2
-  m_SendInterval: 0
+  m_SendInterval: 0.14285715
   m_SyncRotationAxis: 3
   m_RotationSyncCompression: 0
   m_SyncSpin: 0

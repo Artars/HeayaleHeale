@@ -95,7 +95,7 @@ public class GameManager : NetworkBehaviour {
 	public void Cmdwon(GameObject playerObject) {
 		Player player = playerObject.GetComponent<Player>();
 		Debug.Log("Jogador " +  player.username + " ganhou!");
-		RpcShowWhoWon("Jogador " +  player.username + " ganhou!");
+		RpcShowWhoWon("Plyaer " +  player.username + " won!");
 	}
 
 	[ClientRpc]

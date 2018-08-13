@@ -17,4 +17,6 @@ public class arma  {
 	public Sprite img;
 
 	public PlayerAnimationHandler.HandStances handstances;
+
+	public AudioClip soundClip;
 }

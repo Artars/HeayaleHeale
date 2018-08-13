@@ -35,6 +35,12 @@ public class DeathCircle : NetworkBehaviour {
 		playersInside = new List<GameObject>();
 	}
 
+	private void Start() {
+		if(isClient) {
+			CmdUpdateRadius();
+		}
+	}
+
 	[Command]
 	public void CmdStartAtRandom() {
 		Transform position = closePoints[Random.Range(0,closePoints.Length)];
@@ -90,7 +96,7 @@ public class DeathCircle : NetworkBehaviour {
 				}
 				else{
 					if(isServer){
-						RpcForceRadius(currentScale.x,currentState);
+						RpcForceRadius(currentScale.x,currentState, timerSize);
 					}
 				}
 			}
@@ -102,12 +108,17 @@ public class DeathCircle : NetworkBehaviour {
 		}
 	}
 
+	[Command]
+	private void CmdUpdateRadius() {
+		RpcForceRadius(currentScale.x,currentState, timerSize);
+	} 
+
 	[ClientRpc]
-	private void RpcForceRadius(float radius, State forceState){
+	private void RpcForceRadius(float radius, State forceState, float timer){
 		currentScale = new Vector3(radius,radius,1);
 		myTransform.localScale = currentScale;
 		currentState = forceState;
-		this.timerSize = sizeChangeInterval;
+		this.timerSize = timer;
 	}
 
 	[Command]
