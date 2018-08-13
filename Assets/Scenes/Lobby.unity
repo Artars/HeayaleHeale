@@ -113,53 +113,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &54892960
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4824906866922520, guid: f4763c508e04a1249b69245a2fb70085, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4824906866922520, guid: f4763c508e04a1249b69245a2fb70085, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4824906866922520, guid: f4763c508e04a1249b69245a2fb70085, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4824906866922520, guid: f4763c508e04a1249b69245a2fb70085, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4824906866922520, guid: f4763c508e04a1249b69245a2fb70085, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4824906866922520, guid: f4763c508e04a1249b69245a2fb70085, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4824906866922520, guid: f4763c508e04a1249b69245a2fb70085, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4824906866922520, guid: f4763c508e04a1249b69245a2fb70085, type: 2}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114341986716739878, guid: f4763c508e04a1249b69245a2fb70085,
-        type: 2}
-      propertyPath: slider
-      value: 
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: f4763c508e04a1249b69245a2fb70085, type: 2}
-  m_IsPrefabAsset: 0
 --- !u!1 &143916823
 GameObject:
   m_ObjectHideFlags: 0
@@ -307,8 +260,8 @@ MonoBehaviour:
   - {fileID: 1677673031779792, guid: f4763c508e04a1249b69245a2fb70085, type: 2}
   - {fileID: 1359993272587984, guid: 261473856a04f4243b590fc8b82e4357, type: 2}
   - {fileID: 1639015409050466, guid: 901dc9977c9028146bf74d3f1fdf04b7, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1571854499853352, guid: 71f379aec7bdc9b42b9f3284825e7c27, type: 2}
+  - {fileID: 1373596444894644, guid: 8552ac8b1d83cd84fbaf24770edbed1b, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -375,5 +328,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

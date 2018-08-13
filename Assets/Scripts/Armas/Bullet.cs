@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class Bullet : NetworkBehaviour {
+	[HideInInspector]
 	public int damage;
+	[HideInInspector]
 	public float force;
 	public int projectileLife;
 	private int hpAtual;
@@ -42,9 +44,8 @@ public class Bullet : NetworkBehaviour {
 			Bullet bul = col.gameObject.GetComponent<Bullet>();
 			if(bul != null)
 				levarDano(bul.damage);
-			else if(col.gameObject.tag == "Player" ){
-				if(col.gameObject.GetComponent<Player>().username != nomeDoAtirador)
-					col.gameObject.GetComponent<Health>().CmdHeal(damage);
+			else if(col.gameObject.tag == "Player" && col.gameObject.GetComponent<Player>().username != nomeDoAtirador){
+				col.gameObject.GetComponent<Health>().CmdHeal(damage);
 				morrer();
 			}
 		}

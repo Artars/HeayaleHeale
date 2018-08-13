@@ -170,9 +170,9 @@ public class Player : NetworkBehaviour {
 	}
 	[ClientRpc]
 	private void RpcEquip(int id){
-		GetComponent<PlayerAnimationHandler>().setHandStance(armaAtual.handstances);
 		armaAtual.lugarDaArma.GetComponent<SpriteRenderer>().sprite = null;
 		armaAtual = gun[id];
+		GetComponent<PlayerAnimationHandler>().setHandStance(armaAtual.handstances);
 		ammoAtual = armaAtual.maxAmmo;
 		armaAtual.lugarDaArma.GetComponent<SpriteRenderer>().sprite= armaAtual.img;
 	}
@@ -274,6 +274,7 @@ public class Player : NetworkBehaviour {
 			Bullet balaGerada = aux.GetComponent<Bullet>();
 			balaGerada.nomeDoAtirador = username;
 			balaGerada.damage = armaux.damage;
+			balaGerada.force = armaux.Force;
 
 	}
 
