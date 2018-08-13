@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.Networking;
 public class Box :  NetworkBehaviour {
 
+	private void Start() {
+		GameManager.instance.addLocalBoxReference(gameObject);
+	}
+
 	void OnTriggerEnter2D(Collider2D col){
 		if(	isServer && col.gameObject.tag == "Player"){
 			Player aux = col.gameObject.GetComponent<Player>();
@@ -14,6 +18,10 @@ public class Box :  NetworkBehaviour {
 			aux.CmdEquip(aux.getRand());
 			Destroy(gameObject);
 		}
+	}
+
+	private void OnDestroy() {
+		GameManager.instance.removeLocalBoxReference(gameObject);
 	}
 
 }

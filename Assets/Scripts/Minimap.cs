@@ -10,6 +10,8 @@ public class Minimap : MonoBehaviour {
 	public GameObject cratePointerPrefab;
 	public GameObject circlePrefab;
 
+	public Sprite[] skinVariantImages;
+
 	public int numberOfPlayersToSpawn = 20;
 	public int numberOfBoxesToSpawn = 30;
 
@@ -56,6 +58,7 @@ public class Minimap : MonoBehaviour {
 		mySizeX = sizeX *relativeSizePlayer;
 		mySizeY = sizeY *relativeSizePlayer;
 
+
 		for(int i = 0; i < playerPointer.Count; i++){
 			if(i < GameManager.instance.players.Count){
 				Vector2 porc = porcentagePosition(GameManager.instance.players[i].transform.position);
@@ -77,22 +80,23 @@ public class Minimap : MonoBehaviour {
 		mySizeX = sizeX * relativeSizeCrate;
 		mySizeY = sizeY * relativeSizeCrate;
 
-		// for(int i = 0; i < playerPointer.Count; i++){
-		// 	if(i < GameManager.instance. .Count){
-		// 		Vector2 porc = porcentagePosition(GameManager.instance.players[i].transform.position);
-		// 		Vector2 pos = new Vector2(sizeX*porc.x,sizeY*porc.y);
-		// 		playerPointer[i].SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left,pos.x-mySizeX/2,mySizeX);
-		// 		playerPointer[i].SetInsetAndSizeFromParentEdge(RectTransform.Edge.Bottom,pos.y-mySizeY/2,mySizeY);
-		// 	}
-		// 	else{
-		// 		if(playerPointer[i].gameObject.activeInHierarchy){
-		// 			playerPointer[i].gameObject.SetActive(false);
-		// 		}
-		// 		else{
-		// 			break;
-		// 		}
-		// 	}
-		// }
+		for(int i = 0; i < boxPointer.Count; i++){
+			if(i < GameManager.instance.boxes.Count){
+				Vector2 porc = porcentagePosition(GameManager.instance.boxes[i].transform.position);
+				Vector2 pos = new Vector2(sizeX*porc.x,sizeY*porc.y);
+				boxPointer[i].gameObject.SetActive(true);
+				boxPointer[i].SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left,pos.x-mySizeX/2,mySizeX);
+				boxPointer[i].SetInsetAndSizeFromParentEdge(RectTransform.Edge.Bottom,pos.y-mySizeY/2,mySizeY);
+			}
+			else{
+				if(boxPointer[i].gameObject.activeInHierarchy){
+					boxPointer[i].gameObject.SetActive(false);
+				}
+				else{
+					break;
+				}
+			}
+		}
 
 		if( GameManager.instance.DeathCircle != null) {
 			if(circlePointer.gameObject.activeInHierarchy == false)

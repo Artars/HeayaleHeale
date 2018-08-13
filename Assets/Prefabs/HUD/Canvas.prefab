@@ -140,22 +140,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1311071007824956}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d09da5b0f59d5f49b82c20d5a2a5945, type: 3}
+  m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: 
-  imageMap: {fileID: 224023801005640298}
-  playerPointerPrefab: {fileID: 1547278424025824, guid: f6f57ed14eca12042bba06f0931a1f1d,
-    type: 2}
-  cratePointerPrefab: {fileID: 1909867218163748, guid: ddf938755015d82499aead8da2de52c5,
-    type: 2}
-  circlePrefab: {fileID: 1909867218163748, guid: ddf938755015d82499aead8da2de52c5,
-    type: 2}
-  numberOfPlayersToSpawn: 20
-  numberOfBoxesToSpawn: 30
-  relativeSizePlayer: 0.1
-  relativeSizeCrate: 0.1
-  lowerLeftCorner: {x: -10, y: -10, z: 0}
-  topRightCorner: {x: 10, y: 10, z: 0}
 --- !u!114 &114235227539446496
 MonoBehaviour:
   m_ObjectHideFlags: 1

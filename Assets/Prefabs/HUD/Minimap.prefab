@@ -58,16 +58,21 @@ MonoBehaviour:
   imageMap: {fileID: 224703929450638682}
   playerPointerPrefab: {fileID: 1547278424025824, guid: f6f57ed14eca12042bba06f0931a1f1d,
     type: 2}
-  cratePointerPrefab: {fileID: 1909867218163748, guid: ddf938755015d82499aead8da2de52c5,
+  cratePointerPrefab: {fileID: 1815343005211896, guid: 40b4355ee0bc6494fa5f06ab2130f326,
     type: 2}
   circlePrefab: {fileID: 1909867218163748, guid: ddf938755015d82499aead8da2de52c5,
     type: 2}
+  skinVariantImages:
+  - {fileID: 21300000, guid: 29ac9bd68d871984da0f83a89086d789, type: 3}
+  - {fileID: 21300000, guid: 0a9b7eb8ace24c64ab1fe73369df753f, type: 3}
+  - {fileID: 21300000, guid: 7f41bee069f93b94e8a9e1ed790fb621, type: 3}
+  - {fileID: 21300000, guid: af7cb0425ba7c1e4a9de9301adcb2de8, type: 3}
   numberOfPlayersToSpawn: 20
   numberOfBoxesToSpawn: 30
-  relativeSizePlayer: 0.1
-  relativeSizeCrate: 0.1
-  lowerLeftCorner: {x: -10, y: -10, z: 0}
-  topRightCorner: {x: 10, y: 10, z: 0}
+  relativeSizePlayer: 0
+  relativeSizeCrate: 0
+  lowerLeftCorner: {x: 0, y: 0, z: 0}
+  topRightCorner: {x: 0, y: 0, z: 0}
 --- !u!114 &114536360470360900
 MonoBehaviour:
   m_ObjectHideFlags: 1

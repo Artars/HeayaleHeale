@@ -8,6 +8,10 @@ public class Player : NetworkBehaviour {
 
 	public Animator animator;
 
+	[SyncVar(hook="changedID")]
+	// [SyncVar]
+	public int id = -1;
+
 	public List<armaMelee> gunM ;
 	public List<armaRanged> gunR ;
 	//public List<armaRanged> gunL ;//lazer
@@ -27,7 +31,9 @@ public class Player : NetworkBehaviour {
 	[SyncVar]
 	public string username;
 	public float speed;
-	public int skinIndex;
+	[SyncVar(hook="changedSkin")]
+	// [SyncVar]
+	public int skinIndex = 0;
 	[HideInInspector]
 	public bool canWalk = true;
 	[HideInInspector]
@@ -57,16 +63,25 @@ public class Player : NetworkBehaviour {
 		animator = GetComponent<Animator>();
 		GetComponent<PlayerAnimationHandler>().setSkinVariation(skinIndex);
 
+		if(id != -1) {
+			GameManager.instance.addLocalReference(id,gameObject);
+		}
+
+		Debug.Log("Started: " + id);
 	}
 
 	public override void OnStartLocalPlayer() {
 		base.OnStartLocalPlayer();
 		//Pega nome das preferencia
+		
 
-		GameManager.instance.CmdAddPlayer(gameObject);
-		rigi = GetComponent<Rigidbody2D>();
-		SpriteRenderer spr = GetComponent<SpriteRenderer>();
-		if(spr != null) spr.color = Color.red;
+		//GameManager.instance.CmdAddPlayer(gameObject);
+		id = GameManager.instance.getNewID();
+		skinIndex = GameManager.instance.getSkin();
+		CmdUpdateSkinAndID(id,skinIndex);
+		// skinIndex = GameManager.instance.CmdGetSkin();
+		// changedID(id);
+		// changedSkin(skinIndex);
 
 		joystick = GameObject.Find("Joystick").GetComponent<Joystick>();
 		button = GameObject.Find("Button").GetComponent<Button>();	
@@ -78,11 +93,44 @@ public class Player : NetworkBehaviour {
 		}
 	}
 
+	private void OnStartServer() {
+		Debug.Log("ola");
+		base.OnStartServer();
+		if(id == -1)
+			GameManager.instance.CmdAddPlayer(gameObject);
+	}
+
+	[Command]
+	public void CmdUpdateSkinAndID(int id, int skin) {
+		RpcSetSkin(skin);
+		RpcSetID(id);
+	}
+
 	[ClientRpc]
 	public void RpcSetSkin(int id){
+		skinIndex = id;
+		GetComponent<PlayerAnimationHandler>().setSkinVariation(skinIndex);
+	}
+
+	public void changedSkin(int newSkin){
+		skinIndex = newSkin;
+		GetComponent<PlayerAnimationHandler>().setSkinVariation(skinIndex);
+	}
+
+	public void changedID(int newID){
+		id = newID;
+		GameManager.instance.addLocalReference(id, gameObject);
 		if(isLocalPlayer){
-			skinIndex = id;
-			GetComponent<PlayerAnimationHandler>().setSkinVariation(id);
+			GameManager.instance.thisPlayer = id;
+		}
+	}
+
+	[ClientRpc]
+	public void RpcSetID(int i) {
+		id = i;
+		GameManager.instance.addLocalReference(id, gameObject);
+		if(isLocalPlayer){
+			GameManager.instance.thisPlayer = id;
 		}
 	}
 	
@@ -222,13 +270,30 @@ public class Player : NetworkBehaviour {
 	private void walk(){
 		Vector3 moveVector = (Vector3.right * joystick.Horizontal + Vector3.up * joystick.Vertical);
 
+		bool wallAhead = false;
+		//Verificar se não há parede à frente
+		if(moveVector != Vector3.zero){
+			Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position + moveVector*0.3f, 0.1f);
+			foreach(Collider2D c2d in hits) {
+				if(c2d.gameObject.layer > 9){
+				  wallAhead = true;
+				  Debug.Log("Wall ahead");
+				  break;
+				}
+				
+			}
+		}
+
 		if (moveVector != Vector3.zero && !Huged && !Hugging){ 
-			animator.SetBool("Walking",true);
 			transform.rotation = Quaternion.LookRotation(Vector3.forward, moveVector);
+
+			if(!wallAhead){
+				animator.SetBool("Walking",true);
 
 				transform.Translate(moveVector * speed * Time.deltaTime, Space.World);
 				//camTransform.Translate(moveVector * speed * Time.deltaTime, Space.World);
 				camTransform.position = transform.position + camOffset;
+			}
 		}else {
 			animator.SetBool("Walking",false);
 			if(Huged || Hugging)

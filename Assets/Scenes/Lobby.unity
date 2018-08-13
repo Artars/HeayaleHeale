@@ -198,11 +198,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &733304185 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 212686681590500560, guid: f4763c508e04a1249b69245a2fb70085,
-    type: 2}
-  m_PrefabInternal: {fileID: 1950824886}
 --- !u!1001 &1950824886
 Prefab:
   m_ObjectHideFlags: 0
@@ -210,11 +205,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114341986716739878, guid: f4763c508e04a1249b69245a2fb70085,
-        type: 2}
-      propertyPath: sprites.Array.size
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 4824906866922520, guid: f4763c508e04a1249b69245a2fb70085, type: 2}
       propertyPath: m_LocalPosition.x
       value: 11.456289
@@ -247,24 +237,9 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114341986716739878, guid: f4763c508e04a1249b69245a2fb70085,
-        type: 2}
-      propertyPath: sprites.Array.data[0]
-      value: 
-      objectReference: {fileID: 2012974667}
-    - target: {fileID: 114341986716739878, guid: f4763c508e04a1249b69245a2fb70085,
-        type: 2}
-      propertyPath: sprites.Array.data[1]
-      value: 
-      objectReference: {fileID: 733304185}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f4763c508e04a1249b69245a2fb70085, type: 2}
   m_IsPrefabAsset: 0
---- !u!212 &2012974667 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 212715451457682886, guid: f4763c508e04a1249b69245a2fb70085,
-    type: 2}
-  m_PrefabInternal: {fileID: 1950824886}
 --- !u!1 &2136114569
 GameObject:
   m_ObjectHideFlags: 0

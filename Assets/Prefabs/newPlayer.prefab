@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4313126396644762}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pontoDeTiro
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 114554309136022930}
   - component: {fileID: 212399065352372820}
   - component: {fileID: 61524669113458192}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: hitBoxHug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,7 +54,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4050097905685722}
   - component: {fileID: 212686681590500560}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ArmSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,7 +79,7 @@ GameObject:
   - component: {fileID: 114850967796454246}
   - component: {fileID: 95507201031756798}
   - component: {fileID: 114389860012025318}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: newPlayer
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4149625481200560}
   - component: {fileID: 212715451457682886}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BodySprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4268944448202044}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pontoDaArma
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -346,6 +346,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
+  id: -1
   gunM:
   - damage: 100
     fireCooldown: 3

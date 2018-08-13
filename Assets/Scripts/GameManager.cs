@@ -6,8 +6,14 @@ using UnityEngine.UI;
 
 public class GameManager : NetworkBehaviour {
 	public static GameManager instance = null;
-	public List<GameObject> players;
+	public Dictionary<int,GameObject> players;
+	public List<GameObject> boxes;
 	
+	[SyncVar]
+	public int numPlayers = 0;
+
+	public int thisPlayer = -1;
+
 	//Lista de drops
 
 	public DeathCircle DeathCircle;
@@ -31,8 +37,9 @@ public class GameManager : NetworkBehaviour {
 	private GameManager () {
 		// if(instance == null) {
 			instance = this;
-			players = new List<GameObject>();
+			players = new Dictionary<int, GameObject>();
 			remainingSkins = new List<int>();
+			boxes = new List<GameObject>();
 		// }
 		// else if (instance != this) {
 			// Destroy(this);
@@ -43,18 +50,37 @@ public class GameManager : NetworkBehaviour {
 	public void CmdAddPlayer(GameObject playerObject){
 		Player player = playerObject.GetComponent<Player>();
 		if(player != null) {
-			players.Add(playerObject);
-			if(remainingSkins.Count < 1) {
+			Debug.Log("Passou");
+			if(remainingSkins.Count < 1)
 				fillSkinList();
-				int i = Random.Range(0,remainingSkins.Count);
-				player.RpcSetSkin(remainingSkins[i]);
-				remainingSkins.RemoveAt(i);
-			}
+			int i = Random.Range(0,remainingSkins.Count);
+			player.RpcSetSkin(remainingSkins[i]);
+			remainingSkins.RemoveAt(i);
+			player.RpcSetID(numPlayers);
+			numPlayers ++;
 		}
 	}
 
-	public void RpcUpdatePlayerReferences(List<GameObject> players){
-		this.players = players;
+	public int getNewID(){
+		int id = numPlayers;
+		numPlayers++;
+		return id;
+	}
+
+	public int getSkin(){
+		return Random.Range(0,numberOfSkins);
+	}
+
+	public void addLocalReference(int id,GameObject player){
+		this.players.Add(id,player);
+	}
+
+	public void addLocalBoxReference(GameObject box) {
+		boxes.Add(box);
+	}
+
+	public void removeLocalBoxReference(GameObject box) {
+		boxes.Remove(box);
 	}
 
 	[Command]
@@ -87,10 +113,12 @@ public class GameManager : NetworkBehaviour {
 
 	private void Start() {
 		if(isServer){
-			RpcSetTextIp("HostIP: " + System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList[3].ToString());
+			string text = "";
 			foreach (var ip in System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList){//[0].ToString());
-   Debug.Log(ip.ToString());
+				if(ip.ToString().Length < 17)
+					text = ip.ToString();
   			}
+			RpcSetTextIp("HostIP: " + text);
 
 			onGameStart();
 		}
