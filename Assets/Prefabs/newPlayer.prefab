@@ -428,7 +428,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &61063575305042856
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -576,7 +576,7 @@ MonoBehaviour:
     Force: 3
     lugarDaArma: {fileID: 4115285962785878}
     img: {fileID: 21300000, guid: e96740295c97fe74e93ccef1af4a2d1b, type: 3}
-    handstances: 4
+    handstances: 1
     velbala: 6
     spread: 20
     bala: {fileID: 1359993272587984, guid: 261473856a04f4243b590fc8b82e4357, type: 2}
@@ -621,7 +621,7 @@ MonoBehaviour:
     handstances: 1
     velbala: 5
     spread: 40
-    bala: {fileID: 1373596444894644, guid: 8552ac8b1d83cd84fbaf24770edbed1b, type: 2}
+    bala: {fileID: 1140779804055566, guid: 73bd51994b43b7b419ec9760e25c1812, type: 2}
     lugarDeTiro: {fileID: 4100608007002954}
     projectileTime: 6.5
     tipo: 1
@@ -646,6 +646,7 @@ MonoBehaviour:
   acariciado: {fileID: 0}
   prefabHealthBar: {fileID: 1058106516870838, guid: 3edd8dd987ddbbd4aa19069f3ffa7d01,
     type: 2}
+  ammoText: {fileID: 0}
 --- !u!114 &114389860012025318
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -48,6 +48,9 @@ public class Player : NetworkBehaviour {
 	public GameObject acariciado;
 
 	public GameObject prefabHealthBar;
+	public UnityEngine.UI.Text ammoText;
+	private int maxAmmo;
+	private bool shouldShowAmmo;
 
 	private Transform trans;
 	private Rigidbody2D rigi;
@@ -75,6 +78,7 @@ public class Player : NetworkBehaviour {
 			GetComponent<Health>().setBar(slider);
 		} else {
 			GetComponent<Health>().setBar(GameManager.instance.playerSlider);
+			ammoText = GameManager.instance.ammoText;
 		}
 
 		Debug.Log("Started: " + id);
@@ -174,6 +178,12 @@ public class Player : NetworkBehaviour {
 		armaAtual = gun[id];
 		GetComponent<PlayerAnimationHandler>().setHandStance(armaAtual.handstances);
 		ammoAtual = armaAtual.maxAmmo;
+		maxAmmo = armaAtual.maxAmmo;
+		if(maxAmmo > 1000)
+			shouldShowAmmo = false;
+		else
+			shouldShowAmmo = true;
+		updateAmmoText();
 		armaAtual.lugarDaArma.GetComponent<SpriteRenderer>().sprite= armaAtual.img;
 	}
 
@@ -210,6 +220,8 @@ public class Player : NetworkBehaviour {
 		if( button.Pressed){
 			if(canShoot &&  !Huged && !Hugging){
 				ammoAtual -= 1;
+
+				updateAmmoText();
 
 				canShoot = false;
 				if(ammoAtual <= 0){
@@ -248,6 +260,16 @@ public class Player : NetworkBehaviour {
 	
 
 	}
+
+	private void updateAmmoText(){
+		if(ammoText != null) {
+			ammoText.text = "Ammo: " + ammoAtual + " / " + maxAmmo;
+			if(!shouldShowAmmo){
+				ammoText.text = "";
+			}
+		}
+	}
+
 	[Command]
 	private void CmdHug(){
 		armaMelee armaux = (armaMelee)armaAtual;
@@ -314,7 +336,7 @@ public class Player : NetworkBehaviour {
 
 
 	public int getRand(){
-		return Random.Range(0, gun.Count);
+		return Random.Range(1, gun.Count);
 	}
 
 

@@ -18,6 +18,7 @@ public class GameManager : NetworkBehaviour {
 
 	public DeathCircle DeathCircle;
 	public Slider playerSlider;
+	public Text ammoText;
 	
 	
 	//DEBUG
@@ -138,7 +139,15 @@ public class GameManager : NetworkBehaviour {
 				while(!canSpawn) {
 					x = Random.Range(lowerPos.x, upperPos.x);
 					y = Random.Range(lowerPos.y, upperPos.y);
+
 					canSpawn = true;
+					Collider2D[] hits = Physics2D.OverlapCircleAll(new Vector2(x,y),1);
+					foreach(Collider2D c2 in hits) {
+						if(c2.gameObject.layer > 9){
+							canSpawn = false;
+							break;
+						}
+					}
 
 				}
 				GameObject toInstance = GameObject.Instantiate(itemPrefab ,new Vector3 (x,y,0),Quaternion.identity);
