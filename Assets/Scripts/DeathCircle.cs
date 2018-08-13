@@ -67,6 +67,7 @@ public class DeathCircle : NetworkBehaviour {
 		timerSize -= delta;
 		if(timerDamage <= 0){
 			if(shouldDamage && isServer){
+				porcentage = (maxRadius - currentScale.x)/maxRadius;
 				float Damage = (maxDamage-minDamage)* porcentage + minDamage;
 
 				foreach(GameObject g in playersInside) {

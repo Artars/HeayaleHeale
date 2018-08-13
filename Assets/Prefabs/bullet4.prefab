@@ -147,7 +147,7 @@ MonoBehaviour:
   damage: 10
   force: 0
   projectileLife: 1
-  img: {fileID: 21300000, guid: cf2cf35a7a8221042a29778a639db316, type: 3}
+  img: {fileID: 21300000, guid: a05a742a7a7d79140aa1d8ac0aa0efd0, type: 3}
   nomeDoAtirador: 
   playerID: 0
 --- !u!212 &212564057055216372

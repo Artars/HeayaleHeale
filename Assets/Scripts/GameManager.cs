@@ -16,9 +16,12 @@ public class GameManager : NetworkBehaviour {
 
 	//Lista de drops
 
+	[Header("References")]
 	public DeathCircle DeathCircle;
 	public Slider playerSlider;
 	public Text ammoText;
+	public GameObject winPanel;
+	public Text winText;
 	
 	
 	//DEBUG
@@ -97,7 +100,8 @@ public class GameManager : NetworkBehaviour {
 
 	[ClientRpc]
 	public void RpcShowWhoWon(string text){
-		ipAdress.text = text;
+		winPanel.SetActive(true);
+		winText.text = text;
 	} 
 
 	[Command]
