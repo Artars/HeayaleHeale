@@ -388,6 +388,7 @@ public class Player : NetworkBehaviour {
 		balaGerada.nomeDoAtirador = username;
 		balaGerada.damage = armaux.damage;
 		balaGerada.force = armaux.Force;
+		balaGerada.playerID = id;
 		balaGerada.CmdSyncTransformVelocity(aux.transform.position, aux.transform.rotation,(trans.up ) * armaux.velbala);
 		
 	}
