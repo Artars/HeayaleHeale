@@ -54,4 +54,16 @@ public class Bullet : NetworkBehaviour {
 		}
 	}
 
+	[Command]
+	public void CmdSyncTransformVelocity(Vector3 pos, Quaternion rotation, Vector2 velocity) {
+		RpcSyncTransformVelocity(pos, rotation, velocity);
+	}
+
+	[ClientRpc]
+	private void RpcSyncTransformVelocity(Vector3 pos, Quaternion rotation, Vector2 velocity) {
+		transform.position = pos;
+		transform.rotation = rotation;
+		GetComponent<Rigidbody2D>().velocity = velocity;
+	}
+
 }

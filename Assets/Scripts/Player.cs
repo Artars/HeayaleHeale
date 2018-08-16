@@ -221,6 +221,10 @@ public class Player : NetworkBehaviour {
 			return;
 		}
 
+		if(Time.timeScale == 0)
+			return;
+
+
 		//Atualizar posição da camera
 		camTransform.position = transform.position + camOffset;
 
@@ -376,6 +380,7 @@ public class Player : NetworkBehaviour {
 
 
 		aux.GetComponent<Rigidbody2D>().velocity = (trans.up ) * armaux.velbala;
+		
 		NetworkServer.Spawn(aux);
 		Destroy(aux,armaux.projectileTime);
 
@@ -383,6 +388,8 @@ public class Player : NetworkBehaviour {
 		balaGerada.nomeDoAtirador = username;
 		balaGerada.damage = armaux.damage;
 		balaGerada.force = armaux.Force;
+		balaGerada.CmdSyncTransformVelocity(aux.transform.position, aux.transform.rotation,(trans.up ) * armaux.velbala);
+		
 	}
 
 	[Command]

@@ -8,8 +8,13 @@ public class GameManager : NetworkBehaviour {
 	public static GameManager instance = null;
 	public Dictionary<int,GameObject> players;
 	public List<GameObject> boxes;
-	
+
 	[SyncVar]
+	public bool hasGameStarted = false;
+
+	public Dictionary<int, bool> readyPlayers;
+	
+	[SyncVar(hook = "UpdatePlayerNumber")]
 	public int numPlayers = 0;
 
 	public int thisPlayer = -1;
@@ -17,13 +22,14 @@ public class GameManager : NetworkBehaviour {
 	//Lista de drops
 
 	[Header("References")]
+	public GameObject StartScreen;
+	public UnityEngine.UI.Slider progressReady;
+	public Text readyText;
 	public DeathCircle DeathCircle;
 	public Slider playerSlider;
 	public Text ammoText;
 	public GameObject winPanel;
 	public Text winText;
-	
-	
 	//DEBUG
 	public Text ipAdress;
 
@@ -52,6 +58,73 @@ public class GameManager : NetworkBehaviour {
 	}
 
 	[Command]
+	public void CmdUpdateAll() {
+		foreach(KeyValuePair<int,bool> kpair in readyPlayers){
+			RpcUpdateReadyStatus(kpair.Key,kpair.Value);	
+		}
+	}
+
+	[Command]
+	public void CmdUpdateStatus(int id, bool value) {
+		readyPlayers[id] = value;
+		RpcUpdateReadyStatus(id, value);
+		bool isReady = true;
+		for(int i = 0; i < numPlayers; i++){
+			if(!readyPlayers.ContainsKey(i)){
+				isReady = false;
+				break;
+			}
+			if(!readyPlayers[i]){
+				isReady = false;
+				break;
+			}
+		}
+		if(isReady){
+			RpcStartGame();
+			StartGame();
+			hasGameStarted = true;
+			DeathCircle.CmdStartAtRandom();
+
+		}
+	}
+
+	[ClientRpc]
+	public void RpcStartGame(){
+		StartGame();
+	}
+
+	public void StartGame(){
+		pause(false);
+		StartScreen.SetActive(false);
+	}
+
+	[ClientRpc]
+	public void RpcUpdateReadyStatus(int id, bool value){
+		readyPlayers[id] = value;
+		UpdatePlayerNumber(numPlayers);
+	}
+
+	public void UpdatePlayerNumber(int numNumber) {
+		if(readyPlayers == null)
+			readyPlayers = new Dictionary<int, bool>();
+
+		if(!readyPlayers.ContainsKey(numNumber-1))
+			readyPlayers.Add(numNumber-1,false);
+		if(numNumber == 0)
+			return;
+		float count = 0;
+		for(int i = 0; i < numPlayers; i++){
+			if(readyPlayers.ContainsKey(i) && readyPlayers[i])
+				count += 1;
+		}
+		float porcentage = count / numPlayers;
+		if(progressReady != null)
+			progressReady.value = porcentage;
+		if(readyText != null)
+			readyText.text = count + " / " + numPlayers;
+	}
+
+	[Command]
 	public void CmdAddPlayer(GameObject playerObject){
 		Player player = playerObject.GetComponent<Player>();
 		if(player != null) {
@@ -69,6 +142,7 @@ public class GameManager : NetworkBehaviour {
 	public int getNewID(){
 		int id = numPlayers;
 		numPlayers++;
+		// UpdatePlayerNumber(numPlayers);
 		return id;
 	}
 
@@ -94,8 +168,8 @@ public class GameManager : NetworkBehaviour {
 	[Command]
 	public void Cmdwon(GameObject playerObject) {
 		Player player = playerObject.GetComponent<Player>();
-		Debug.Log("Jogador " +  player.username + " ganhou!");
-		RpcShowWhoWon("Plyaer " +  player.username + " won!");
+		Debug.Log("Jogador " +  player.id + " ganhou!");
+		RpcShowWhoWon("Player   " +  (player.id+1) + "   won!");
 	}
 
 	[ClientRpc]
@@ -121,6 +195,8 @@ public class GameManager : NetworkBehaviour {
 	}
 
 	private void Start() {
+		if(readyPlayers == null)
+			readyPlayers = new Dictionary<int, bool>();
 		if(isServer){
 			string text = "";
 			foreach (var ip in System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList){//[0].ToString());
@@ -129,34 +205,49 @@ public class GameManager : NetworkBehaviour {
   			}
 			RpcSetTextIp("HostIP: " + text);
 
-			onGameStart();
+			// onGameStart();
 		}
+
+		if(isClient &&  hasGameStarted){
+			quitGame();
+		}
+
+		pause(true);
 
 	}
 
 	private void Update() {
 		if(isServer){
-			bool canSpawn = false;
-			float x =0 ,y = 0;
-			timerSpawn -= Time.deltaTime;
-			if(timerSpawn <= 0) {
-				while(!canSpawn) {
-					x = Random.Range(lowerPos.x, upperPos.x);
-					y = Random.Range(lowerPos.y, upperPos.y);
+			if(hasGameStarted) {
+				bool canSpawn = false;
+				float x =0 ,y = 0;
+				timerSpawn -= Time.deltaTime;
+				if(timerSpawn <= 0) {
+					while(!canSpawn) {
+						x = Random.Range(lowerPos.x, upperPos.x);
+						y = Random.Range(lowerPos.y, upperPos.y);
 
-					canSpawn = true;
-					Collider2D[] hits = Physics2D.OverlapCircleAll(new Vector2(x,y),1);
-					foreach(Collider2D c2 in hits) {
-						if(c2.gameObject.layer > 9){
-							canSpawn = false;
-							break;
+						canSpawn = true;
+						Collider2D[] hits = Physics2D.OverlapCircleAll(new Vector2(x,y),1);
+						foreach(Collider2D c2 in hits) {
+							if(c2.gameObject.layer > 9){
+								canSpawn = false;
+								break;
+							}
 						}
 					}
-
+					GameObject toInstance = GameObject.Instantiate(itemPrefab ,new Vector3 (x,y,0),Quaternion.identity);
+					NetworkServer.Spawn(toInstance);
+					timerSpawn = timeToSpawn;
 				}
-				GameObject toInstance = GameObject.Instantiate(itemPrefab ,new Vector3 (x,y,0),Quaternion.identity);
-				NetworkServer.Spawn(toInstance);
-				timerSpawn = timeToSpawn;
+			}
+		}
+	}
+
+	public void toggleReady(){
+		if(thisPlayer != -1) {
+			if(!readyPlayers.ContainsKey(thisPlayer) || !readyPlayers[thisPlayer]){
+				CmdUpdateStatus(thisPlayer, true);
 			}
 		}
 	}
@@ -168,10 +259,6 @@ public class GameManager : NetworkBehaviour {
 	}
 
 
-	private void onGameStart(){
-		DeathCircle.CmdStartAtRandom();
-
-	}
 
 	private void fillSkinList(){
 		for(int i = 0; i < numberOfSkins; i++) {
@@ -186,6 +273,30 @@ public class GameManager : NetworkBehaviour {
 		if(isPaused ^ toPause){
 			isPaused = toPause;
 			Time.timeScale = (isPaused) ? 1 : 0;
+		}
+	}
+
+	private void pause(bool toPause){
+		if(isPaused ^ toPause){
+			isPaused = toPause;
+			Time.timeScale = (isPaused) ? 0 : 1;
+		}
+		Debug.Log("Paused: " + isPaused);
+	}
+
+
+	public void quitGame() {
+		NetworkManager networkManager = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
+		NetworkDiscovery NetworkDiscovery = GameObject.Find("NetworkManager").GetComponent<NetworkDiscovery>();
+		if(isServer){
+			if(NetworkDiscovery != null)
+				NetworkDiscovery.StopBroadcast();
+			networkManager.StopHost();
+		}
+		if(isClient){
+			if(NetworkDiscovery != null)
+				NetworkDiscovery.StopBroadcast();
+			networkManager.StopClient();
 		}
 	}
 }

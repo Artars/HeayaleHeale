@@ -51,6 +51,8 @@ public class Minimap : MonoBehaviour {
 	}
 
 	private void Update() {
+		if(Time.timeScale == 0)
+			return;
 		// float sizeX = imageMap.sizeDelta.x;
 		// float sizeY = imageMap.sizeDelta.y;
 		// float sizeY = imageMap.rect.height;
