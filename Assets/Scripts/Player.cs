@@ -100,8 +100,16 @@ public class Player : NetworkBehaviour {
 		// changedID(id);
 		// changedSkin(skinIndex);
 
+		//FOR ANDROID
+		#if UNITY_ANDROID
 		joystick = GameObject.Find("Joystick").GetComponent<Joystick>();
 		button = GameObject.Find("Button").GetComponent<Button>();	
+		
+		#else
+		GameObject.Find("Joystick").SetActive(false);
+		GameObject.Find("Button").SetActive(false);	
+		#endif
+
 		camTransform = Camera.main.transform;
 		camOffset = new Vector3(0,0,-18);
 		camTransform.position = transform.position + camOffset;
@@ -230,7 +238,13 @@ public class Player : NetworkBehaviour {
 
 		if(canWalk && !Huged && !Hugging)
 			walk();
+		
+		#if UNITY_ANDROID
 		if( button.Pressed){
+		#else
+		if(Input.GetButton("Jump")){
+		#endif
+
 			if(canShoot &&  !Huged && !Hugging){
 				ammoAtual -= 1;
 
@@ -317,7 +331,11 @@ public class Player : NetworkBehaviour {
 	}
 
 	private void walk(){
+		#if UNITY_ANDROID
 		Vector3 moveVector = (Vector3.right * joystick.Horizontal + Vector3.up * joystick.Vertical);
+		#else
+		Vector3 moveVector = (Vector3.right * Input.GetAxis("Horizontal") + Vector3.up * Input.GetAxis("Vertical"));
+		#endif
 
 		bool wallAhead = false;
 		//Verificar se não há parede à frente
