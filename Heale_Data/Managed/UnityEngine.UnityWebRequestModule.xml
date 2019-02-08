@@ -4,17 +4,17 @@
     <assembly>
       <name>UnityEngine.UnityWebRequestModule</name>
     </assembly>
-    <member name="T:UnityEngine.Networking.CertificateHandler">
+    <member name="T:Mirror.CertificateHandler">
       <summary>
         <para>Responsible for rejecting or accepting certificates received on https requests.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Networking.CertificateHandler.Dispose">
+    <member name="M:Mirror.CertificateHandler.Dispose">
       <summary>
         <para>Signals that this [CertificateHandler] is no longer being used, and should clean up any resources it is using.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Networking.CertificateHandler.ValidateCertificate(System.Byte[])">
+    <member name="M:Mirror.CertificateHandler.ValidateCertificate(System.Byte[])">
       <summary>
         <para>Callback, invoked for each leaf certificate sent by the remote server.</para>
       </summary>
@@ -23,37 +23,37 @@
         <para>true if the certificate should be accepted, false if not.</para>
       </returns>
     </member>
-    <member name="T:UnityEngine.Networking.DownloadHandler">
+    <member name="T:Mirror.DownloadHandler">
       <summary>
         <para>Manage and process HTTP response body data received from a remote server.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.DownloadHandler.data">
+    <member name="P:Mirror.DownloadHandler.data">
       <summary>
         <para>Returns the raw bytes downloaded from the remote server, or null. (Read Only)</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.DownloadHandler.isDone">
+    <member name="P:Mirror.DownloadHandler.isDone">
       <summary>
         <para>Returns true if this DownloadHandler has been informed by its parent UnityWebRequest that all data has been received, and this DownloadHandler has completed any necessary post-download processing. (Read Only)</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.DownloadHandler.text">
+    <member name="P:Mirror.DownloadHandler.text">
       <summary>
         <para>Convenience property. Returns the bytes from data interpreted as a UTF8 string. (Read Only)</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Networking.DownloadHandler.CompleteContent">
+    <member name="M:Mirror.DownloadHandler.CompleteContent">
       <summary>
         <para>Callback, invoked when all data has been received from the remote server.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Networking.DownloadHandler.Dispose">
+    <member name="M:Mirror.DownloadHandler.Dispose">
       <summary>
         <para>Signals that this [DownloadHandler] is no longer being used, and should clean up any resources it is using.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Networking.DownloadHandler.GetData">
+    <member name="M:Mirror.DownloadHandler.GetData">
       <summary>
         <para>Callback, invoked when the data property is accessed.</para>
       </summary>
@@ -61,7 +61,7 @@
         <para>Byte array to return as the value of the data property.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.DownloadHandler.GetProgress">
+    <member name="M:Mirror.DownloadHandler.GetProgress">
       <summary>
         <para>Callback, invoked when UnityWebRequest.downloadProgress is accessed.</para>
       </summary>
@@ -69,7 +69,7 @@
         <para>The return value for UnityWebRequest.downloadProgress.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.DownloadHandler.GetText">
+    <member name="M:Mirror.DownloadHandler.GetText">
       <summary>
         <para>Callback, invoked when the text property is accessed.</para>
       </summary>
@@ -77,13 +77,13 @@
         <para>String to return as the return value of the text property.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.DownloadHandler.ReceiveContentLength(System.Int32)">
+    <member name="M:Mirror.DownloadHandler.ReceiveContentLength(System.Int32)">
       <summary>
         <para>Callback, invoked with a Content-Length header is received.</para>
       </summary>
       <param name="contentLength">The value of the received Content-Length header.</param>
     </member>
-    <member name="M:UnityEngine.Networking.DownloadHandler.ReceiveData(System.Byte[],System.Int32)">
+    <member name="M:Mirror.DownloadHandler.ReceiveData(System.Byte[],System.Int32)">
       <summary>
         <para>Callback, invoked as data is received from the remote server.</para>
       </summary>
@@ -93,17 +93,17 @@
         <para>True if the download should continue, false to abort.</para>
       </returns>
     </member>
-    <member name="T:UnityEngine.Networking.DownloadHandlerBuffer">
+    <member name="T:Mirror.DownloadHandlerBuffer">
       <summary>
         <para>A general-purpose DownloadHandler implementation which stores received data in a native byte buffer.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Networking.DownloadHandlerBuffer.#ctor">
+    <member name="M:Mirror.DownloadHandlerBuffer.#ctor">
       <summary>
         <para>Default constructor.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Networking.DownloadHandlerBuffer.GetContent(UnityEngine.Networking.UnityWebRequest)">
+    <member name="M:Mirror.DownloadHandlerBuffer.GetContent(Mirror.UnityWebRequest)">
       <summary>
         <para>Returns a copy of the native-memory buffer interpreted as a UTF8 string.</para>
       </summary>
@@ -112,7 +112,7 @@
         <para>The same as DownloadHandlerBuffer.text</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.DownloadHandlerBuffer.GetData">
+    <member name="M:Mirror.DownloadHandlerBuffer.GetData">
       <summary>
         <para>Returns a copy of the contents of the native-memory data buffer as a byte array.</para>
       </summary>
@@ -120,44 +120,44 @@
         <para>A copy of the data which has been downloaded.</para>
       </returns>
     </member>
-    <member name="T:UnityEngine.Networking.DownloadHandlerFile">
+    <member name="T:Mirror.DownloadHandlerFile">
       <summary>
         <para>Download handler for saving the downloaded data to file.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.DownloadHandlerFile.removeFileOnAbort">
+    <member name="P:Mirror.DownloadHandlerFile.removeFileOnAbort">
       <summary>
         <para>Should the created file be removed if download is aborted (manually or due to an error). Default: false.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Networking.DownloadHandlerFile.#ctor(System.String)">
+    <member name="M:Mirror.DownloadHandlerFile.#ctor(System.String)">
       <summary>
         <para>Creates a new instance and a file on disk where downloaded data will be written to.</para>
       </summary>
       <param name="path">Path to file to be written.</param>
     </member>
-    <member name="T:UnityEngine.Networking.DownloadHandlerScript">
+    <member name="T:Mirror.DownloadHandlerScript">
       <summary>
         <para>An abstract base class for user-created scripting-driven DownloadHandler implementations.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Networking.DownloadHandlerScript.#ctor">
+    <member name="M:Mirror.DownloadHandlerScript.#ctor">
       <summary>
         <para>Create a DownloadHandlerScript which allocates new buffers when passing data to callbacks.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Networking.DownloadHandlerScript.#ctor(System.Byte[])">
+    <member name="M:Mirror.DownloadHandlerScript.#ctor(System.Byte[])">
       <summary>
         <para>Create a DownloadHandlerScript which reuses a preallocated buffer to pass data to callbacks.</para>
       </summary>
       <param name="preallocatedBuffer">A byte buffer into which data will be copied, for use by DownloadHandler.ReceiveData.</param>
     </member>
-    <member name="?:UnityEngine.Networking.IMultipartFormSection">
+    <member name="?:Mirror.IMultipartFormSection">
       <summary>
         <para>An interface for composition of data into multipart forms.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.IMultipartFormSection.contentType">
+    <member name="P:Mirror.IMultipartFormSection.contentType">
       <summary>
         <para>Returns the value to use in the Content-Type header for this form section.</para>
       </summary>
@@ -165,7 +165,7 @@
         <para>The value to use in the Content-Type header, or null.</para>
       </returns>
     </member>
-    <member name="P:UnityEngine.Networking.IMultipartFormSection.fileName">
+    <member name="P:Mirror.IMultipartFormSection.fileName">
       <summary>
         <para>Returns a string denoting the desired filename of this section on the destination server.</para>
       </summary>
@@ -173,7 +173,7 @@
         <para>The desired file name of this section, or null if this is not a file section.</para>
       </returns>
     </member>
-    <member name="P:UnityEngine.Networking.IMultipartFormSection.sectionData">
+    <member name="P:Mirror.IMultipartFormSection.sectionData">
       <summary>
         <para>Returns the raw binary data contained in this section. Must not return null or a zero-length array.</para>
       </summary>
@@ -181,7 +181,7 @@
         <para>The raw binary data contained in this section. Must not be null or empty.</para>
       </returns>
     </member>
-    <member name="P:UnityEngine.Networking.IMultipartFormSection.sectionName">
+    <member name="P:Mirror.IMultipartFormSection.sectionName">
       <summary>
         <para>Returns the name of this section, if any.</para>
       </summary>
@@ -189,12 +189,12 @@
         <para>The section's name, or null.</para>
       </returns>
     </member>
-    <member name="T:UnityEngine.Networking.MultipartFormDataSection">
+    <member name="T:Mirror.MultipartFormDataSection">
       <summary>
         <para>A helper object for form sections containing generic, non-file data.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.MultipartFormDataSection.contentType">
+    <member name="P:Mirror.MultipartFormDataSection.contentType">
       <summary>
         <para>Returns the value to use in this section's Content-Type header.</para>
       </summary>
@@ -202,7 +202,7 @@
         <para>The Content-Type header for this section, or null.</para>
       </returns>
     </member>
-    <member name="P:UnityEngine.Networking.MultipartFormDataSection.fileName">
+    <member name="P:Mirror.MultipartFormDataSection.fileName">
       <summary>
         <para>Returns a string denoting the desired filename of this section on the destination server.</para>
       </summary>
@@ -210,7 +210,7 @@
         <para>The desired file name of this section, or null if this is not a file section.</para>
       </returns>
     </member>
-    <member name="P:UnityEngine.Networking.MultipartFormDataSection.sectionData">
+    <member name="P:Mirror.MultipartFormDataSection.sectionData">
       <summary>
         <para>Returns the raw binary data contained in this section. Will not return null or a zero-length array.</para>
       </summary>
@@ -218,7 +218,7 @@
         <para>The raw binary data contained in this section. Will not be null or empty.</para>
       </returns>
     </member>
-    <member name="P:UnityEngine.Networking.MultipartFormDataSection.sectionName">
+    <member name="P:Mirror.MultipartFormDataSection.sectionName">
       <summary>
         <para>Returns the name of this section, if any.</para>
       </summary>
@@ -226,20 +226,20 @@
         <para>The section's name, or null.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.MultipartFormDataSection.#ctor(System.Byte[])">
+    <member name="M:Mirror.MultipartFormDataSection.#ctor(System.Byte[])">
       <summary>
         <para>Raw data section, unnamed and no Content-Type header.</para>
       </summary>
       <param name="data">Data payload of this section.</param>
     </member>
-    <member name="M:UnityEngine.Networking.MultipartFormDataSection.#ctor(System.String,System.Byte[])">
+    <member name="M:Mirror.MultipartFormDataSection.#ctor(System.String,System.Byte[])">
       <summary>
         <para>Raw data section with a section name, no Content-Type header.</para>
       </summary>
       <param name="name">Section name.</param>
       <param name="data">Data payload of this section.</param>
     </member>
-    <member name="M:UnityEngine.Networking.MultipartFormDataSection.#ctor(System.String,System.Byte[],System.String)">
+    <member name="M:Mirror.MultipartFormDataSection.#ctor(System.String,System.Byte[],System.String)">
       <summary>
         <para>A raw data section with a section name and a Content-Type header.</para>
       </summary>
@@ -247,7 +247,7 @@
       <param name="data">Data payload of this section.</param>
       <param name="contentType">The value for this section's Content-Type header.</param>
     </member>
-    <member name="M:UnityEngine.Networking.MultipartFormDataSection.#ctor(System.String,System.String,System.Text.Encoding,System.String)">
+    <member name="M:Mirror.MultipartFormDataSection.#ctor(System.String,System.String,System.Text.Encoding,System.String)">
       <summary>
         <para>A named raw data section whose payload is derived from a string, with a Content-Type header.</para>
       </summary>
@@ -256,7 +256,7 @@
       <param name="contentType">The value for this section's Content-Type header.</param>
       <param name="encoding">An encoding to marshal data to or from raw bytes.</param>
     </member>
-    <member name="M:UnityEngine.Networking.MultipartFormDataSection.#ctor(System.String,System.String,System.String)">
+    <member name="M:Mirror.MultipartFormDataSection.#ctor(System.String,System.String,System.String)">
       <summary>
         <para>A named raw data section whose payload is derived from a UTF8 string, with a Content-Type header.</para>
       </summary>
@@ -264,25 +264,25 @@
       <param name="data">String data payload for this section.</param>
       <param name="contentType">C.</param>
     </member>
-    <member name="M:UnityEngine.Networking.MultipartFormDataSection.#ctor(System.String,System.String)">
+    <member name="M:Mirror.MultipartFormDataSection.#ctor(System.String,System.String)">
       <summary>
         <para>A names raw data section whose payload is derived from a UTF8 string, with a default Content-Type.</para>
       </summary>
       <param name="name">Section name.</param>
       <param name="data">String data payload for this section.</param>
     </member>
-    <member name="M:UnityEngine.Networking.MultipartFormDataSection.#ctor(System.String)">
+    <member name="M:Mirror.MultipartFormDataSection.#ctor(System.String)">
       <summary>
         <para>An anonymous raw data section whose payload is derived from a UTF8 string, with a default Content-Type.</para>
       </summary>
       <param name="data">String data payload for this section.</param>
     </member>
-    <member name="T:UnityEngine.Networking.MultipartFormFileSection">
+    <member name="T:Mirror.MultipartFormFileSection">
       <summary>
         <para>A helper object for adding file uploads to multipart forms via the [IMultipartFormSection] API.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.MultipartFormFileSection.contentType">
+    <member name="P:Mirror.MultipartFormFileSection.contentType">
       <summary>
         <para>Returns the value of the section's Content-Type header.</para>
       </summary>
@@ -290,7 +290,7 @@
         <para>The Content-Type header for this section, or null.</para>
       </returns>
     </member>
-    <member name="P:UnityEngine.Networking.MultipartFormFileSection.fileName">
+    <member name="P:Mirror.MultipartFormFileSection.fileName">
       <summary>
         <para>Returns a string denoting the desired filename of this section on the destination server.</para>
       </summary>
@@ -298,7 +298,7 @@
         <para>The desired file name of this section, or null if this is not a file section.</para>
       </returns>
     </member>
-    <member name="P:UnityEngine.Networking.MultipartFormFileSection.sectionData">
+    <member name="P:Mirror.MultipartFormFileSection.sectionData">
       <summary>
         <para>Returns the raw binary data contained in this section. Will not return null or a zero-length array.</para>
       </summary>
@@ -306,7 +306,7 @@
         <para>The raw binary data contained in this section. Will not be null or empty.</para>
       </returns>
     </member>
-    <member name="P:UnityEngine.Networking.MultipartFormFileSection.sectionName">
+    <member name="P:Mirror.MultipartFormFileSection.sectionName">
       <summary>
         <para>Returns the name of this section, if any.</para>
       </summary>
@@ -314,7 +314,7 @@
         <para>The section's name, or null.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.MultipartFormFileSection.#ctor(System.String,System.Byte[],System.String,System.String)">
+    <member name="M:Mirror.MultipartFormFileSection.#ctor(System.String,System.Byte[],System.String,System.String)">
       <summary>
         <para>Contains a named file section based on the raw bytes from data, with a custom Content-Type and file name.</para>
       </summary>
@@ -323,20 +323,20 @@
       <param name="fileName">Name of the file uploaded by this form section.</param>
       <param name="contentType">The value for this section's Content-Type header.</param>
     </member>
-    <member name="M:UnityEngine.Networking.MultipartFormFileSection.#ctor(System.Byte[])">
+    <member name="M:Mirror.MultipartFormFileSection.#ctor(System.Byte[])">
       <summary>
         <para>Contains an anonymous file section based on the raw bytes from data, assigns a default Content-Type and file name.</para>
       </summary>
       <param name="data">Raw contents of the file to upload.</param>
     </member>
-    <member name="M:UnityEngine.Networking.MultipartFormFileSection.#ctor(System.String,System.Byte[])">
+    <member name="M:Mirror.MultipartFormFileSection.#ctor(System.String,System.Byte[])">
       <summary>
         <para>Contains an anonymous file section based on the raw bytes from data with a specific file name. Assigns a default Content-Type.</para>
       </summary>
       <param name="data">Raw contents of the file to upload.</param>
       <param name="fileName">Name of the file uploaded by this form section.</param>
     </member>
-    <member name="M:UnityEngine.Networking.MultipartFormFileSection.#ctor(System.String,System.String,System.Text.Encoding,System.String)">
+    <member name="M:Mirror.MultipartFormFileSection.#ctor(System.String,System.String,System.Text.Encoding,System.String)">
       <summary>
         <para>Contains a named file section with data drawn from data, as marshaled by dataEncoding. Assigns a specific file name from fileName and a default Content-Type.</para>
       </summary>
@@ -345,7 +345,7 @@
       <param name="dataEncoding">A string encoding.</param>
       <param name="fileName">Name of the file uploaded by this form section.</param>
     </member>
-    <member name="M:UnityEngine.Networking.MultipartFormFileSection.#ctor(System.String,System.Text.Encoding,System.String)">
+    <member name="M:Mirror.MultipartFormFileSection.#ctor(System.String,System.Text.Encoding,System.String)">
       <summary>
         <para>An anonymous file section with data drawn from data, as marshaled by dataEncoding. Assigns a specific file name from fileName and a default Content-Type.</para>
       </summary>
@@ -353,181 +353,181 @@
       <param name="dataEncoding">A string encoding.</param>
       <param name="fileName">Name of the file uploaded by this form section.</param>
     </member>
-    <member name="M:UnityEngine.Networking.MultipartFormFileSection.#ctor(System.String,System.String)">
+    <member name="M:Mirror.MultipartFormFileSection.#ctor(System.String,System.String)">
       <summary>
         <para>An anonymous file section with data drawn from the UTF8 string data. Assigns a specific file name from fileName and a default Content-Type.</para>
       </summary>
       <param name="data">Contents of the file to upload.</param>
       <param name="fileName">Name of the file uploaded by this form section.</param>
     </member>
-    <member name="T:UnityEngine.Networking.UnityWebRequest">
+    <member name="T:Mirror.UnityWebRequest">
       <summary>
         <para>The UnityWebRequest object is used to communicate with web servers.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UnityWebRequest.certificateHandler">
+    <member name="P:Mirror.UnityWebRequest.certificateHandler">
       <summary>
         <para>Holds a reference to a CertificateHandler object, which manages certificate validation for this UnityWebRequest.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UnityWebRequest.chunkedTransfer">
+    <member name="P:Mirror.UnityWebRequest.chunkedTransfer">
       <summary>
         <para>Indicates whether the UnityWebRequest system should employ the HTTP/1.1 chunked-transfer encoding method.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UnityWebRequest.disposeCertificateHandlerOnDispose">
+    <member name="P:Mirror.UnityWebRequest.disposeCertificateHandlerOnDispose">
       <summary>
         <para>If true, any CertificateHandler attached to this UnityWebRequest will have CertificateHandler.Dispose called automatically when UnityWebRequest.Dispose is called.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UnityWebRequest.disposeDownloadHandlerOnDispose">
+    <member name="P:Mirror.UnityWebRequest.disposeDownloadHandlerOnDispose">
       <summary>
         <para>If true, any DownloadHandler attached to this UnityWebRequest will have DownloadHandler.Dispose called automatically when UnityWebRequest.Dispose is called.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UnityWebRequest.disposeUploadHandlerOnDispose">
+    <member name="P:Mirror.UnityWebRequest.disposeUploadHandlerOnDispose">
       <summary>
         <para>If true, any UploadHandler attached to this UnityWebRequest will have UploadHandler.Dispose called automatically when UnityWebRequest.Dispose is called.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UnityWebRequest.downloadedBytes">
+    <member name="P:Mirror.UnityWebRequest.downloadedBytes">
       <summary>
         <para>Returns the number of bytes of body data the system has downloaded from the remote server. (Read Only)</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UnityWebRequest.downloadHandler">
+    <member name="P:Mirror.UnityWebRequest.downloadHandler">
       <summary>
         <para>Holds a reference to a DownloadHandler object, which manages body data received from the remote server by this UnityWebRequest.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UnityWebRequest.downloadProgress">
+    <member name="P:Mirror.UnityWebRequest.downloadProgress">
       <summary>
         <para>Returns a floating-point value between 0.0 and 1.0, indicating the progress of downloading body data from the server. (Read Only)</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UnityWebRequest.error">
+    <member name="P:Mirror.UnityWebRequest.error">
       <summary>
         <para>A human-readable string describing any system errors encountered by this UnityWebRequest object while handling HTTP requests or responses. (Read Only)</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UnityWebRequest.isDone">
+    <member name="P:Mirror.UnityWebRequest.isDone">
       <summary>
         <para>Returns true after the UnityWebRequest has finished communicating with the remote server. (Read Only)</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UnityWebRequest.isHttpError">
+    <member name="P:Mirror.UnityWebRequest.isHttpError">
       <summary>
         <para>Returns true after this UnityWebRequest receives an HTTP response code indicating an error. (Read Only)</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UnityWebRequest.isModifiable">
+    <member name="P:Mirror.UnityWebRequest.isModifiable">
       <summary>
         <para>Returns true while a UnityWebRequest’s configuration properties can be altered. (Read Only)</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UnityWebRequest.isNetworkError">
+    <member name="P:Mirror.UnityWebRequest.isNetworkError">
       <summary>
         <para>Returns true after this UnityWebRequest encounters a system error. (Read Only)</para>
       </summary>
     </member>
-    <member name="F:UnityEngine.Networking.UnityWebRequest.kHttpVerbCREATE">
+    <member name="F:Mirror.UnityWebRequest.kHttpVerbCREATE">
       <summary>
         <para>The string "CREATE", commonly used as the verb for an HTTP CREATE request.</para>
       </summary>
     </member>
-    <member name="F:UnityEngine.Networking.UnityWebRequest.kHttpVerbDELETE">
+    <member name="F:Mirror.UnityWebRequest.kHttpVerbDELETE">
       <summary>
         <para>The string "DELETE", commonly used as the verb for an HTTP DELETE request.</para>
       </summary>
     </member>
-    <member name="F:UnityEngine.Networking.UnityWebRequest.kHttpVerbGET">
+    <member name="F:Mirror.UnityWebRequest.kHttpVerbGET">
       <summary>
         <para>The string "GET", commonly used as the verb for an HTTP GET request.</para>
       </summary>
     </member>
-    <member name="F:UnityEngine.Networking.UnityWebRequest.kHttpVerbHEAD">
+    <member name="F:Mirror.UnityWebRequest.kHttpVerbHEAD">
       <summary>
         <para>The string "HEAD", commonly used as the verb for an HTTP HEAD request.</para>
       </summary>
     </member>
-    <member name="F:UnityEngine.Networking.UnityWebRequest.kHttpVerbPOST">
+    <member name="F:Mirror.UnityWebRequest.kHttpVerbPOST">
       <summary>
         <para>The string "POST", commonly used as the verb for an HTTP POST request.</para>
       </summary>
     </member>
-    <member name="F:UnityEngine.Networking.UnityWebRequest.kHttpVerbPUT">
+    <member name="F:Mirror.UnityWebRequest.kHttpVerbPUT">
       <summary>
         <para>The string "PUT", commonly used as the verb for an HTTP PUT request.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UnityWebRequest.method">
+    <member name="P:Mirror.UnityWebRequest.method">
       <summary>
         <para>Defines the HTTP verb used by this UnityWebRequest, such as GET or POST.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UnityWebRequest.redirectLimit">
+    <member name="P:Mirror.UnityWebRequest.redirectLimit">
       <summary>
         <para>Indicates the number of redirects which this UnityWebRequest will follow before halting with a “Redirect Limit Exceeded” system error.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UnityWebRequest.responseCode">
+    <member name="P:Mirror.UnityWebRequest.responseCode">
       <summary>
         <para>The numeric HTTP response code returned by the server, such as 200, 404 or 500. (Read Only)</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UnityWebRequest.timeout">
+    <member name="P:Mirror.UnityWebRequest.timeout">
       <summary>
         <para>Sets UnityWebRequest to attempt to abort after the number of seconds in timeout have passed.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UnityWebRequest.uploadedBytes">
+    <member name="P:Mirror.UnityWebRequest.uploadedBytes">
       <summary>
         <para>Returns the number of bytes of body data the system has uploaded to the remote server. (Read Only)</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UnityWebRequest.uploadHandler">
+    <member name="P:Mirror.UnityWebRequest.uploadHandler">
       <summary>
         <para>Holds a reference to the UploadHandler object which manages body data to be uploaded to the remote server.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UnityWebRequest.uploadProgress">
+    <member name="P:Mirror.UnityWebRequest.uploadProgress">
       <summary>
         <para>Returns a floating-point value between 0.0 and 1.0, indicating the progress of uploading body data to the server.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UnityWebRequest.uri">
+    <member name="P:Mirror.UnityWebRequest.uri">
       <summary>
         <para>Defines the target URI for the UnityWebRequest to communicate with.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UnityWebRequest.url">
+    <member name="P:Mirror.UnityWebRequest.url">
       <summary>
         <para>Defines the target URL for the UnityWebRequest to communicate with.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UnityWebRequest.useHttpContinue">
+    <member name="P:Mirror.UnityWebRequest.useHttpContinue">
       <summary>
         <para>Determines whether this UnityWebRequest will include Expect: 100-Continue in its outgoing request headers. (Default: true).</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.Abort">
+    <member name="M:Mirror.UnityWebRequest.Abort">
       <summary>
         <para>If in progress, halts the UnityWebRequest as soon as possible.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.#ctor">
+    <member name="M:Mirror.UnityWebRequest.#ctor">
       <summary>
         <para>Creates a UnityWebRequest with the default options and no attached DownloadHandler or UploadHandler. Default method is GET.</para>
       </summary>
       <param name="url">The target URL with which this UnityWebRequest will communicate. Also accessible via the url property.</param>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.#ctor(System.String)">
+    <member name="M:Mirror.UnityWebRequest.#ctor(System.String)">
       <summary>
         <para>Creates a UnityWebRequest with the default options and no attached DownloadHandler or UploadHandler. Default method is GET.</para>
       </summary>
       <param name="url">The target URL with which this UnityWebRequest will communicate. Also accessible via the url property.</param>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.Delete(System.String)">
+    <member name="M:Mirror.UnityWebRequest.Delete(System.String)">
       <summary>
         <para>Creates a UnityWebRequest configured for HTTP DELETE.</para>
       </summary>
@@ -536,26 +536,26 @@
         <para>A UnityWebRequest configured to send an HTTP DELETE request.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.Dispose">
+    <member name="M:Mirror.UnityWebRequest.Dispose">
       <summary>
         <para>Signals that this [UnityWebRequest] is no longer being used, and should clean up any resources it is using.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.EscapeURL(System.String)">
+    <member name="M:Mirror.UnityWebRequest.EscapeURL(System.String)">
       <summary>
         <para>Escapes characters in a string to ensure they are URL-friendly.</para>
       </summary>
       <param name="s">A string with characters to be escaped.</param>
       <param name="e">The text encoding to use.</param>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.EscapeURL(System.String,System.Text.Encoding)">
+    <member name="M:Mirror.UnityWebRequest.EscapeURL(System.String,System.Text.Encoding)">
       <summary>
         <para>Escapes characters in a string to ensure they are URL-friendly.</para>
       </summary>
       <param name="s">A string with characters to be escaped.</param>
       <param name="e">The text encoding to use.</param>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.GenerateBoundary">
+    <member name="M:Mirror.UnityWebRequest.GenerateBoundary">
       <summary>
         <para>Generate a random 40-byte array for use as a multipart form boundary.</para>
       </summary>
@@ -563,7 +563,7 @@
         <para>40 random bytes, guaranteed to contain only printable ASCII values.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.Get(System.String)">
+    <member name="M:Mirror.UnityWebRequest.Get(System.String)">
       <summary>
         <para>Creates a UnityWebRequest configured for HTTP GET.</para>
       </summary>
@@ -572,7 +572,7 @@
         <para>A UnityWebRequest object configured to retrieve data from uri.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.GetAssetBundle(System.String,System.UInt32)">
+    <member name="M:Mirror.UnityWebRequest.GetAssetBundle(System.String,System.UInt32)">
       <summary>
         <para>Deprecated. Replaced by UnityWebRequestAssetBundle.GetAssetBundle.</para>
       </summary>
@@ -582,7 +582,7 @@
       <param name="hash"></param>
       <param name="cachedAssetBundle"></param>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.GetAssetBundle(System.String,System.UInt32,System.UInt32)">
+    <member name="M:Mirror.UnityWebRequest.GetAssetBundle(System.String,System.UInt32,System.UInt32)">
       <summary>
         <para>Deprecated. Replaced by UnityWebRequestAssetBundle.GetAssetBundle.</para>
       </summary>
@@ -592,7 +592,7 @@
       <param name="hash"></param>
       <param name="cachedAssetBundle"></param>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.GetAssetBundle(System.String,UnityEngine.Hash128,System.UInt32)">
+    <member name="M:Mirror.UnityWebRequest.GetAssetBundle(System.String,UnityEngine.Hash128,System.UInt32)">
       <summary>
         <para>Deprecated. Replaced by UnityWebRequestAssetBundle.GetAssetBundle.</para>
       </summary>
@@ -602,7 +602,7 @@
       <param name="hash"></param>
       <param name="cachedAssetBundle"></param>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.GetAssetBundle(System.String,UnityEngine.CachedAssetBundle,System.UInt32)">
+    <member name="M:Mirror.UnityWebRequest.GetAssetBundle(System.String,UnityEngine.CachedAssetBundle,System.UInt32)">
       <summary>
         <para>Deprecated. Replaced by UnityWebRequestAssetBundle.GetAssetBundle.</para>
       </summary>
@@ -612,14 +612,14 @@
       <param name="hash"></param>
       <param name="cachedAssetBundle"></param>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.GetAudioClip(System.String,UnityEngine.AudioType)">
+    <member name="M:Mirror.UnityWebRequest.GetAudioClip(System.String,UnityEngine.AudioType)">
       <summary>
         <para>OBSOLETE. Use UnityWebRequestMultimedia.GetAudioClip().</para>
       </summary>
       <param name="uri"></param>
       <param name="audioType"></param>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.GetRequestHeader(System.String)">
+    <member name="M:Mirror.UnityWebRequest.GetRequestHeader(System.String)">
       <summary>
         <para>Retrieves the value of a custom request header.</para>
       </summary>
@@ -628,7 +628,7 @@
         <para>The value of the custom request header. If no custom header with a matching name has been set, returns an empty string.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.GetResponseHeader(System.String)">
+    <member name="M:Mirror.UnityWebRequest.GetResponseHeader(System.String)">
       <summary>
         <para>Retrieves the value of a response header from the latest HTTP response received.</para>
       </summary>
@@ -637,7 +637,7 @@
         <para>The value of the HTTP header from the latest HTTP response. If no header with a matching name has been received, or no responses have been received, returns null.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.GetResponseHeaders">
+    <member name="M:Mirror.UnityWebRequest.GetResponseHeaders">
       <summary>
         <para>Retrieves a dictionary containing all the response headers received by this UnityWebRequest in the latest HTTP response.</para>
       </summary>
@@ -645,7 +645,7 @@
         <para>A dictionary containing all the response headers received in the latest HTTP response. If no responses have been received, returns null.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.GetTexture(System.String)">
+    <member name="M:Mirror.UnityWebRequest.GetTexture(System.String)">
       <summary>
         <para>Creates a UnityWebRequest intended to download an image via HTTP GET and create a Texture based on the retrieved data.</para>
       </summary>
@@ -655,7 +655,7 @@
         <para>A UnityWebRequest properly configured to download an image and convert it to a Texture.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.GetTexture(System.String,System.Boolean)">
+    <member name="M:Mirror.UnityWebRequest.GetTexture(System.String,System.Boolean)">
       <summary>
         <para>Creates a UnityWebRequest intended to download an image via HTTP GET and create a Texture based on the retrieved data.</para>
       </summary>
@@ -665,7 +665,7 @@
         <para>A UnityWebRequest properly configured to download an image and convert it to a Texture.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.Head(System.String)">
+    <member name="M:Mirror.UnityWebRequest.Head(System.String)">
       <summary>
         <para>Creates a UnityWebRequest configured to send a HTTP HEAD request.</para>
       </summary>
@@ -674,7 +674,7 @@
         <para>A UnityWebRequest configured to transmit a HTTP HEAD request.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.Post(System.String,System.String)">
+    <member name="M:Mirror.UnityWebRequest.Post(System.String,System.String)">
       <summary>
         <para>Creates a UnityWebRequest configured to send form data to a server via HTTP POST.</para>
       </summary>
@@ -684,7 +684,7 @@
         <para>A UnityWebRequest configured to send form data to uri via POST.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.Post(System.String,UnityEngine.WWWForm)">
+    <member name="M:Mirror.UnityWebRequest.Post(System.String,UnityEngine.WWWForm)">
       <summary>
         <para>Create a UnityWebRequest configured to send form data to a server via HTTP POST.</para>
       </summary>
@@ -694,7 +694,7 @@
         <para>A UnityWebRequest configured to send form data to uri via POST.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.Post(System.String,System.Collections.Generic.List`1&lt;UnityEngine.Networking.IMultipartFormSection&gt;)">
+    <member name="M:Mirror.UnityWebRequest.Post(System.String,System.Collections.Generic.List`1&lt;Mirror.IMultipartFormSection&gt;)">
       <summary>
         <para>Create a UnityWebRequest configured to send form data to a server via HTTP POST.</para>
       </summary>
@@ -705,7 +705,7 @@
         <para>A UnityWebRequest configured to send form data to uri via POST.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.Post(System.String,System.Collections.Generic.List`1&lt;UnityEngine.Networking.IMultipartFormSection&gt;,System.Byte[])">
+    <member name="M:Mirror.UnityWebRequest.Post(System.String,System.Collections.Generic.List`1&lt;Mirror.IMultipartFormSection&gt;,System.Byte[])">
       <summary>
         <para>Create a UnityWebRequest configured to send form data to a server via HTTP POST.</para>
       </summary>
@@ -716,7 +716,7 @@
         <para>A UnityWebRequest configured to send form data to uri via POST.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.Post(System.String,System.Collections.Generic.Dictionary`2&lt;System.String,System.String&gt;)">
+    <member name="M:Mirror.UnityWebRequest.Post(System.String,System.Collections.Generic.Dictionary`2&lt;System.String,System.String&gt;)">
       <summary>
         <para>Create a UnityWebRequest configured to send form data to a server via HTTP POST.</para>
       </summary>
@@ -726,7 +726,7 @@
         <para>A UnityWebRequest configured to send form data to uri via POST.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.Put(System.String,System.Byte[])">
+    <member name="M:Mirror.UnityWebRequest.Put(System.String,System.Byte[])">
       <summary>
         <para>Creates a UnityWebRequest configured to upload raw data to a remote server via HTTP PUT.</para>
       </summary>
@@ -738,7 +738,7 @@ If a string, the string will be converted to raw bytes via &lt;a href="http:msdn
         <para>A UnityWebRequest configured to transmit bodyData to uri via HTTP PUT.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.Put(System.String,System.String)">
+    <member name="M:Mirror.UnityWebRequest.Put(System.String,System.String)">
       <summary>
         <para>Creates a UnityWebRequest configured to upload raw data to a remote server via HTTP PUT.</para>
       </summary>
@@ -750,7 +750,7 @@ If a string, the string will be converted to raw bytes via &lt;a href="http:msdn
         <para>A UnityWebRequest configured to transmit bodyData to uri via HTTP PUT.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.Send">
+    <member name="M:Mirror.UnityWebRequest.Send">
       <summary>
         <para>Begin communicating with the remote server.</para>
       </summary>
@@ -758,7 +758,7 @@ If a string, the string will be converted to raw bytes via &lt;a href="http:msdn
         <para>An AsyncOperation indicating the progress/completion state of the UnityWebRequest. Yield this object to wait until the UnityWebRequest is done.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.SendWebRequest">
+    <member name="M:Mirror.UnityWebRequest.SendWebRequest">
       <summary>
         <para>Begin communicating with the remote server.
 
@@ -769,7 +769,7 @@ This method can only be called once on any given UnityWebRequest object. Once th
 This method returns a WebRequestAsyncOperation object. Yielding the WebRequestAsyncOperation inside a coroutine will cause the coroutine to pause until the UnityWebRequest encounters a system error or finishes communicating.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.SerializeFormSections(System.Collections.Generic.List`1&lt;UnityEngine.Networking.IMultipartFormSection&gt;,System.Byte[])">
+    <member name="M:Mirror.UnityWebRequest.SerializeFormSections(System.Collections.Generic.List`1&lt;Mirror.IMultipartFormSection&gt;,System.Byte[])">
       <summary>
         <para>Converts a List of IMultipartFormSection objects into a byte array containing raw multipart form data.</para>
       </summary>
@@ -779,7 +779,7 @@ This method returns a WebRequestAsyncOperation object. Yielding the WebRequestAs
         <para>A byte array of raw multipart form data.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.SerializeSimpleForm(System.Collections.Generic.Dictionary`2&lt;System.String,System.String&gt;)">
+    <member name="M:Mirror.UnityWebRequest.SerializeSimpleForm(System.Collections.Generic.Dictionary`2&lt;System.String,System.String&gt;)">
       <summary>
         <para>Serialize a dictionary of strings into a byte array containing URL-encoded UTF8 characters.</para>
       </summary>
@@ -788,81 +788,81 @@ This method returns a WebRequestAsyncOperation object. Yielding the WebRequestAs
         <para>A byte array containing the serialized form. The form's keys and values have been URL-encoded.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.SetRequestHeader(System.String,System.String)">
+    <member name="M:Mirror.UnityWebRequest.SetRequestHeader(System.String,System.String)">
       <summary>
         <para>Set a HTTP request header to a custom value.</para>
       </summary>
       <param name="name">The key of the header to be set. Case-sensitive.</param>
       <param name="value">The header's intended value.</param>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.UnEscapeURL(System.String)">
+    <member name="M:Mirror.UnityWebRequest.UnEscapeURL(System.String)">
       <summary>
         <para>Converts URL-friendly escape sequences back to normal text.</para>
       </summary>
       <param name="s">A string containing escaped characters.</param>
       <param name="e">The text encoding to use.</param>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequest.UnEscapeURL(System.String,System.Text.Encoding)">
+    <member name="M:Mirror.UnityWebRequest.UnEscapeURL(System.String,System.Text.Encoding)">
       <summary>
         <para>Converts URL-friendly escape sequences back to normal text.</para>
       </summary>
       <param name="s">A string containing escaped characters.</param>
       <param name="e">The text encoding to use.</param>
     </member>
-    <member name="T:UnityEngine.Networking.UnityWebRequestAsyncOperation">
+    <member name="T:Mirror.UnityWebRequestAsyncOperation">
       <summary>
         <para>Asynchronous operation object returned from UnityWebRequest.SendWebRequest().
 
 You can yield until it continues, register an event handler with AsyncOperation.completed, or manually check whether it's done (AsyncOperation.isDone) or progress (AsyncOperation.progress).</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UnityWebRequestAsyncOperation.webRequest">
+    <member name="P:Mirror.UnityWebRequestAsyncOperation.webRequest">
       <summary>
         <para>Returns the associated UnityWebRequest that created the operation.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Networking.UploadHandler">
+    <member name="T:Mirror.UploadHandler">
       <summary>
         <para>Helper object for UnityWebRequests. Manages the buffering and transmission of body data during HTTP requests.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UploadHandler.contentType">
+    <member name="P:Mirror.UploadHandler.contentType">
       <summary>
         <para>Determines the default Content-Type header which will be transmitted with the outbound HTTP request.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UploadHandler.data">
+    <member name="P:Mirror.UploadHandler.data">
       <summary>
         <para>The raw data which will be transmitted to the remote server as body data. (Read Only)</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.UploadHandler.progress">
+    <member name="P:Mirror.UploadHandler.progress">
       <summary>
         <para>Returns the proportion of data uploaded to the remote server compared to the total amount of data to upload. (Read Only)</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Networking.UploadHandler.Dispose">
+    <member name="M:Mirror.UploadHandler.Dispose">
       <summary>
         <para>Signals that this [UploadHandler] is no longer being used, and should clean up any resources it is using.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Networking.UploadHandlerFile">
+    <member name="T:Mirror.UploadHandlerFile">
       <summary>
         <para>A specialized UploadHandler that reads data from a given file and sends raw bytes to the server as the request body.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Networking.UploadHandlerFile.#ctor(System.String)">
+    <member name="M:Mirror.UploadHandlerFile.#ctor(System.String)">
       <summary>
         <para>Create a new upload handler to send data from the given file to the server.</para>
       </summary>
       <param name="filePath">A file containing data to send.</param>
     </member>
-    <member name="T:UnityEngine.Networking.UploadHandlerRaw">
+    <member name="T:Mirror.UploadHandlerRaw">
       <summary>
         <para>A general-purpose UploadHandler subclass, using a native-code memory buffer.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Networking.UploadHandlerRaw.#ctor(System.Byte[])">
+    <member name="M:Mirror.UploadHandlerRaw.#ctor(System.Byte[])">
       <summary>
         <para>General constructor. Contents of the input argument are copied into a native buffer.</para>
       </summary>

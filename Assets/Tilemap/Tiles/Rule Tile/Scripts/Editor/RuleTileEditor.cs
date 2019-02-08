@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEditor.Sprites;
 using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.Networking;
+using Mirror;
 using UnityEngine.Tilemaps;
 using Object = UnityEngine.Object;
 

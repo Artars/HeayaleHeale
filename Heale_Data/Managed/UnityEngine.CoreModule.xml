@@ -19307,37 +19307,37 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
       </summary>
       <param name="lines">How many lines of text to make room for. Default is 3.</param>
     </member>
-    <member name="T:UnityEngine.Networking.PlayerConnection.MessageEventArgs">
+    <member name="T:Mirror.PlayerConnection.MessageEventArgs">
       <summary>
         <para>Arguments passed to Action callbacks registered in PlayerConnection.</para>
       </summary>
     </member>
-    <member name="F:UnityEngine.Networking.PlayerConnection.MessageEventArgs.data">
+    <member name="F:Mirror.PlayerConnection.MessageEventArgs.data">
       <summary>
         <para>Data that is received.</para>
       </summary>
     </member>
-    <member name="F:UnityEngine.Networking.PlayerConnection.MessageEventArgs.playerId">
+    <member name="F:Mirror.PlayerConnection.MessageEventArgs.playerId">
       <summary>
         <para>The Player ID that the data is received from.</para>
       </summary>
     </member>
-    <member name="T:UnityEngine.Networking.PlayerConnection.PlayerConnection">
+    <member name="T:Mirror.PlayerConnection.PlayerConnection">
       <summary>
         <para>Used for handling the network connection from the Player to the Editor.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.PlayerConnection.PlayerConnection.instance">
+    <member name="P:Mirror.PlayerConnection.PlayerConnection.instance">
       <summary>
         <para>Singleton instance.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.PlayerConnection.PlayerConnection.isConnected">
+    <member name="P:Mirror.PlayerConnection.PlayerConnection.isConnected">
       <summary>
         <para>Returns true when Editor is connected to the player.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Networking.PlayerConnection.PlayerConnection.BlockUntilRecvMsg(System.Guid,System.Int32)">
+    <member name="M:Mirror.PlayerConnection.PlayerConnection.BlockUntilRecvMsg(System.Guid,System.Int32)">
       <summary>
         <para>Blocks the calling thread until either a message with the specified messageId is received or the specified time-out elapses.</para>
       </summary>
@@ -19347,12 +19347,12 @@ Use false when you want to use the existing bounding box and reduce the CPU cost
         <para>Returns true when the message is received and false if the call timed out.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.PlayerConnection.PlayerConnection.DisconnectAll">
+    <member name="M:Mirror.PlayerConnection.PlayerConnection.DisconnectAll">
       <summary>
         <para>This disconnects all of the active connections.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Networking.PlayerConnection.PlayerConnection.Register(System.Guid,UnityEngine.Events.UnityAction`1&lt;UnityEngine.Networking.PlayerConnection.MessageEventArgs&gt;)">
+    <member name="M:Mirror.PlayerConnection.PlayerConnection.Register(System.Guid,UnityEngine.Events.UnityAction`1&lt;Mirror.PlayerConnection.MessageEventArgs&gt;)">
       <summary>
         <para>Registers a listener for a specific message ID, with an Action to be executed whenever that message is received by the Editor.
 This ID must be the same as for messages sent from EditorConnection.Send().</para>
@@ -19362,26 +19362,26 @@ This ID must be the same as for messages sent from EditorConnection.Send().</par
 The callback includes the data that is sent from the Player, and the Player ID.
 The Player ID is always 1, because only one Editor can be connected.</param>
     </member>
-    <member name="M:UnityEngine.Networking.PlayerConnection.PlayerConnection.RegisterConnection(UnityEngine.Events.UnityAction`1&lt;System.Int32&gt;)">
+    <member name="M:Mirror.PlayerConnection.PlayerConnection.RegisterConnection(UnityEngine.Events.UnityAction`1&lt;System.Int32&gt;)">
       <summary>
         <para>Registers a callback that is invoked when the Editor connects to the Player.</para>
       </summary>
       <param name="callback">Action called when Player connects, with the Player ID of the Editor.</param>
     </member>
-    <member name="M:UnityEngine.Networking.PlayerConnection.PlayerConnection.RegisterDisconnection(UnityEngine.Events.UnityAction`1&lt;System.Int32&gt;)">
+    <member name="M:Mirror.PlayerConnection.PlayerConnection.RegisterDisconnection(UnityEngine.Events.UnityAction`1&lt;System.Int32&gt;)">
       <summary>
         <para>Registers a callback to be called when Editor disconnects.</para>
       </summary>
       <param name="callback">The Action that is called when a Player disconnects.</param>
     </member>
-    <member name="M:UnityEngine.Networking.PlayerConnection.PlayerConnection.Send(System.Guid,System.Byte[])">
+    <member name="M:Mirror.PlayerConnection.PlayerConnection.Send(System.Guid,System.Byte[])">
       <summary>
         <para>Sends data to the Editor.</para>
       </summary>
       <param name="messageId">The type ID of the message that is sent to the Editor.</param>
       <param name="data"></param>
     </member>
-    <member name="M:UnityEngine.Networking.PlayerConnection.PlayerConnection.Unregister(System.Guid,UnityEngine.Events.UnityAction`1&lt;UnityEngine.Networking.PlayerConnection.MessageEventArgs&gt;)">
+    <member name="M:Mirror.PlayerConnection.PlayerConnection.Unregister(System.Guid,UnityEngine.Events.UnityAction`1&lt;Mirror.PlayerConnection.MessageEventArgs&gt;)">
       <summary>
         <para>Deregisters a message listener.</para>
       </summary>

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
+using Mirror;
 using UnityEngine.UI;
 
 public class GameManager : NetworkBehaviour {
@@ -66,6 +66,7 @@ public class GameManager : NetworkBehaviour {
 
 	[Command]
 	public void CmdUpdateStatus(int id, bool value) {
+		Debug.Log("User " + id + "is ready? " + value);
 		readyPlayers[id] = value;
 		RpcUpdateReadyStatus(id, value);
 		bool isReady = true;
@@ -287,15 +288,15 @@ public class GameManager : NetworkBehaviour {
 
 	public void quitGame() {
 		NetworkManager networkManager = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
-		NetworkDiscovery NetworkDiscovery = GameObject.Find("NetworkManager").GetComponent<NetworkDiscovery>();
+		// NetworkDiscovery NetworkDiscovery = GameObject.Find("NetworkManager").GetComponent<NetworkDiscovery>();
 		if(isServer){
-			if(NetworkDiscovery != null)
-				NetworkDiscovery.StopBroadcast();
+			// if(NetworkDiscovery != null)
+			// 	NetworkDiscovery.StopBroadcast();
 			networkManager.StopHost();
 		}
 		if(isClient){
-			if(NetworkDiscovery != null)
-				NetworkDiscovery.StopBroadcast();
+			// if(NetworkDiscovery != null)
+			// 	NetworkDiscovery.StopBroadcast();
 			networkManager.StopClient();
 		}
 	}

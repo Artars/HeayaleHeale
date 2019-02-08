@@ -4,24 +4,24 @@
     <assembly>
       <name>UnityEngine.UnityWebRequestAssetBundleModule</name>
     </assembly>
-    <member name="T:UnityEngine.Networking.DownloadHandlerAssetBundle">
+    <member name="T:Mirror.DownloadHandlerAssetBundle">
       <summary>
         <para>A DownloadHandler subclass specialized for downloading AssetBundles.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.Networking.DownloadHandlerAssetBundle.assetBundle">
+    <member name="P:Mirror.DownloadHandlerAssetBundle.assetBundle">
       <summary>
         <para>Returns the downloaded AssetBundle, or null. (Read Only)</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Networking.DownloadHandlerAssetBundle.#ctor(System.String,System.UInt32)">
+    <member name="M:Mirror.DownloadHandlerAssetBundle.#ctor(System.String,System.UInt32)">
       <summary>
         <para>Standard constructor for non-cached asset bundles.</para>
       </summary>
       <param name="url">The nominal (pre-redirect) URL at which the asset bundle is located.</param>
       <param name="crc">A checksum to compare to the downloaded data for integrity checking, or zero to skip integrity checking.</param>
     </member>
-    <member name="M:UnityEngine.Networking.DownloadHandlerAssetBundle.#ctor(System.String,System.UInt32,System.UInt32)">
+    <member name="M:Mirror.DownloadHandlerAssetBundle.#ctor(System.String,System.UInt32,System.UInt32)">
       <summary>
         <para>Simple versioned constructor. Caches downloaded asset bundles.</para>
       </summary>
@@ -29,7 +29,7 @@
       <param name="crc">A checksum to compare to the downloaded data for integrity checking, or zero to skip integrity checking.</param>
       <param name="version">Current version number of the asset bundle at url. Increment to redownload.</param>
     </member>
-    <member name="M:UnityEngine.Networking.DownloadHandlerAssetBundle.#ctor(System.String,UnityEngine.Hash128,System.UInt32)">
+    <member name="M:Mirror.DownloadHandlerAssetBundle.#ctor(System.String,UnityEngine.Hash128,System.UInt32)">
       <summary>
         <para>Versioned constructor. Caches downloaded asset bundles.</para>
       </summary>
@@ -37,7 +37,7 @@
       <param name="crc">A checksum to compare to the downloaded data for integrity checking, or zero to skip integrity checking.</param>
       <param name="hash">A hash object defining the version of the asset bundle.</param>
     </member>
-    <member name="M:UnityEngine.Networking.DownloadHandlerAssetBundle.GetContent(UnityEngine.Networking.UnityWebRequest)">
+    <member name="M:Mirror.DownloadHandlerAssetBundle.GetContent(Mirror.UnityWebRequest)">
       <summary>
         <para>Returns the downloaded AssetBundle, or null.</para>
       </summary>
@@ -46,7 +46,7 @@
         <para>The same as DownloadHandlerAssetBundle.assetBundle</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.DownloadHandlerAssetBundle.GetData">
+    <member name="M:Mirror.DownloadHandlerAssetBundle.GetData">
       <summary>
         <para>Not implemented. Throws &lt;a href="http:msdn.microsoft.comen-uslibrarysystem.notsupportedexception"&gt;NotSupportedException&lt;a&gt;.</para>
       </summary>
@@ -54,7 +54,7 @@
         <para>Not implemented.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.DownloadHandlerAssetBundle.GetText">
+    <member name="M:Mirror.DownloadHandlerAssetBundle.GetText">
       <summary>
         <para>Not implemented. Throws &lt;a href="http:msdn.microsoft.comen-uslibrarysystem.notsupportedexception"&gt;NotSupportedException&lt;a&gt;.</para>
       </summary>
@@ -62,12 +62,12 @@
         <para>Not implemented.</para>
       </returns>
     </member>
-    <member name="T:UnityEngine.Networking.UnityWebRequestAssetBundle">
+    <member name="T:Mirror.UnityWebRequestAssetBundle">
       <summary>
         <para>Helpers for downloading asset bundles using UnityWebRequest.</para>
       </summary>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(System.String)">
+    <member name="M:Mirror.UnityWebRequestAssetBundle.GetAssetBundle(System.String)">
       <summary>
         <para>Creates a UnityWebRequest optimized for downloading a Unity Asset Bundle via HTTP GET.</para>
       </summary>
@@ -82,7 +82,7 @@ Analogous to the version parameter for WWW.LoadFromCacheOrDownload.</param>
         <para>A UnityWebRequest configured to downloading a Unity Asset Bundle.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(System.Uri)">
+    <member name="M:Mirror.UnityWebRequestAssetBundle.GetAssetBundle(System.Uri)">
       <summary>
         <para>Creates a UnityWebRequest optimized for downloading a Unity Asset Bundle via HTTP GET.</para>
       </summary>
@@ -97,7 +97,7 @@ Analogous to the version parameter for WWW.LoadFromCacheOrDownload.</param>
         <para>A UnityWebRequest configured to downloading a Unity Asset Bundle.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(System.String,System.UInt32)">
+    <member name="M:Mirror.UnityWebRequestAssetBundle.GetAssetBundle(System.String,System.UInt32)">
       <summary>
         <para>Creates a UnityWebRequest optimized for downloading a Unity Asset Bundle via HTTP GET.</para>
       </summary>
@@ -112,7 +112,7 @@ Analogous to the version parameter for WWW.LoadFromCacheOrDownload.</param>
         <para>A UnityWebRequest configured to downloading a Unity Asset Bundle.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(System.Uri,System.UInt32)">
+    <member name="M:Mirror.UnityWebRequestAssetBundle.GetAssetBundle(System.Uri,System.UInt32)">
       <summary>
         <para>Creates a UnityWebRequest optimized for downloading a Unity Asset Bundle via HTTP GET.</para>
       </summary>
@@ -127,7 +127,7 @@ Analogous to the version parameter for WWW.LoadFromCacheOrDownload.</param>
         <para>A UnityWebRequest configured to downloading a Unity Asset Bundle.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(System.String,System.UInt32,System.UInt32)">
+    <member name="M:Mirror.UnityWebRequestAssetBundle.GetAssetBundle(System.String,System.UInt32,System.UInt32)">
       <summary>
         <para>Creates a UnityWebRequest optimized for downloading a Unity Asset Bundle via HTTP GET.</para>
       </summary>
@@ -142,7 +142,7 @@ Analogous to the version parameter for WWW.LoadFromCacheOrDownload.</param>
         <para>A UnityWebRequest configured to downloading a Unity Asset Bundle.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(System.Uri,System.UInt32,System.UInt32)">
+    <member name="M:Mirror.UnityWebRequestAssetBundle.GetAssetBundle(System.Uri,System.UInt32,System.UInt32)">
       <summary>
         <para>Creates a UnityWebRequest optimized for downloading a Unity Asset Bundle via HTTP GET.</para>
       </summary>
@@ -157,7 +157,7 @@ Analogous to the version parameter for WWW.LoadFromCacheOrDownload.</param>
         <para>A UnityWebRequest configured to downloading a Unity Asset Bundle.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(System.String,UnityEngine.Hash128,System.UInt32)">
+    <member name="M:Mirror.UnityWebRequestAssetBundle.GetAssetBundle(System.String,UnityEngine.Hash128,System.UInt32)">
       <summary>
         <para>Creates a UnityWebRequest optimized for downloading a Unity Asset Bundle via HTTP GET.</para>
       </summary>
@@ -172,7 +172,7 @@ Analogous to the version parameter for WWW.LoadFromCacheOrDownload.</param>
         <para>A UnityWebRequest configured to downloading a Unity Asset Bundle.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(System.Uri,UnityEngine.Hash128,System.UInt32)">
+    <member name="M:Mirror.UnityWebRequestAssetBundle.GetAssetBundle(System.Uri,UnityEngine.Hash128,System.UInt32)">
       <summary>
         <para>Creates a UnityWebRequest optimized for downloading a Unity Asset Bundle via HTTP GET.</para>
       </summary>
@@ -187,7 +187,7 @@ Analogous to the version parameter for WWW.LoadFromCacheOrDownload.</param>
         <para>A UnityWebRequest configured to downloading a Unity Asset Bundle.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(System.String,UnityEngine.CachedAssetBundle,System.UInt32)">
+    <member name="M:Mirror.UnityWebRequestAssetBundle.GetAssetBundle(System.String,UnityEngine.CachedAssetBundle,System.UInt32)">
       <summary>
         <para>Creates a UnityWebRequest optimized for downloading a Unity Asset Bundle via HTTP GET.</para>
       </summary>
@@ -202,7 +202,7 @@ Analogous to the version parameter for WWW.LoadFromCacheOrDownload.</param>
         <para>A UnityWebRequest configured to downloading a Unity Asset Bundle.</para>
       </returns>
     </member>
-    <member name="M:UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(System.Uri,UnityEngine.CachedAssetBundle,System.UInt32)">
+    <member name="M:Mirror.UnityWebRequestAssetBundle.GetAssetBundle(System.Uri,UnityEngine.CachedAssetBundle,System.UInt32)">
       <summary>
         <para>Creates a UnityWebRequest optimized for downloading a Unity Asset Bundle via HTTP GET.</para>
       </summary>
