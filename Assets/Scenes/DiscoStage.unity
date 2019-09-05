@@ -28756,18 +28756,13 @@ PrefabInstance:
     - target: {fileID: 2931614496634084280, guid: 3d9f3f052a3276344bb1c590dfc66696,
         type: 3}
       propertyPath: m_SceneId
-      value: 423936115
+      value: 2417356589
       objectReference: {fileID: 0}
     - target: {fileID: 4827563600393938061, guid: 3d9f3f052a3276344bb1c590dfc66696,
         type: 3}
       propertyPath: DeathCircle
       value: 
       objectReference: {fileID: 1485598882}
-    - target: {fileID: 4827563600393938061, guid: 3d9f3f052a3276344bb1c590dfc66696,
-        type: 3}
-      propertyPath: syncInterval
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7897809571663526476, guid: 3d9f3f052a3276344bb1c590dfc66696,
         type: 3}
       propertyPath: m_SizeDelta.x
@@ -28858,5 +28853,19 @@ PrefabInstance:
       propertyPath: topRightCornerTransform
       value: 
       objectReference: {fileID: 720772484}
+    - target: {fileID: 426256968, guid: 3d9f3f052a3276344bb1c590dfc66696, type: 3}
+      propertyPath: m_Volume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7897809572546547909, guid: 3d9f3f052a3276344bb1c590dfc66696,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8033508454015298349, guid: 3d9f3f052a3276344bb1c590dfc66696,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d9f3f052a3276344bb1c590dfc66696, type: 3}

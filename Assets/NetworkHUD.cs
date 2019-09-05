@@ -48,4 +48,9 @@ public class NetworkHUD : MonoBehaviour {
 		// }
 	}
 
+	public void OnExitClick()
+	{
+		Application.Quit();
+	}
+
 }
