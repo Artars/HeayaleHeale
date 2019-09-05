@@ -23,7 +23,12 @@ public class Bullet : NetworkBehaviour {
 		hpAtual = projectileLife;
 		if(isServer){
 			GetComponent<SpriteRenderer>().sprite = img;
-			RpcAtualizarSprite();
+			// RpcAtualizarSprite();
+		}
+		else
+		{
+			GetComponent<SpriteRenderer>().sprite = img;
+			GetComponent<Rigidbody2D>().isKinematic = true;
 		}
     }
 	[ClientRpc]
@@ -42,13 +47,18 @@ public class Bullet : NetworkBehaviour {
 			morrer();
 		}
 	}
-	void OnCollisionEnter2D(Collision2D col){//CMD
+	void OnTriggerEnter2D(Collider2D col){//CMD
 		if(isServer){
-			if(col.gameObject.tag == "Player" && col.gameObject.GetComponent<Player>().id != playerID){
-				col.gameObject.GetComponent<Health>().CmdHeal(damage);
-				morrer();
+			if(col.gameObject.tag == "Player")
+			{
+				Player p = col.gameObject.GetComponent<Player>();
+				if(p != null && p.playerID != playerID)
+				{
+					col.gameObject.GetComponent<Health>().Heal(damage);
+					morrer();
+				}
 			}
-			else {
+			else  if (col.gameObject.tag != "DeathZone"){
 				morrer();
 			}
 		}

@@ -18,14 +18,19 @@ public class Minimap : MonoBehaviour {
 	public float relativeSizePlayer;
 	public float relativeSizeCrate;
 
-	public Vector3 lowerLeftCorner;
-	public Vector3 topRightCorner;
+	public Transform lowerLeftCornerTransform;
+	public Transform topRightCornerTransform;
+	protected Vector3 lowerLeftCorner;
+	protected Vector3 topRightCorner;
 
 	private List<RectTransform> playerPointer;
 	private List<RectTransform> boxPointer;
 	private RectTransform circlePointer;
 	
 	private void Start() {
+		lowerLeftCorner = lowerLeftCornerTransform.position;
+		topRightCorner = topRightCornerTransform.position;
+
 		playerPointer = new List<RectTransform>();
 		boxPointer = new List<RectTransform>();
 		for(int i = 0; i < numberOfPlayersToSpawn; i++){
@@ -66,8 +71,8 @@ public class Minimap : MonoBehaviour {
 
 
 		for(int i = 0; i < playerPointer.Count; i++){
-			if(i < GameManager.instance.players.Count){
-				Vector2 porc = porcentagePosition(GameManager.instance.players[i].transform.position);
+			if(i < PlayerManager.instance.players.Count){
+				Vector2 porc = porcentagePosition(PlayerManager.instance.players[i].transform.position);
 				Vector2 pos = new Vector2(sizeX*porc.x,sizeY*porc.y);
 				playerPointer[i].gameObject.SetActive(true);
 				playerPointer[i].SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left,pos.x-mySizeX/2,mySizeX);
@@ -87,8 +92,8 @@ public class Minimap : MonoBehaviour {
 		mySizeY = sizeY * relativeSizeCrate;
 
 		for(int i = 0; i < boxPointer.Count; i++){
-			if(i < GameManager.instance.boxes.Count){
-				Vector2 porc = porcentagePosition(GameManager.instance.boxes[i].transform.position);
+			if(i < PlayerManager.instance.boxes.Count){
+				Vector2 porc = porcentagePosition(PlayerManager.instance.boxes[i].transform.position);
 				Vector2 pos = new Vector2(sizeX*porc.x,sizeY*porc.y);
 				boxPointer[i].gameObject.SetActive(true);
 				boxPointer[i].SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left,pos.x-mySizeX/2,mySizeX);
@@ -104,12 +109,12 @@ public class Minimap : MonoBehaviour {
 			}
 		}
 
-		if( GameManager.instance.DeathCircle != null) {
+		if( PlayerManager.instance.DeathCircle != null) {
 			if(circlePointer.gameObject.activeInHierarchy == false)
 				circlePointer.gameObject.SetActive(true);
-			float radius = GameManager.instance.DeathCircle.currentRadius();
-			mySizeX = mySizeY = porcentagePosition(lowerLeftCorner + new Vector3(radius,0,0)).x * sizeX * 0.4f;
-			Vector2 porcent = porcentagePosition(GameManager.instance.DeathCircle.transform.position);
+			float radius = PlayerManager.instance.DeathCircle.currentRadius();
+			mySizeX = mySizeY = porcentagePosition(lowerLeftCorner + new Vector3(radius*2,0,0)).x * sizeX * 0.42f;
+			Vector2 porcent = porcentagePosition(PlayerManager.instance.DeathCircle.transform.position);
 			Vector2 posi = new Vector2(sizeX*porcent.x,sizeY*porcent.y);
 			circlePointer.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left,posi.x-mySizeX/2,mySizeX);
 			circlePointer.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Bottom,posi.y-mySizeY/2,mySizeY);

@@ -6,13 +6,20 @@ using Mirror;
 
 public class Player : NetworkBehaviour {
 
+	public enum PlayerState
+	{
+		Lobby,Playing
+	}
+
 	public Animator animator;
 
 	private AudioSource audioSource;
 
 	[SyncVar(hook="changedID")]
-	// [SyncVar]
-	public int id = -1;
+	public int playerID = -1;
+
+	[SyncVar]
+	public PlayerState playerState = PlayerState.Lobby;
 
 	public List<armaMelee> gunM ;
 	public List<armaRanged> gunR ;
@@ -33,8 +40,7 @@ public class Player : NetworkBehaviour {
 	[SyncVar]
 	public string username;
 	public float speed;
-	[SyncVar(hook="changedSkin")]
-	// [SyncVar]
+	[SyncVar(hook="UpdateSkin")]
 	public int skinIndex = 0;
 	[HideInInspector]
 	public bool canWalk = true;
@@ -70,32 +76,46 @@ public class Player : NetworkBehaviour {
 		animator = GetComponent<Animator>();
 		GetComponent<PlayerAnimationHandler>().setSkinVariation(skinIndex);
 
-		if(id != -1) {
-			GameManager.instance.addLocalReference(id,gameObject);
-		}
-
-		if(!isLocalPlayer) {
+		if(!isLocalPlayer) {	
 			GameObject toSpawn = GameObject.Instantiate(prefabHealthBar);
 			toSpawn.GetComponent<Follower>().target = transform;
 			UnityEngine.UI.Slider slider = toSpawn.GetComponentInChildren<UnityEngine.UI.Slider>();
 			GetComponent<Health>().setBar(slider);
 		} else {
-			GetComponent<Health>().setBar(GameManager.instance.playerSlider);
-			ammoText = GameManager.instance.ammoText;
+
+			if(playerID != -1) {
+				changedID(playerID);
+			}
+
+			GetComponent<Health>().setBar(PlayerManager.instance.playerSlider);
+			ammoText = PlayerManager.instance.ammoText;
 		}
 
-		Debug.Log("Started: " + id);
+		Debug.Log("Started: " + playerID);
+	}
+
+	public override void OnNetworkDestroy()
+	{
+		if(isServer)
+		{
+			GameManager.instance.RemovePlayer(this);
+		}
+		else
+		{
+			if(PlayerManager.instance.players.ContainsKey(playerID))
+				PlayerManager.instance.players.Remove(playerID);
+		}
 	}
 
 	public override void OnStartLocalPlayer() {
 		base.OnStartLocalPlayer();
-		//Pega nome das preferencia
-		
 
+		Debug.Log("Local player");
+		//Pega nome das preferencia
 		//GameManager.instance.CmdAddPlayer(gameObject);
-		id = GameManager.instance.getNewID();
-		skinIndex = GameManager.instance.getSkin();
-		CmdUpdateSkinAndID(id,skinIndex);
+		// id = GameManager.instance.getNewID();
+		// skinIndex = GameManager.instance.getSkin();
+		// CmdUpdateSkinAndID(id,skinIndex);
 		// skinIndex = GameManager.instance.CmdGetSkin();
 		// changedID(id);
 		// changedSkin(skinIndex);
@@ -113,50 +133,45 @@ public class Player : NetworkBehaviour {
 		camTransform = Camera.main.transform;
 		camOffset = new Vector3(0,0,-18);
 		camTransform.position = transform.position + camOffset;
-		foreach (var ip in System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList){//[0].ToString());
-			Debug.Log(ip.ToString());
-		}
+		// foreach (var ip in System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList){//[0].ToString());
+		// 	Debug.Log(ip.ToString());
+		// }
+
 	}
 
-	private void OnStartServer() {
-		Debug.Log("ola");
+	public override void OnStartServer() {
 		base.OnStartServer();
-		if(id == -1)
-			GameManager.instance.CmdAddPlayer(gameObject);
+		Debug.Log("Server Start");
+		GameManager.instance.AddPlayer(this);
 	}
 
-	[Command]
-	public void CmdUpdateSkinAndID(int id, int skin) {
-		RpcSetSkin(skin);
-		RpcSetID(id);
-	}
-
-	[ClientRpc]
-	public void RpcSetSkin(int id){
+	public void UpdateSkin(int id){
 		skinIndex = id;
 		GetComponent<PlayerAnimationHandler>().setSkinVariation(skinIndex);
 	}
 
-	public void changedSkin(int newSkin){
-		skinIndex = newSkin;
-		GetComponent<PlayerAnimationHandler>().setSkinVariation(skinIndex);
-	}
-
 	public void changedID(int newID){
-		id = newID;
-		GameManager.instance.addLocalReference(id, gameObject);
+		int previousId = playerID;
+		playerID = newID;
 		if(isLocalPlayer){
-			GameManager.instance.thisPlayer = id;
+			PlayerManager.instance.thisPlayerId = playerID;
+			PlayerManager.instance.thisLocalPlayer = this;
 		}
+		if(playerID != previousId && previousId != -1)
+		{
+			if(PlayerManager.instance.players.ContainsKey(previousId))
+			PlayerManager.instance.players.Remove(previousId);
+		}
+		if(!PlayerManager.instance.players.ContainsKey(playerID))
+			PlayerManager.instance.players.Add(playerID, this);
+		PlayerManager.instance.players[playerID] = this;
+
 	}
 
-	[ClientRpc]
-	public void RpcSetID(int i) {
-		id = i;
-		GameManager.instance.addLocalReference(id, gameObject);
-		if(isLocalPlayer){
-			GameManager.instance.thisPlayer = id;
-		}
+	[Command]
+	public void CmdSetReady()
+	{
+		GameManager.instance.SetReady(playerID);
 	}
 	
 	[ClientRpc]
@@ -191,7 +206,7 @@ public class Player : NetworkBehaviour {
 		if(isLocalPlayer){
 			ammoAtual = armaAtual.maxAmmo;
 			maxAmmo = armaAtual.maxAmmo;
-			if(maxAmmo > 1000)
+			if(maxAmmo > 500)
 				shouldShowAmmo = false;
 			else
 				shouldShowAmmo = true;
@@ -229,6 +244,9 @@ public class Player : NetworkBehaviour {
 			return;
 		}
 
+		if(playerState == PlayerState.Lobby)
+			return;
+
 		if(Time.timeScale == 0)
 			return;
 
@@ -259,22 +277,33 @@ public class Player : NetworkBehaviour {
 				}
 
 				if(armaAtual.GetType() == typeof(armaRanged)){
-					CmdAtirar(trans.rotation);
+					armaRanged armaux = (armaRanged)armaAtual;
+					float rand = Random.Range(-armaux.spread, armaux.spread);
+					trans.Rotate(0,0,rand);
+					rigi.AddForce(-trans.up*armaux.Force);
+
+					CmdAtirar(trans.up);
+					
 					Debug.Log("armaRanged");
+
+					// RpcSetCanWalk(false);
+					canWalk = false;
+					StartCoroutine(esperaKnock(armaAtual.knockbackTime));
 				}
 				else if(armaAtual.GetType() == typeof(armaMelee)){
-					armaMelee armaux  = (armaMelee)armaAtual;
-					Debug.Log("armaMelle");
-					if(armaux.tipo == 0){
-						CmdHug();
-					}
+					// Remover abraço porque é bugado
+					// armaMelee armaux  = (armaMelee)armaAtual;
+					// Debug.Log("armaMelle");
+					// if(armaux.tipo == 0){
+					// 	CmdHug();
+					// }
 				}else{
 					Debug.Log("outraArma??");
 				}
 				
-
-				RpcSetCanWalk(false);
-				StartCoroutine(esperaKnock(armaAtual.knockbackTime));
+				// Colocar só na arma normal por enqunato
+				// RpcSetCanWalk(false);
+				// StartCoroutine(esperaKnock(armaAtual.knockbackTime));
 			}
 		}else if(Hugging && !Input.GetKeyDown("space")){
 			CmdsoltarHug();
@@ -306,15 +335,16 @@ public class Player : NetworkBehaviour {
 	}
 
 	[Command]
-	private void CmdAtirar (Quaternion rotation){
+	private void CmdAtirar (Vector3 direction){
 		armaRanged armaux = (armaRanged)armaAtual;
-		trans.rotation = rotation;
-		float rand = Random.Range(-armaux.spread, armaux.spread);
-		trans.Rotate(0,0,rand);
+		// trans.rotation = rotation;
+		// float rand = Random.Range(-armaux.spread, armaux.spread);
+		// trans.Rotate(0,0,rand);
 
+		// // RpcPush(-trans.up* armaux.Force) ;
+
+		trans.up = direction;
 		RpcPlaySound();
-		RpcPush(-trans.up* armaux.Force) ;
-
 		gerarBala();
 
 		if(armaux.tipo == 1){
@@ -399,16 +429,17 @@ public class Player : NetworkBehaviour {
 
 		aux.GetComponent<Rigidbody2D>().velocity = (trans.up ) * armaux.velbala;
 		
-		NetworkServer.Spawn(aux);
-		Destroy(aux,armaux.projectileTime);
 
 		Bullet balaGerada = aux.GetComponent<Bullet>();
 		balaGerada.nomeDoAtirador = username;
 		balaGerada.damage = armaux.damage;
 		balaGerada.force = armaux.Force;
-		balaGerada.playerID = id;
-		balaGerada.CmdSyncTransformVelocity(aux.transform.position, aux.transform.rotation,(trans.up ) * armaux.velbala);
+		balaGerada.playerID = playerID;
+
+		NetworkServer.Spawn(aux);
+		Destroy(aux,armaux.projectileTime);
 		
+		balaGerada.CmdSyncTransformVelocity(aux.transform.position, aux.transform.rotation,(trans.up ) * armaux.velbala);
 	}
 
 	[Command]

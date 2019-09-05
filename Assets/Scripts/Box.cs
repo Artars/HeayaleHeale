@@ -5,7 +5,7 @@ using Mirror;
 public class Box :  NetworkBehaviour {
 
 	private void Start() {
-		GameManager.instance.addLocalBoxReference(gameObject);
+		PlayerManager.instance.addLocalBoxReference(gameObject);
 	}
 
 	void OnTriggerEnter2D(Collider2D col){
@@ -21,7 +21,7 @@ public class Box :  NetworkBehaviour {
 	}
 
 	private void OnDestroy() {
-		GameManager.instance.removeLocalBoxReference(gameObject);
+		PlayerManager.instance.removeLocalBoxReference(gameObject);
 	}
 
 }

@@ -1,111 +1,175 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 namespace Mirror
 {
+    public enum ConnectState
+    {
+        None,
+        Connecting,
+        Connected,
+        Disconnected
+    }
+
+    // TODO make fully static after removing obsoleted singleton!
+    /// <summary>
+    /// This is a network client class used by the networking system. It contains a NetworkConnection that is used to connect to a network server.
+    /// <para>The <see cref="NetworkClient">NetworkClient</see> handle connection state, messages handlers, and connection configuration. There can be many <see cref="NetworkClient">NetworkClient</see> instances in a process at a time, but only one that is connected to a game server (<see cref="NetworkServer">NetworkServer</see>) that uses spawned objects.</para>
+    /// <para><see cref="NetworkClient">NetworkClient</see> has an internal update function where it handles events from the transport layer. This includes asynchronous connect events, disconnect events and incoming data from a server.</para>
+    /// <para>The <see cref="NetworkManager">NetworkManager</see> has a NetworkClient instance that it uses for games that it starts, but the NetworkClient may be used by itself.</para>
+    /// </summary>
     public class NetworkClient
     {
-        static bool s_IsActive;
+        /// <summary>
+        /// Obsolete: Use <see cref="NetworkClient"/> directly.
+        /// <para>Singleton isn't needed anymore, all functions are static now. For example: NetworkClient.Send(message) instead of NetworkClient.singleton.Send(message).</para>
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never), Obsolete("Use NetworkClient directly. Singleton isn't needed anymore, all functions are static now. For example: NetworkClient.Send(message) instead of NetworkClient.singleton.Send(message).")]
+        public static NetworkClient singleton = new NetworkClient();
 
-        public static List<NetworkClient> allClients = new List<NetworkClient>();
-        public static bool active => s_IsActive;
+        /// <summary>
+        /// A list of all the active network clients in the current process.
+        /// <para>This is NOT a list of all clients that are connected to the remote server, it is client instances on the local game.</para>
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never), Obsolete("Use NetworkClient directly instead. There is always exactly one client.")]
+        public static List<NetworkClient> allClients => new List<NetworkClient> { singleton };
 
-        string m_ServerIp = "";
-        int m_ClientId = -1;
+        /// <summary>
+        /// The registered network message handlers.
+        /// </summary>
+        public static readonly Dictionary<int, NetworkMessageDelegate> handlers = new Dictionary<int, NetworkMessageDelegate>();
 
-        public readonly Dictionary<short, NetworkMessageDelegate> handlers = new Dictionary<short, NetworkMessageDelegate>();
-        protected NetworkConnection m_Connection;
+        /// <summary>
+        /// The NetworkConnection object this client is using.
+        /// </summary>
+        public static NetworkConnection connection { get; internal set; }
 
-        protected enum ConnectState
+        internal static ConnectState connectState = ConnectState.None;
+
+        /// <summary>
+        /// The IP address of the server that this client is connected to.
+        /// <para>This will be empty if the client has not connected yet.</para>
+        /// </summary>
+        public static string serverIp => connection.address;
+
+        /// <summary>
+        /// active is true while a client is connecting/connected
+        /// (= while the network is active)
+        /// </summary>
+        public static bool active => connectState == ConnectState.Connecting || connectState == ConnectState.Connected;
+
+        /// <summary>
+        /// This gives the current connection status of the client.
+        /// </summary>
+        public static bool isConnected => connectState == ConnectState.Connected;
+
+        /// <summary>
+        /// NetworkClient can connect to local server in host mode too
+        /// </summary>
+        public static bool isLocalClient => connection is ULocalConnectionToServer;
+
+        // local client in host mode might call Cmds/Rpcs during Update, but we
+        // want to apply them in LateUpdate like all other Transport messages
+        // to avoid race conditions. keep packets in Queue until LateUpdate.
+        internal static Queue<byte[]> localClientPacketQueue = new Queue<byte[]>();
+
+        /// <summary>
+        /// Connect client to a NetworkServer instance.
+        /// </summary>
+        /// <param name="address"></param>
+        public static void Connect(string address)
         {
-            None,
-            Connecting,
-            Connected,
-            Disconnected,
-        }
-        protected ConnectState connectState = ConnectState.None;
+            if (LogFilter.Debug) Debug.Log("Client Connect: " + address);
 
-        internal void SetHandlers(NetworkConnection conn)
-        {
-            conn.SetHandlers(handlers);
-        }
-
-        public string serverIp => m_ServerIp; 
-        public NetworkConnection connection => m_Connection;
-
-        public bool isConnected => connectState == ConnectState.Connected;
-
-        public NetworkClient()
-        {
-            if (LogFilter.Debug) { Debug.Log("Client created version " + Version.Current); }
-            AddClient(this);
-        }
-
-        public NetworkClient(NetworkConnection conn)
-        {
-            if (LogFilter.Debug) { Debug.Log("Client created version " + Version.Current); }
-            AddClient(this);
-
-            SetActive(true);
-            m_Connection = conn;
-            connectState = ConnectState.Connected;
-            conn.SetHandlers(handlers);
             RegisterSystemHandlers(false);
-        }
-
-        public void Connect(string serverIp)
-        {
-            PrepareForConnect();
-
-            if (LogFilter.Debug) { Debug.Log("Client Connect: " + serverIp); }
-
-            string hostnameOrIp = serverIp;
-            m_ServerIp = hostnameOrIp;
+            Transport.activeTransport.enabled = true;
+            InitializeTransportHandlers();
 
             connectState = ConnectState.Connecting;
-            NetworkManager.singleton.transport.ClientConnect(serverIp);
+            Transport.activeTransport.ClientConnect(address);
 
             // setup all the handlers
-            m_Connection = new NetworkConnection(m_ServerIp, m_ClientId, 0);
-            m_Connection.SetHandlers(handlers);
+            connection = new NetworkConnection(address, 0);
+            connection.SetHandlers(handlers);
         }
 
-        private void InitializeTransportHandlers()
+        /// <summary>
+        /// connect host mode
+        /// </summary>
+        internal static void ConnectLocalServer()
         {
-            // TODO do this in inspector?
-            NetworkManager.singleton.transport.OnClientConnected.AddListener(OnConnected);
-            NetworkManager.singleton.transport.OnClientDataReceived.AddListener(OnDataReceived);
-            NetworkManager.singleton.transport.OnClientDisconnected.AddListener(OnDisconnected);
-            NetworkManager.singleton.transport.OnClientError.AddListener(OnError);
+            if (LogFilter.Debug) Debug.Log("Client Connect Local Server");
+
+            RegisterSystemHandlers(true);
+
+            connectState = ConnectState.Connected;
+
+            // create local connection to server
+            connection = new ULocalConnectionToServer();
+            connection.SetHandlers(handlers);
+
+            // create server connection to local client
+            ULocalConnectionToClient connectionToClient = new ULocalConnectionToClient();
+            NetworkServer.SetLocalConnection(connectionToClient);
+
+            localClientPacketQueue.Enqueue(MessagePacker.Pack(new ConnectMessage()));
         }
 
-        void OnError(Exception exception)
+        /// <summary>
+        /// Called by the server to set the LocalClient's LocalPlayer object during NetworkServer.AddPlayer()
+        /// </summary>
+        /// <param name="localPlayer"></param>
+        internal static void AddLocalPlayer(NetworkIdentity localPlayer)
+        {
+            if (LogFilter.Debug) Debug.Log("Local client AddLocalPlayer " + localPlayer.gameObject.name + " conn=" + connection.connectionId);
+            connection.isReady = true;
+            connection.playerController = localPlayer;
+            if (localPlayer != null)
+            {
+                localPlayer.isClient = true;
+                NetworkIdentity.spawned[localPlayer.netId] = localPlayer;
+                localPlayer.connectionToServer = connection;
+            }
+            // there is no SystemOwnerMessage for local client. add to ClientScene here instead
+            ClientScene.InternalAddPlayer(localPlayer);
+        }
+
+        static void InitializeTransportHandlers()
+        {
+            Transport.activeTransport.OnClientConnected.AddListener(OnConnected);
+            Transport.activeTransport.OnClientDataReceived.AddListener(OnDataReceived);
+            Transport.activeTransport.OnClientDisconnected.AddListener(OnDisconnected);
+            Transport.activeTransport.OnClientError.AddListener(OnError);
+        }
+
+        static void OnError(Exception exception)
         {
             Debug.LogException(exception);
         }
 
-        void OnDisconnected()
+        static void OnDisconnected()
         {
             connectState = ConnectState.Disconnected;
 
-            ClientScene.HandleClientDisconnect(m_Connection);
-           
-            m_Connection?.InvokeHandlerNoData((short)MsgType.Disconnect);
+            ClientScene.HandleClientDisconnect(connection);
+
+            connection?.InvokeHandler(new DisconnectMessage());
         }
 
-        void OnDataReceived(byte[] data)
+        internal static void OnDataReceived(ArraySegment<byte> data)
         {
-            if (m_Connection != null)
+            if (connection != null)
             {
-                m_Connection.TransportReceive(data);
+                connection.TransportReceive(data);
             }
-            else Debug.LogError("Skipped Data message handling because m_Connection is null.");
+            else Debug.LogError("Skipped Data message handling because connection is null.");
         }
 
-        void OnConnected()
+        static void OnConnected()
         {
-            if (m_Connection != null)
+            if (connection != null)
             {
                 // reset network time stats
                 NetworkTime.Reset();
@@ -113,118 +177,141 @@ namespace Mirror
                 // the handler may want to send messages to the client
                 // thus we should set the connected state before calling the handler
                 connectState = ConnectState.Connected;
-                NetworkTime.UpdateClient(this);
-                m_Connection.InvokeHandlerNoData((short)MsgType.Connect);
+                NetworkTime.UpdateClient();
+                connection.InvokeHandler(new ConnectMessage());
             }
-            else Debug.LogError("Skipped Connect message handling because m_Connection is null.");
+            else Debug.LogError("Skipped Connect message handling because connection is null.");
         }
 
-        void PrepareForConnect()
-        {
-            SetActive(true);
-            RegisterSystemHandlers(false);
-            m_ClientId = 0;
-            NetworkManager.singleton.transport.enabled = true;
-            InitializeTransportHandlers();
-        }
-
-        public virtual void Disconnect()
+        /// <summary>
+        /// Disconnect from server.
+        /// <para>The disconnect message will be invoked.</para>
+        /// </summary>
+        public static void Disconnect()
         {
             connectState = ConnectState.Disconnected;
-            ClientScene.HandleClientDisconnect(m_Connection);
-            if (m_Connection != null)
+            ClientScene.HandleClientDisconnect(connection);
+
+            // local or remote connection?
+            if (isLocalClient)
             {
-                m_Connection.Disconnect();
-                m_Connection.Dispose();
-                m_Connection = null;
-                m_ClientId = -1;
-                RemoveTransportHandlers();
+                if (isConnected)
+                {
+                    localClientPacketQueue.Enqueue(MessagePacker.Pack(new DisconnectMessage()));
+                }
+                NetworkServer.RemoveLocalConnection();
+            }
+            else
+            {
+                if (connection != null)
+                {
+                    connection.Disconnect();
+                    connection.Dispose();
+                    connection = null;
+                    RemoveTransportHandlers();
+                }
             }
         }
 
-        void RemoveTransportHandlers()
+        static void RemoveTransportHandlers()
         {
             // so that we don't register them more than once
-            NetworkManager.singleton.transport.OnClientConnected.RemoveListener(OnConnected);
-            NetworkManager.singleton.transport.OnClientDataReceived.RemoveListener(OnDataReceived);
-            NetworkManager.singleton.transport.OnClientDisconnected.RemoveListener(OnDisconnected);
-            NetworkManager.singleton.transport.OnClientError.RemoveListener(OnError);
+            Transport.activeTransport.OnClientConnected.RemoveListener(OnConnected);
+            Transport.activeTransport.OnClientDataReceived.RemoveListener(OnDataReceived);
+            Transport.activeTransport.OnClientDisconnected.RemoveListener(OnDisconnected);
+            Transport.activeTransport.OnClientError.RemoveListener(OnError);
         }
 
-        public bool Send(short msgType, MessageBase msg)
+        /// <summary>
+        /// Obsolete: Use <see cref="Send{T}(T, int)"/> instead with no message id instead
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never), Obsolete("Use SendMessage<T> instead with no message id instead")]
+        public static bool Send(short msgType, MessageBase msg)
         {
-            if (m_Connection != null)
+            if (connection != null)
             {
                 if (connectState != ConnectState.Connected)
                 {
                     Debug.LogError("NetworkClient Send when not connected to a server");
                     return false;
                 }
-                return m_Connection.Send(msgType, msg);
+                return connection.Send(msgType, msg);
             }
             Debug.LogError("NetworkClient Send with no connection");
             return false;
         }
 
-        public void Shutdown()
+        /// <summary>
+        /// This sends a network message with a message Id to the server. This message is sent on channel zero, which by default is the reliable channel.
+        /// <para>The message must be an instance of a class derived from MessageBase.</para>
+        /// <para>The message id passed to Send() is used to identify the handler function to invoke on the server when the message is received.</para>
+        /// </summary>
+        /// <typeparam name="T">The message type to unregister.</typeparam>
+        /// <param name="message"></param>
+        /// <param name="channelId"></param>
+        /// <returns>True if message was sent.</returns>
+        public static bool Send<T>(T message, int channelId = Channels.DefaultReliable) where T : IMessageBase
         {
-            if (LogFilter.Debug) Debug.Log("Shutting down client " + m_ClientId);
-            m_ClientId = -1;
-            RemoveClient(this);
-            if (allClients.Count == 0)
+            if (connection != null)
             {
-                SetActive(false);
+                if (connectState != ConnectState.Connected)
+                {
+                    Debug.LogError("NetworkClient Send when not connected to a server");
+                    return false;
+                }
+                return connection.Send(message, channelId);
             }
+            Debug.LogError("NetworkClient Send with no connection");
+            return false;
         }
 
-        internal virtual void Update()
+        internal static void Update()
         {
-            if (m_ClientId == -1)
+            // local or remote connection?
+            if (isLocalClient)
             {
-                return;
+                // process internal messages so they are applied at the correct time
+                while (localClientPacketQueue.Count > 0)
+                {
+                    byte[] packet = localClientPacketQueue.Dequeue();
+                    OnDataReceived(new ArraySegment<byte>(packet));
+                }
             }
-
-            // don't do anything if we aren't fully connected
-            // -> we don't check Client.Connected because then we wouldn't
-            //    process the last disconnect message.
-            if (connectState != ConnectState.Connecting &&
-                connectState != ConnectState.Connected)
+            else
             {
-                return;
+                // only update things while connected
+                if (active && connectState == ConnectState.Connected)
+                {
+                    NetworkTime.UpdateClient();
+                }
             }
-
-            if (connectState == ConnectState.Connected)
-            {
-                NetworkTime.UpdateClient(this);
-            }
-        }
-
-        void GenerateConnectError(byte error)
-        {
-            Debug.LogError("UNet Client Error Connect Error: " + error);
-            GenerateError(error);
         }
 
         /* TODO use or remove
+        void GenerateConnectError(byte error)
+        {
+            Debug.LogError("Mirror Client Error Connect Error: " + error);
+            GenerateError(error);
+        }
+
         void GenerateDataError(byte error)
         {
             NetworkError dataError = (NetworkError)error;
-            Debug.LogError("UNet Client Data Error: " + dataError);
+            Debug.LogError("Mirror Client Data Error: " + dataError);
             GenerateError(error);
         }
 
         void GenerateDisconnectError(byte error)
         {
             NetworkError disconnectError = (NetworkError)error;
-            Debug.LogError("UNet Client Disconnect Error: " + disconnectError);
+            Debug.LogError("Mirror Client Disconnect Error: " + disconnectError);
             GenerateError(error);
         }
-        */
 
         void GenerateError(byte error)
         {
-            NetworkMessageDelegate msgDelegate;
-            if (handlers.TryGetValue((short)MsgType.Error, out msgDelegate))
+            int msgId = MessageBase.GetId<ErrorMessage>();
+            if (handlers.TryGetValue(msgId, out NetworkMessageDelegate msgDelegate))
             {
                 ErrorMessage msg = new ErrorMessage
                 {
@@ -237,87 +324,141 @@ namespace Mirror
 
                 NetworkMessage netMsg = new NetworkMessage
                 {
-                    msgType = (short)MsgType.Error,
+                    msgType = msgId,
                     reader = new NetworkReader(writer.ToArray()),
-                    conn = m_Connection
+                    conn = connection
                 };
                 msgDelegate(netMsg);
             }
         }
+        */
 
-        [Obsolete("Use NetworkTime.rtt instead")]
-        public float GetRTT()
+        /// <summary>
+        /// Obsolete: Use <see cref="NetworkTime.rtt"/> instead
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never), Obsolete("Use NetworkTime.rtt instead")]
+        public static float GetRTT()
         {
             return (float)NetworkTime.rtt;
         }
 
-        internal void RegisterSystemHandlers(bool localClient)
+        internal static void RegisterSystemHandlers(bool localClient)
         {
-            ClientScene.RegisterSystemHandlers(this, localClient);
+            // local client / regular client react to some messages differently.
+            // but we still need to add handlers for all of them to avoid
+            // 'message id not found' errors.
+            if (localClient)
+            {
+                RegisterHandler<ObjectDestroyMessage>(ClientScene.OnLocalClientObjectDestroy);
+                RegisterHandler<ObjectHideMessage>(ClientScene.OnLocalClientObjectHide);
+                RegisterHandler<NetworkPongMessage>((conn, msg) => { });
+                RegisterHandler<SpawnPrefabMessage>(ClientScene.OnLocalClientSpawnPrefab);
+                RegisterHandler<SpawnSceneObjectMessage>(ClientScene.OnLocalClientSpawnSceneObject);
+                RegisterHandler<ObjectSpawnStartedMessage>((conn, msg) => { }); // host mode doesn't need spawning
+                RegisterHandler<ObjectSpawnFinishedMessage>((conn, msg) => { }); // host mode doesn't need spawning
+                RegisterHandler<UpdateVarsMessage>((conn, msg) => { });
+            }
+            else
+            {
+                RegisterHandler<ObjectDestroyMessage>(ClientScene.OnObjectDestroy);
+                RegisterHandler<ObjectHideMessage>(ClientScene.OnObjectHide);
+                RegisterHandler<NetworkPongMessage>(NetworkTime.OnClientPong);
+                RegisterHandler<SpawnPrefabMessage>(ClientScene.OnSpawnPrefab);
+                RegisterHandler<SpawnSceneObjectMessage>(ClientScene.OnSpawnSceneObject);
+                RegisterHandler<ObjectSpawnStartedMessage>(ClientScene.OnObjectSpawnStarted);
+                RegisterHandler<ObjectSpawnFinishedMessage>(ClientScene.OnObjectSpawnFinished);
+                RegisterHandler<UpdateVarsMessage>(ClientScene.OnUpdateVarsMessage);
+            }
+            RegisterHandler<ClientAuthorityMessage>(ClientScene.OnClientAuthority);
+            RegisterHandler<RpcMessage>(ClientScene.OnRPCMessage);
+            RegisterHandler<SyncEventMessage>(ClientScene.OnSyncEventMessage);
         }
 
-        public void RegisterHandler(short msgType, NetworkMessageDelegate handler)
+        /// <summary>
+        /// Obsolete: Use <see cref="RegisterHandler{T}"/> instead
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never), Obsolete("Use RegisterHandler<T> instead")]
+        public static void RegisterHandler(int msgType, NetworkMessageDelegate handler)
         {
             if (handlers.ContainsKey(msgType))
             {
-                if (LogFilter.Debug) { Debug.Log("NetworkClient.RegisterHandler replacing " + msgType); }
+                if (LogFilter.Debug) Debug.Log("NetworkClient.RegisterHandler replacing " + handler + " - " + msgType);
             }
             handlers[msgType] = handler;
         }
 
-        public void RegisterHandler(MsgType msgType, NetworkMessageDelegate handler)
+        /// <summary>
+        /// Obsolete: Use <see cref="RegisterHandler{T}"/> instead
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never), Obsolete("Use RegisterHandler<T> instead")]
+        public static void RegisterHandler(MsgType msgType, NetworkMessageDelegate handler)
         {
-            RegisterHandler((short)msgType, handler);
+            RegisterHandler((int)msgType, handler);
         }
 
-        public void UnregisterHandler(short msgType)
+        /// <summary>
+        /// Register a handler for a particular message type.
+        /// <para>There are several system message types which you can add handlers for. You can also add your own message types.</para>
+        /// </summary>
+        /// <typeparam name="T">The message type to unregister.</typeparam>
+        /// <param name="handler"></param>
+        public static void RegisterHandler<T>(Action<NetworkConnection, T> handler) where T : IMessageBase, new()
+        {
+            int msgType = MessagePacker.GetId<T>();
+            if (handlers.ContainsKey(msgType))
+            {
+                if (LogFilter.Debug) Debug.Log("NetworkClient.RegisterHandler replacing " + handler + " - " + msgType);
+            }
+            handlers[msgType] = MessagePacker.MessageHandler<T>(handler);
+        }
+
+        /// <summary>
+        /// Obsolete: Use <see cref="UnregisterHandler{T}"/> instead
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never), Obsolete("Use UnregisterHandler<T> instead")]
+        public static void UnregisterHandler(int msgType)
         {
             handlers.Remove(msgType);
         }
 
-        public void UnregisterHandler(MsgType msgType)
+        /// <summary>
+        /// Obsolete: Use <see cref="UnregisterHandler{T}"/> instead
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never), Obsolete("Use UnregisterHandler<T> instead")]
+        public static void UnregisterHandler(MsgType msgType)
         {
-            UnregisterHandler((short)msgType);
+            UnregisterHandler((int)msgType);
         }
 
-        internal static void AddClient(NetworkClient client)
+        /// <summary>
+        /// Unregisters a network message handler.
+        /// </summary>
+        /// <typeparam name="T">The message type to unregister.</typeparam>
+        public static void UnregisterHandler<T>() where T : IMessageBase
         {
-            allClients.Add(client);
+            // use int to minimize collisions
+            int msgType = MessagePacker.GetId<T>();
+            handlers.Remove(msgType);
         }
 
-        internal static bool RemoveClient(NetworkClient client)
+        /// <summary>
+        /// Shut down a client.
+        /// <para>This should be done when a client is no longer going to be used.</para>
+        /// </summary>
+        public static void Shutdown()
         {
-            return allClients.Remove(client);
+            if (LogFilter.Debug) Debug.Log("Shutting down client.");
+            ClientScene.Shutdown();
+            connectState = ConnectState.None;
         }
 
-        internal static void UpdateClients()
-        {
-            // remove null clients first
-            allClients.RemoveAll(cl => cl == null);
-
-            // now update valid clients
-            // IMPORTANT: no foreach, otherwise we get an InvalidOperationException
-            // when stopping the client.
-            for (int i = 0; i < allClients.Count; ++i)
-            {
-                allClients[i].Update();
-            }
-        }
-
+        /// <summary>
+        /// Obsolete: Call <see cref="NetworkClient.Shutdown"/> instead. There is only one client.
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never), Obsolete("Call NetworkClient.Shutdown() instead. There is only one client.")]
         public static void ShutdownAll()
         {
-            while (allClients.Count != 0)
-            {
-                allClients[0].Shutdown();
-            }
-            allClients = new List<NetworkClient>();
-            s_IsActive = false;
-            ClientScene.Shutdown();
-        }
-
-        internal static void SetActive(bool state)
-        {
-            s_IsActive = state;
+            Shutdown();
         }
     }
 }

@@ -22,11 +22,13 @@ public class DeathCircle : NetworkBehaviour {
 	private float porcentage = 1;
 	private Transform myTransform;
 
+	[SyncVar]
 	private State currentState = State.IsIdle;
 	public float timerSize;
 	private float timerDamage;
 	private Vector3 currentScale;
 	private float scaleSpeed;
+	[SyncVar]
 	private bool shouldDamage = true;
 
 
@@ -37,12 +39,11 @@ public class DeathCircle : NetworkBehaviour {
 
 	private void Start() {
 		if(isClient) {
-			CmdUpdateRadius();
+			PlayerManager.instance.DeathCircle = this;
 		}
 	}
 
-	[Command]
-	public void CmdStartAtRandom() {
+	public void StartAtRandom() {
 		Transform position = closePoints[Random.Range(0,closePoints.Length)];
 		RpcStartAtTransform(position.position);
 		myTransform.position = position.position;
@@ -78,7 +79,7 @@ public class DeathCircle : NetworkBehaviour {
 
 				foreach(GameObject g in playersInside) {
 					Health h = g.GetComponent<Health>();
-					h.CmdHurt((int) Damage);
+					h.Hurt((int) Damage);
 				}
 			}
 			timerDamage = hurtTimeInterval;
@@ -90,9 +91,7 @@ public class DeathCircle : NetworkBehaviour {
 			else if(currentState == State.IsShrinking) {
 				currentState = State.isStable;
 				if(currentScale.x <= minRadius){
-					currentState = State.finished;
-					GameManager.instance.CmdHasEndedCircle();
-					shouldDamage = false;
+					HasReachedEnd();
 				}
 				else{
 					if(isServer){
@@ -105,6 +104,17 @@ public class DeathCircle : NetworkBehaviour {
 		if(currentState == State.IsShrinking){
 			currentScale -= delta * scaleSpeed * new Vector3(1,1,0);
 			myTransform.localScale = currentScale;
+		}
+	}
+
+	protected void HasReachedEnd()
+	{
+		if(isServer)
+		{
+			currentState = State.finished;
+			GameManager.instance.HasEndedCircle();
+			shouldDamage = false;
+
 		}
 	}
 

@@ -11,7 +11,7 @@ public class Hug : NetworkBehaviour {
 	void OnTriggerEnter2D(Collider2D col){
 		Player aux = player.gameObject.GetComponent<Player>();
 		if(col.gameObject.tag == "Player" && aux.acariciado == null){
-				col.gameObject.GetComponent<Health>().CmdHeal(damage);
+				col.gameObject.GetComponent<Health>().Heal(damage);
 
 				col.gameObject.GetComponent<Player>().Huged = true;
 				aux.Hugging = true;

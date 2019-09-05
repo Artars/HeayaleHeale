@@ -1,19 +1,21 @@
-﻿using UnityEngine;
-using Mirror;
+using UnityEngine;
 
 namespace Mirror.Examples.Pong
 {
     public class Ball : NetworkBehaviour
     {
         public float speed = 30;
+        public Rigidbody2D rigidbody2d;
 
         public override void OnStartServer()
         {
-            // only simulate ball physics on server
-            GetComponent<Rigidbody2D>().simulated = true;
+            base.OnStartServer();
 
-            // Initial Velocity
-            GetComponent<Rigidbody2D>().velocity = Vector2.right * speed;
+            // only simulate ball physics on server
+            rigidbody2d.simulated = true;
+
+            // Serve the ball from left player
+            rigidbody2d.velocity = Vector2.right * speed;
         }
 
         float HitFactor(Vector2 ballPos, Vector2 racketPos, float racketHeight)
@@ -51,7 +53,7 @@ namespace Mirror.Examples.Pong
                 Vector2 dir = new Vector2(x, y).normalized;
 
                 // Set Velocity with dir * speed
-                GetComponent<Rigidbody2D>().velocity = dir * speed;
+                rigidbody2d.velocity = dir * speed;
             }
         }
     }

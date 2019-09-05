@@ -16,18 +16,16 @@ public class Health : NetworkBehaviour {
 		hpAtual = hpInicial;
 	}
 
-	[Command]
-	public void CmdHurt(float dano){
+	public void Hurt(float dano){
 		hpAtual -=dano;
 		if(hpAtual <= 0){
-			GameManager.instance.Cmdwon(gameObject);
+			GameManager.instance.PlayerWon(GetComponent<Player>());
 		}else if(hpAtual >= hpMax)
 			hpAtual = hpMax;
 	}
 
-	[Command]
-	public void CmdHeal(float dano){
-		CmdHurt(-dano);
+	public void Heal(float dano){
+		Hurt(-dano);
 	}
 
 
@@ -36,6 +34,7 @@ public class Health : NetworkBehaviour {
 	/// </summary>
 	/// <param name="newCurrentLife"></param>
 	public void UpdateCurrentLife(float newCurrentLife) {
+		hpAtual = newCurrentLife;
 		float porcentage = newCurrentLife / hpMax;
 		
 		if(slider != null)
