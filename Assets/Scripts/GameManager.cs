@@ -27,7 +27,8 @@ public class GameManager : NetworkBehaviour
 
 	[Header("Item spawn")]
 	public GameObject itemPrefab;
-	public float timeToSpawn;
+	public float timeToSpawnForPlayer;
+	protected float timeToSpawn;
 	private float timerSpawn = 0;
 	public Vector3 lowerPos;
 	public Vector3 upperPos;
@@ -135,6 +136,18 @@ public class GameManager : NetworkBehaviour
         {
             player.Value.playerState = Player.PlayerState.Playing;
         }
+
+		if(players.Count != 0)
+			timeToSpawn = timeToSpawnForPlayer / players.Count;
+		else
+			timeToSpawn = timeToSpawnForPlayer;
+
+		// Spawn one crate for each player at start
+		for (int i = 0; i < players.Count; i++)
+		{
+			SpawnCrate();
+		}
+		timerSpawn = timeToSpawn;
 	}
 
 
@@ -145,6 +158,7 @@ public class GameManager : NetworkBehaviour
 	public void PlayerWon(Player player) {
 		Debug.Log("Jogador " +  player.playerID + " ganhou!");
 		PlayerManager.instance.RpcShowWhoWon("Player   " +  (player.playerID+1) + "   won!");
+		PlayerManager.instance.RpcSetGamePaused(true);
 	}
 
 	public void HasEndedCircle(){
@@ -177,32 +191,46 @@ public class GameManager : NetworkBehaviour
 
 	}
 
+	protected void SpawnCrate()
+	{
+		bool canSpawn = false;
+		float x =0 ,y = 0;
+		timerSpawn -= Time.deltaTime;
+		while(!canSpawn) {
+			x = Random.Range(lowerPos.x, upperPos.x);
+			y = Random.Range(lowerPos.y, upperPos.y);
+
+			canSpawn = true;
+			Collider2D[] hits = Physics2D.OverlapCircleAll(new Vector2(x,y),1);
+			foreach(Collider2D c2 in hits) {
+				if(c2.gameObject.layer > 9){
+					canSpawn = false;
+					break;
+				}
+			}
+		}
+		GameObject toInstance = GameObject.Instantiate(itemPrefab ,new Vector3 (x,y,0),Quaternion.identity);
+		NetworkServer.Spawn(toInstance);
+	}
+
 	private void Update() {
 		if(isServer){
 			if(hasGameStarted) {
-				bool canSpawn = false;
-				float x =0 ,y = 0;
 				timerSpawn -= Time.deltaTime;
 				if(timerSpawn <= 0) {
-					while(!canSpawn) {
-						x = Random.Range(lowerPos.x, upperPos.x);
-						y = Random.Range(lowerPos.y, upperPos.y);
-
-						canSpawn = true;
-						Collider2D[] hits = Physics2D.OverlapCircleAll(new Vector2(x,y),1);
-						foreach(Collider2D c2 in hits) {
-							if(c2.gameObject.layer > 9){
-								canSpawn = false;
-								break;
-							}
-						}
-					}
-					GameObject toInstance = GameObject.Instantiate(itemPrefab ,new Vector3 (x,y,0),Quaternion.identity);
-					NetworkServer.Spawn(toInstance);
+					SpawnCrate();
 					timerSpawn = timeToSpawn;
 				}
 			}
 		}
+	}
+
+	public void PauseGameAll(bool toPause){
+		isPaused = toPause;
+		Time.timeScale = (isPaused) ? 0 : 1;
+		Debug.Log("Server paused: " + isPaused);
+
+		PlayerManager.instance.RpcSetGamePaused(toPause);
 	}
 
 

@@ -287,8 +287,11 @@ public class Player : NetworkBehaviour {
 					Debug.Log("armaRanged");
 
 					// RpcSetCanWalk(false);
-					canWalk = false;
-					StartCoroutine(esperaKnock(armaAtual.knockbackTime));
+					if(armaAtual.knockbackTime != 0)
+					{
+						canWalk = false;
+						StartCoroutine(esperaKnock(armaAtual.knockbackTime));
+					}
 				}
 				else if(armaAtual.GetType() == typeof(armaMelee)){
 					// Remover abraço porque é bugado

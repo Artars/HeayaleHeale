@@ -112,14 +112,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  minDamage: 10
-  maxDamage: 50
-  minRadius: 10
-  maxRadius: 20
+  minDamage: 1
+  maxDamage: 20
+  minRadius: 5
+  maxRadius: 25
   hurtTimeInterval: 1
   sizeDelta: 5
-  sizeChangeInterval: 10
+  sizeChangeInterval: 150
   closePoints:
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   timerSize: 0
 --- !u!114 &4459134634945461234

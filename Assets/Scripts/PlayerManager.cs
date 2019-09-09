@@ -131,11 +131,10 @@ public class PlayerManager : NetworkBehaviour {
 		ipAdress.text = ip;
 	}
 
-	private void RpcSetGamePaused(bool toPause){
-		if(isPaused ^ toPause){
-			isPaused = toPause;
-			Time.timeScale = (isPaused) ? 1 : 0;
-		}
+	[ClientRpc]
+	public void RpcSetGamePaused(bool toPause){
+		isPaused = toPause;
+		Time.timeScale = (isPaused) ? 0 : 1;
 	}
 
 	private void pause(bool toPause){
@@ -149,5 +148,19 @@ public class PlayerManager : NetworkBehaviour {
 
 	public void quitGame() {
 		NetworkManager.Shutdown();
+	}
+
+	public void OnOpenMenu() {
+		if(isServer)
+		{
+			GameManager.instance.PauseGameAll(true);
+		}
+	}
+
+	public void OnCloseMenu() {
+		if(isServer)
+		{
+			GameManager.instance.PauseGameAll(false);
+		}
 	}
 }
