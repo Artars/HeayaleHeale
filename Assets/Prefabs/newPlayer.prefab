@@ -496,7 +496,6 @@ GameObject:
   - component: {fileID: 50950534666320482}
   - component: {fileID: 114357743358972784}
   - component: {fileID: 114341986716739878}
-  - component: {fileID: 7970348906645184470}
   - component: {fileID: 212130115877148370}
   - component: {fileID: 61063575305042856}
   - component: {fileID: 114850967796454246}
@@ -504,6 +503,9 @@ GameObject:
   - component: {fileID: 82078353986564606}
   - component: {fileID: 3560848025277301147}
   - component: {fileID: 4891878933083869613}
+  - component: {fileID: 4036102844958793593}
+  - component: {fileID: 8792952390630493718}
+  - component: {fileID: 1882800797652145395}
   m_Layer: 8
   m_Name: newPlayer
   m_TagString: Player
@@ -591,7 +593,7 @@ MonoBehaviour:
   - damage: 8
     fireCooldown: 0.5
     maxAmmo: 40
-    knockbackTime: 0
+    knockbackTime: 0.1
     Force: 3
     lugarDaArma: {fileID: 4115285962785878}
     img: {fileID: 21300000, guid: e96740295c97fe74e93ccef1af4a2d1b, type: 3}
@@ -636,7 +638,7 @@ MonoBehaviour:
   - damage: 15
     fireCooldown: 1
     maxAmmo: 15
-    knockbackTime: 0
+    knockbackTime: 0.1
     Force: 6
     lugarDaArma: {fileID: 4268944448202044}
     img: {fileID: 21300000, guid: e3a3d34903d2c52498d0394af7617d41, type: 3}
@@ -688,21 +690,6 @@ MonoBehaviour:
   hpMax: 100
   hpInicial: 80
   slider: {fileID: 0}
---- !u!114 &7970348906645184470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1677673031779792}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.014
-  compressRotation: 0
 --- !u!212 &212130115877148370
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -985,6 +972,223 @@ MonoBehaviour:
   localPlayerAuthority: 1
   m_AssetId: f4763c508e04a1249b69245a2fb70085
   m_SceneId: 0
+--- !u!114 &4036102844958793593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677673031779792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbdf5a6b1cc27d74cab63a5666d2960a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  na: {fileID: 1882800797652145395}
+  ghostGO: {fileID: 0}
+  _state: 3
+  ignoreStateUntil: 2
+  sendEveryXTick: 1
+  desiredBufferMS: 0.1
+  bufferDriftCorrectAmt: 0.1
+  autoKinematic: 1
+  allowOfftick: 1
+  sendOnEvent: 30
+  includedAxes: 7
+  keyEvery: 5
+  extrapolation: 0.5
+  extrapolationDivisor: 0
+  maxExtrapolates: 2
+  teleportThreshold: 2
+  bitCullingLevel: 0
+  sequentialKeys: 5
+  rootRotationElement:
+    name: Root Rotation
+    isRoot: 1
+    crusher:
+      isExpanded: 1
+      hideFieldName: 1
+      _trsType: 2
+      defaultTransform: {fileID: 0}
+      uniformAxes: 0
+      _xcrusher:
+        axis: 0
+        showBCL: 0
+        expandBCL: 0
+        showEnableToggle: 1
+        enabled: 1
+        _accurateCenter: 0
+        outOfBoundsHandling: 1
+        encoder: 5.6833334
+        decoder: 0.17595308
+        actualMin: -90
+        actualMax: 90
+        wrappoint: 180
+        range: 180
+        rotationMaxValue: 270
+        maxEncodedVal: 1023
+        centerValue: 0
+        centerEncodedValue: 511
+        _limitRange: 1
+        _useHalfRangeX: 1
+        _bitsDeterminedBy: 10
+        _bits: 0a000000060000000500000000000000
+        _min: -90
+        _max: 90
+        _resolution: 1023
+        _precision: 0.17595308
+        _trsType: 1
+      _ycrusher:
+        axis: 1
+        showBCL: 0
+        expandBCL: 0
+        showEnableToggle: 1
+        enabled: 1
+        _accurateCenter: 0
+        outOfBoundsHandling: 1
+        encoder: 11.375
+        decoder: 0.08791209
+        actualMin: -180
+        actualMax: 180
+        wrappoint: 180
+        range: 360
+        rotationMaxValue: 180
+        maxEncodedVal: 4095
+        centerValue: 0
+        centerEncodedValue: 2047
+        _limitRange: 1
+        _useHalfRangeX: 0
+        _bitsDeterminedBy: 12
+        _bits: 0c000000080000000600000000000000
+        _min: -180
+        _max: 180
+        _resolution: 4095
+        _precision: 0.08791209
+        _trsType: 1
+      _zcrusher:
+        axis: 2
+        showBCL: 0
+        expandBCL: 0
+        showEnableToggle: 1
+        enabled: 1
+        _accurateCenter: 0
+        outOfBoundsHandling: 1
+        encoder: 2.8416667
+        decoder: 0.35190615
+        actualMin: -180
+        actualMax: 180
+        wrappoint: 180
+        range: 360
+        rotationMaxValue: 180
+        maxEncodedVal: 1023
+        centerValue: 0
+        centerEncodedValue: 511
+        _limitRange: 1
+        _useHalfRangeX: 0
+        _bitsDeterminedBy: 10
+        _bits: 0a000000060000000500000000000000
+        _min: -180
+        _max: 180
+        _resolution: 1023
+        _precision: 0.35190615
+        _trsType: 1
+      _ucrusher:
+        axis: 4
+        showBCL: 0
+        expandBCL: 0
+        showEnableToggle: 0
+        enabled: 1
+        _accurateCenter: 0
+        outOfBoundsHandling: 1
+        encoder: 12.75
+        decoder: 0.078431375
+        actualMin: -10
+        actualMax: 10
+        wrappoint: 180
+        range: 20
+        rotationMaxValue: 350
+        maxEncodedVal: 255
+        centerValue: 0
+        centerEncodedValue: 127
+        _limitRange: 0
+        _useHalfRangeX: 0
+        _bitsDeterminedBy: 8
+        _bits: 08000000040000000300000000000000
+        _min: -10
+        _max: 10
+        _resolution: 255
+        _precision: 0.078431375
+        _trsType: 4
+      _qcrusher:
+        bits: 32
+        _compressLevel: 32
+        transform: {fileID: 0}
+        local: 0
+        isStandalone: 0
+        showEnableToggle: 1
+        enabled: 1
+      local: 0
+      useWorldBounds: 0
+      boundsGroupId: 0
+      enableTRSTypeSelector: 0
+      enableLocalSelector: 1
+      bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 0, y: 0, z: 0}
+    index: 0
+    drawerHeight: 193
+    nst: {fileID: 0}
+    na: {fileID: 0}
+    sendCullMask: 30
+    keyRate: 5
+    gameobject: {fileID: 0}
+    extrapolation: 0.5
+    maxExtrapolates: 2
+    teleportOverride: 1
+    ghostGO: {fileID: 0}
+    lastSentKeyTime: 0
+    snapshotFrameId: 0
+    targetFrameId: 0
+  debugXform: 0
+  dontDestroyOnLoad: 1
+  destroyUnspawned: 1
+  rb: {fileID: 0}
+  cachedGameObject: {fileID: 0}
+  cachedTransform: {fileID: 0}
+  frameUpdateInterval: 0
+  invFrameUpdateInterval: 0
+  lastSentPos: {x: 0, y: 0, z: 0}
+--- !u!114 &8792952390630493718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677673031779792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc6587c27fd07824eb346469eb351e86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nst: {fileID: 4036102844958793593}
+  na: {fileID: 0}
+  cachedGameObject: {fileID: 0}
+  cachedTransform: {fileID: 0}
+  frameCount: 0
+--- !u!114 &1882800797652145395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677673031779792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba7cb10fedfa1164ebbb304fa0368dbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
 --- !u!1 &1695528399544876
 GameObject:
   m_ObjectHideFlags: 0

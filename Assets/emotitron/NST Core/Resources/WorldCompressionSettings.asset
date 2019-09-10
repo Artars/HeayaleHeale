@@ -1,0 +1,142 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98c73ab841ad15f42b63371f1ed23ba1, type: 3}
+  m_Name: WorldCompressionSettings
+  m_EditorClassIdentifier: 
+  m_Name: WorldCompressionSettings
+  m_EditorClassIdentifier: 
+  minPosResolution: 100
+  defaultPosCrusher:
+    isExpanded: 1
+    hideFieldName: 0
+    _trsType: 0
+    defaultTransform: {fileID: 0}
+    uniformAxes: 0
+    xcrusher:
+      axis: 0
+      showBCL: 0
+      expandBCL: 0
+      showEnableToggle: 0
+      enabled: 1
+      _accurateCenter: 0
+      outOfBoundsHandling: 1
+      encoder: 327.675
+      decoder: 0.0030518044
+      actualMin: -100
+      actualMax: 100
+      wrappoint: 180
+      range: 200
+      rotationMaxValue: 260
+      maxEncodedVal: 65535
+      centerValue: 0
+      centerEncodedValue: 32767
+      _limitRange: 1
+      _useHalfRangeX: 0
+      _bitsDeterminedBy: -3
+      _bits: 100000000a0000000800000000000000
+      _min: -100
+      _max: 100
+      _precision: 0.01
+      _trsType: 0
+    ycrusher:
+      axis: 1
+      showBCL: 0
+      expandBCL: 0
+      showEnableToggle: 0
+      enabled: 1
+      _accurateCenter: 0
+      outOfBoundsHandling: 1
+      encoder: 102.375
+      decoder: 0.00976801
+      actualMin: -20
+      actualMax: 20
+      wrappoint: 180
+      range: 40
+      rotationMaxValue: 340
+      maxEncodedVal: 4095
+      centerValue: 0
+      centerEncodedValue: 2047
+      _limitRange: 1
+      _useHalfRangeX: 0
+      _bitsDeterminedBy: -3
+      _bits: 0c000000080000000600000000000000
+      _min: -20
+      _max: 20
+      _precision: 0.01
+      _trsType: 0
+    zcrusher:
+      axis: 2
+      showBCL: 0
+      expandBCL: 0
+      showEnableToggle: 0
+      enabled: 1
+      _accurateCenter: 0
+      outOfBoundsHandling: 1
+      encoder: 327.675
+      decoder: 0.0030518044
+      actualMin: -100
+      actualMax: 100
+      wrappoint: 180
+      range: 200
+      rotationMaxValue: 260
+      maxEncodedVal: 65535
+      centerValue: 0
+      centerEncodedValue: 32767
+      _limitRange: 1
+      _useHalfRangeX: 0
+      _bitsDeterminedBy: -3
+      _bits: 100000000a0000000800000000000000
+      _min: -100
+      _max: 100
+      _precision: 0.01
+      _trsType: 0
+    ucrusher:
+      axis: 4
+      showBCL: 0
+      expandBCL: 0
+      showEnableToggle: 0
+      enabled: 1
+      _accurateCenter: 0
+      outOfBoundsHandling: 1
+      encoder: 12.75
+      decoder: 0.078431375
+      actualMin: -10
+      actualMax: 10
+      wrappoint: 180
+      range: 20
+      rotationMaxValue: 350
+      maxEncodedVal: 255
+      centerValue: 0
+      centerEncodedValue: 127
+      _limitRange: 0
+      _useHalfRangeX: 0
+      _bitsDeterminedBy: 8
+      _bits: 08000000040000000300000000000000
+      _min: -10
+      _max: 10
+      _precision: 0.078431375
+      _trsType: 4
+    qcrusher:
+      bits: 0
+      _compressLevel: 0
+      transform: {fileID: 0}
+      local: 0
+      isStandalone: 0
+      showEnableToggle: 0
+      enabled: 0
+    local: 0
+    useWorldBounds: 0
+    enableTRSTypeSelector: 0
+    enableLocalSelector: 0
+    bounds:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0, y: 0, z: 0}

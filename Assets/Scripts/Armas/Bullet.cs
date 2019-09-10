@@ -38,7 +38,10 @@ public class Bullet : NetworkBehaviour {
 	
 	public virtual void morrer(){//CMD
 		if(isServer)
-			Destroy(gameObject);
+		{
+			// Destroy(gameObject);
+			NetworkServer.Destroy(gameObject);
+		}
 	}
 
 	public void levarDano(int dano){//CMD
@@ -59,6 +62,12 @@ public class Bullet : NetworkBehaviour {
 				}
 			}
 			else  if (col.gameObject.tag != "DeathZone"){
+				morrer();
+			}
+		}
+		else
+		{
+			if (col.gameObject.tag != "DeathZone"){
 				morrer();
 			}
 		}
