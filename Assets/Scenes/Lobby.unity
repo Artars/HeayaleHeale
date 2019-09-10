@@ -139,7 +139,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 92933477}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7424c1070fad4ba2a7a96b02fbeb4bb, type: 3}
+  m_Script: {fileID: 11500000, guid: 71e9bc32a33e875449302faaac757daa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OnClientConnected:
@@ -180,10 +180,19 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: Mirror.UnityEventInt, Mirror, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  port: 7777
-  NoDelay: 1
-  serverMaxMessageSize: 16384
-  clientMaxMessageSize: 16384
+  DebugEnabled: 0
+  ServerBindAll: 1
+  ServerBindAddress: 127.0.0.1
+  CommunicationPort: 7777
+  MaxPacketSizeInKb: 64
+  Channels: 0100000002000000
+  CustomMaxPeerLimit: 0
+  CustomMaxPeers: 1000
+  CustomTimeoutLimit: 0
+  CustomTimeoutBaseTicks: 5000
+  CustomTimeoutMultiplier: 3
+  PingCalculationEnabled: 1
+  PingCalculationFrameTimer: 120
 --- !u!114 &92933479
 MonoBehaviour:
   m_ObjectHideFlags: 0
